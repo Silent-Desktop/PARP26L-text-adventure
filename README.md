@@ -7,3 +7,8 @@ TODO
 Run PROLOG with "swipl -s <filename>"
 Run HASKELL with arrow in top right or "ghc <filename>"
 Run SMALLTALK with "gst <filename>"
+
+Alternatively:
+https://onecompiler.com/haskell for online haskell usage
+
+https://www.jdoodle.com/execute-smalltalk-online for smalltalk online usage
