@@ -19,20 +19,20 @@ item(house_keys).
 item(boots).
 
 /* List of setpieces in this adventure: */
-setpiece(dishwasher). /**/
-setpiece(cupboard). /**/
+setpiece(dishwasher). 
+setpiece(cupboard).
 setpiece(trashcan).
 setpiece(table).
 setpiece(couch).
 setpiece(desk).
-setpiece(bed). /**/
-setpiece(plant). /**/
-setpiece(railing). /**/
+setpiece(bed). 
+setpiece(plant).
+setpiece(railing).
 setpiece(string).
-setpiece(house_door). /**/
+setpiece(house_door).
 setpiece(clothing_rack).
 setpiece(taped_paper_box).
-setpiece(shower). /**/
+setpiece(shower).
 setpiece(sink).
 setpiece(toilet).
 
@@ -69,6 +69,7 @@ at(can5, living_room).
 in(dishwasher, kitchen).
 in(cupboard, kitchen).
 in(trashcan, kitchen).
+in(fridge, kitchen).
 in(table, living_room).
 in(couch, living_room).
 in(desk, bedroom).
@@ -248,6 +249,7 @@ TODO */
 /* This rule prints out instructions and tells where you are at the beginning of the game. */
 
 start :-
+        write('You are in your kitchen, staring into your fridge. Lately you''ve bought exactly 12 cans of your favourite energy drink to last you through the exam season. You had some friends over last night and they must have decided on a prank to hide all of them from you, because the fridge is nearly empty without a single perfectly chilled can. They''re not in the fridge but they wouldn''t steal so they must be around the house. Better get to searching!'), nl,
         instructions,
         look.
 
@@ -374,109 +376,162 @@ dropepd(towel)      :- write('Dropped towel TODO.'), nl.
 
 /* These rules describe interractions with setpieces */
 interract(dishwasher)    :- 
-  (unused(dishwasher) ->
-    (running(dishwasher) ->
-      write('The dishwasher is rumbling and the little display is on - there''s a wash cycle still going. You''l have to wait some time before opening it.'), nl
+  i_am_at(Here), 
+  (in(dishwasher, Here) ->
+    (unused(dishwasher) ->
+      (running(dishwasher) ->
+        write('The dishwasher is rumbling and the little display is on - there''s a wash cycle still going. You''l have to wait some time before opening it.'), nl
+        ;
+        write('The little display is off and the dishwasher isn''t making any noises - the wash cycle must be done. You grab the handle and open the door. Inside it''s still warm and humid. Between plates and pots you find Can #1!.'), nl,
+        retract(unfound(can1)), assert(found(can1)),
+        retract(unused(dishwasher))
+      )
       ;
-      write('The little display is off and the dishwasher isn''t making any noises - the wash cycle must be done. You grab the handle and open the door. Inside it''s still warm and humid. Between plates and pots you find Can #1!.'), nl,
-      retract(unfound(can1)), assert(found(can1)),
-      retract(unused(dishwasher))
+      write('The dishwasher has already been opened. The plates inside are drying. Can #1 used to be here.'), nl
     )
     ;
-    write('The dishwasher has already been opened. The plates inside are drying. Can #1 used to be here.'), nl
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 
-interract(couch)    :- 
-  (unused(couch) ->
-    write('You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!'), nl,
-    retract(unfound(can4)), assert(found(can4)),
-    retract(unused(couch))
+interract(couch)    :-
+  i_am_at(Here), 
+  (in(couch, Here) ->
+    (unused(couch) ->
+      write('You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!'), nl,
+      retract(unfound(can4)), assert(found(can4)),
+      retract(unused(couch))
+      ;
+      write('Against better judgment you decide to sit on the couch again and waste more time. It''s way comfier than previously. Can #4 used to be hidden beneath the blanket here.'), nl
+    )
     ;
-    write('Against better judgment you decide to sit on the couch again and waste more time. It''s way comfier than previously. Can #4 used to be hidden beneath the blanket here.'), nl
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 interract(taped_paper_box)  :-
-  write('You squat down to reach the box.'), nl,
-  (unused(taped_paper_box) ->
-    (holding(knife) ->
-      write('You use the sharp knife to cut through the packing tape. Inside the box is a lot of white packing peanuts but underneath them you find Can #10!'), nl,
-      retract(unfound(can10)), assert(found(can10)),
-      retract(unused(taped_paper_box)), fail
+  i_am_at(Here), 
+  (in(taped_paper_box, Here) ->
+    write('You squat down to reach the box.'), nl,
+    (unused(taped_paper_box) ->
+      (holding(knife) ->
+        write('You use the sharp knife to cut through the packing tape. Inside the box is a lot of white packing peanuts but underneath them you find Can #10!'), nl,
+        retract(unfound(can10)), assert(found(can10)),
+        retract(unused(taped_paper_box)), fail
+        ;
+        write('The thick layers of tape are too much for you to tear through. Something sharp would come in handy...'), nl
+      ), 
+      retract(unused(taped_paper_box))
       ;
-      write('The thick layers of tape are too much for you to tear through. Something sharp would come in handy...'), nl
-    ), 
-    retract(unused(taped_paper_box))
+      write('You''ve already opened the box using the knife. Inside there used to be Can # 10.')
+    )
     ;
-    write('You''ve already opened the box using the knife. Inside there used to be Can # 10.')
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 interract(cupboard)  :-
-  write('You open the door of the cupboard wider.'), nl,
-  (unused(cupboard) ->
-    (holding(chair) ->
-      write('You climb the chair to reach the top shelf and grab Can #2!'), nl,
-      retract(unfound(can2)), assert(found(can2)),
-      retract(unused(cupboard)), fail
+  i_am_at(Here), 
+  (in(cupboard, Here) ->
+    write('You open the door of the cupboard wider.'), nl,
+    (unused(cupboard) ->
+      (holding(chair) ->
+        write('You climb the chair to reach the top shelf and grab Can #2!'), nl,
+        retract(unfound(can2)), assert(found(can2)),
+        retract(unused(cupboard)), fail
+        ;
+        write('You can see something on the top shelf but It''s much too high for you to reach.'), nl
+      )
       ;
-      write('You can see something on the top shelf but It''s much too high for you to reach.'), nl
+      write('You look into the cupboard again but besides some clean cups and plates there''s nothing of interest anymore. Can #2 used to be on the top shelf.')
     )
     ;
-    write('You look into the cupboard again but besides some clean cups and plates there''s nothing of interest anymore. Can #2 used to be on the top shelf.')
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
-interract(string) :- 
-  write('You grab the string at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of Can #6!'), nl,
-  retract(unfound(can6)), assert(found(can6)), retract(in(string, balcony)), retract(unused(string)).
+interract(string) :-
+  i_am_at(Here), 
+  (in(string, Here) ->
+    write('You grab the string at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of Can #6!'), nl,
+    retract(unfound(can6)), assert(found(can6)), retract(in(string, balcony)), retract(unused(string))
+  ).
 
 interract(fridge)    :- 
-  write('You open the fridge again. There''s supposed to be 12 cans of your favourite energy drink here but they''re missing. There''s some leftovers and some veggies on the bottom shelf but you aren''t hungry right now. Better get to searching.'),
-  nl.
+  i_am_at(Here), 
+  (in(fridge, Here) ->
+    write('You open the fridge again. There''s supposed to be 12 cans of your favourite energy drink here but they''re missing. There''s some leftovers and some veggies on the bottom shelf but you aren''t hungry right now. Better get to searching.'),
+    nl
+    ;
+    write('Whatever you are trying to do you can''t do that here'), nl
+  ).
 
 interract(trashcan)    :- 
-  (unused(trashcan) ->
-    write('You grab the plastic lid and open the trashcan. Inside nestled between old takeout boxes and paper scraps is Can #3!'), nl,
-    retract(unfound(can3)), assert(found(can3)),
-    retract(unused(trashcan))
+  i_am_at(Here), 
+  (in(trashcan, Here) ->
+    (unused(trashcan) ->
+      write('You grab the plastic lid and open the trashcan. Inside nestled between old takeout boxes and paper scraps is Can #3!'), nl,
+      retract(unfound(can3)), assert(found(can3)),
+      retract(unused(trashcan))
+      ;
+      write('You open the trashcan again. Luckily there is no upleasant smell. Can #3 used to lie on the paper scraps here.'), nl
+    )
     ;
-    write('You open the trashcan again. Luckily there is no upleasant smell. Can #3 used to lie on the paper scraps here.'), nl
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 interract(plant)    :-
-  (unused(plant) ->
-    write('You squat down to touch the plant. After some searching under its many leaves you find Can #7!'), nl,
-    retract(unfound(can7)), assert(found(can7)),
-    retract(unused(plant))
+  i_am_at(Here), 
+  (in(plant, Here) ->
+    (unused(plant) ->
+      write('You squat down to touch the plant. After some searching under its many leaves you find Can #7!'), nl,
+      retract(unfound(can7)), assert(found(can7)),
+      retract(unused(plant))
+      ;
+      write('You ruffle the plants leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. Can #3 used to be hidden below the leaves.')
+    )
     ;
-    write('You ruffle the plants leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. Can #3 used to be hidden below the leaves.')
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 interract(house_door)  :-
-  (unused(house_door) ->
-    write('You stand in front of the door of your aparment'), nl,
-    (holding(house_keys) ->
-      write('You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!'), nl,
-      retract(unfound(can12)), assert(found(can12)),
-      retract(unused(house_door)), fail
+  i_am_at(Here), 
+  (in(house_door, Here) ->
+    (unused(house_door) ->
+      write('You stand in front of the door of your aparment'), nl,
+      (holding(house_keys) ->
+        write('You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!'), nl,
+        retract(unfound(can12)), assert(found(can12)),
+        retract(unused(house_door)), fail
+        ;
+        write('The door is locked and with your current equipment there isn''t much you can do about it.'), nl
+      )
       ;
-      write('The door is locked and with your current equipment there isn''t much you can do about it.'), nl
+      write('You''ve already open the door. Can #12 used to be outside standing on your doormat. You made sure to lock the door again right?'), nl
     )
     ;
-    write('You''ve already open the door. Can #12 used to be outside standing on your doormat. You made sure to lock the door again right?'), nl
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 interract(bed)  :-
-  (unused(bed) ->
-    write('Despite being unmade the bed looks really inviting. You lie down and the moment your cheek touches the pillow you drift off for a nap.'), nl, nl,
-    write('You wake up sometime later, unsure what time it is really is. The house is quiet, even the rumble of the dishwasher in the kitchen has stopped.'), nl,
-    retract(unused(bed)), 
-    retract(running(dishwasher))
+  i_am_at(Here), 
+  (in(bed, Here) ->
+    (unused(bed) ->
+      write('Despite being unmade the bed looks really inviting. You lie down and the moment your cheek touches the pillow you drift off for a nap.'), nl, nl,
+      write('You wake up sometime later, unsure what time it is really is. The house is quiet, even the rumble of the dishwasher in the kitchen has stopped.'), nl,
+      retract(unused(bed)), 
+      retract(running(dishwasher))
+      ;
+      write('Without clear reason you lie down for a nap again. But you already had one today so it''s much harder to fall asleep. After a while of tossing and turning you get back up.'), nl
+    )
     ;
-    write('Without clear reason you lie down for a nap again. But you already had one today so it''s much harder to fall asleep. After a while of tossing and turning you get back up.'), nl
+    write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
 interract(shower) :-
-  write('You grab the shower nozle and turn on the water. It splashes a bit an wets your socks. It could be used to clean something dirty.'), nl.
+  i_am_at(Here), 
+  (in(shower, Here) ->
+    write('You grab the shower nozle and turn on the water. It splashes a bit an wets your socks. It could be used to clean something dirty.'), nl
+    ;
+    write('Whatever you are trying to do you can''t do that here'), nl
+  ).
   /*this could be a side quest to clean the boots*/
 
 /* interract(_)  :- write('You can''t do anything interesting with this.'), nl. */
@@ -524,7 +579,7 @@ inspect(railing) :-
 inspect(cupboard) :-
   i_am_at(Here), 
   (in(cupboard, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -532,7 +587,7 @@ inspect(cupboard) :-
 inspect(plant) :-
   i_am_at(Here), 
   (in(plant, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -540,7 +595,7 @@ inspect(plant) :-
 inspect(house_door) :-
   i_am_at(Here), 
   (in(house_door, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -548,7 +603,7 @@ inspect(house_door) :-
 inspect(trashcan) :-
   i_am_at(Here), 
   (in(trashcan, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -556,7 +611,7 @@ inspect(trashcan) :-
 inspect(table) :-
   i_am_at(Here), 
   (in(table, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -564,7 +619,7 @@ inspect(table) :-
 inspect(couch) :-
   i_am_at(Here), 
   (in(couch, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -572,7 +627,7 @@ inspect(couch) :-
 inspect(desk) :-
   i_am_at(Here), 
   (in(desk, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -580,7 +635,7 @@ inspect(desk) :-
 inspect(string) :-
   i_am_at(Here), 
   (in(string, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -588,7 +643,7 @@ inspect(string) :-
 inspect(clothing_rack) :-
   i_am_at(Here), 
   (in(clothing_rack, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -596,7 +651,7 @@ inspect(clothing_rack) :-
 inspect(taped_paper_box) :-
   i_am_at(Here), 
   (in(taped_paper_box, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -604,7 +659,7 @@ inspect(taped_paper_box) :-
 inspect(sink) :-
   i_am_at(Here), 
   (in(sink, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -612,7 +667,7 @@ inspect(sink) :-
 inspect(toilet) :-
   i_am_at(Here), 
   (in(toilet, Here) ->
-    write('TODO'), nl,
+    write('TODO'), nl
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
