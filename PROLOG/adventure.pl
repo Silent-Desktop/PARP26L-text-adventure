@@ -40,6 +40,7 @@ setpiece(toilet).
 unused(house_door).
 unused(cupboard).
 unused(taped_paper_box).
+unused(desk).
 unused(boots).
 unused(trashcan).
 unused(plant).
@@ -115,7 +116,7 @@ unfound(can11).
 unfound(can12).
 
 /* This is a counter of trophies found during the adventure:
-TODO */
+TOmDO */
 
 /* Standard command and ways of interracting with the game: */
   /* These rules describe how to pick up an object. */
@@ -270,7 +271,7 @@ describe(can4) :- write('Can #4, It''s pink in color and the drink is probably s
 describe(can5) :- write('Can #5, The color of it is a really bright cheerful yellow. There''s some drawing on it as well but they''re pretty meaningless. The flavour is bad.'), nl.
 describe(can6) :- write('Can #6, It''s a uniform soft pinkish-orange color. The drink tastes like peach and lemon.'), nl.
 describe(can7) :- write('Can #7, It has a gold coating with sparkling silver details. It''s reeeaaaly shiny. The drink tastes like cream soda.'), nl.
-describe(can8) :- write('TODO'), nl.
+describe(can8) :- write('Can #8, It''s a really bright pastel pink. The drink inside tastes like bubblegum.'), nl.
 describe(can9) :- write('TODO'), nl.
 describe(can10) :- write('Can #10, It''s black with red details. The drink flavour is cherry.'), nl.
 describe(can11) :- write('Can #11, completely white with some grey shading and silver details. You''re not sure what the flavour is supposed to be.'), nl.
@@ -287,45 +288,45 @@ This might a common over-ambitious blunder.*/
     /*kitchen*/
       notice(knife, kitchen)         :- write('There is a KNIFE on the countertop near the sink. It looks sharp.'), nl.
       notice(chair, kitchen)         :- write('You left the CHAIR here, not sure why but maybe you could stand on it.'), nl.
-      notice(house_keys, kitchen)         :- write('You left the HOUSE KEYS on the countertop. The cabinets aren''t even locked so any keys are pointless here but alright.'), nl.
+      notice(house_keys, kitchen)    :- write('You left the HOUSE KEYS on the countertop. The cabinets aren''t even locked so any keys are pointless here but alright.'), nl.
       notice(boots, kitchen)         :- write('You left the boots here. And now theres mud on the floor. In the kitchen. Great.'), nl.
-      notice(towel, kitchen)         :- write('TODO'), nl.
+      notice(towel, kitchen)         :- write('YOu left your towel here. It''s still a bit moist and might leave a wet stain on the countertop'), nl.
     /*living_room*/
       notice(knife, living_room)         :- write('You left the KNIFE on the table. There is no use for it here right now but maybe you''ll have dinner soon.'), nl.
       notice(chair, living_room)         :- write('There is a CHAIR here, just next to the table. Usually you''d just sit on it but sometimes you use it to reach higher places.'), nl.
-      notice(house_keys, living_room)         :- write('You left the HOUSE KEYS on the table. Usually you leave them here anyway, easier to find later.'), nl.
+      notice(house_keys, living_room)    :- write('You left the HOUSE KEYS on the table. Usually you leave them here anyway, easier to find later.'), nl.
       notice(boots, living_room)         :- write('You left the BOOTS on the floor, a safe distance from the couch. They''re still muddy.'), nl.
-      notice(towel, living_room)         :- write('TODO'), nl.
+      notice(towel, living_room)         :- write('You left your TOWEL here, on the couch. Terrible idea since the towel isn''t perfectly dry. Why would you do that?'), nl.
     /*balcony*/
       notice(knife, balcony)         :- write('You left the KNIFE here. You can''t really do anything with it here.'), nl.
       notice(chair, balcony)         :- write('You left the CHAIR here. You could sit and enjoy the morning sun, just don'' stand on it here. That can''t be safe near the edge.'), nl.
       notice(house_keys, balcony)    :- write('You left the HOUSE KEYS here, behind the potten PLANT in the corner. A safe spot for sure.'), nl.
       notice(boots, balcony)         :- write('You left the BOOTS on the dirty tiled floor. Maybe the mud on them will dry out in the sun.'), nl.
-      notice(towel, balcony)         :- write('TODO'), nl.
+      notice(towel, balcony)         :- write('You left your TOWEL here, next to the other ones hanging on the railing. Perfect spot for it to dry.'), nl.
     /*hall*/
-      notice(knife, hall)            :- write('TODO'), nl.
-      notice(chair, hall)            :- write('TODO'), nl.
-      notice(house_keys, hall)       :- write('TODO'), nl.
+      notice(knife, hall)            :- write('You left your KNIFE here. The shiny blade is lying on the tiled floor.'), nl.
+      notice(chair, hall)            :- write('You left the CHAIR here. It''s standing near the door, almost blocking it'), nl.
+      notice(house_keys, hall)       :- write('You left the HOUSE KEYS here, hanging on the door handle. This is the exact place you could use them you know.'), nl.
       notice(boots, hall)            :- write('There is a pair of your heavy duty BOOTS here. They''re still covered with wet mud from outside.'), nl.
-      notice(towel, hall)         :- write('TODO'), nl.
+      notice(towel, hall)            :- write('You left the TOWEL here, on the empty coat rack. At least you didn''t put it on the muddy floor.'), nl.
     /*bedroom*/
-      notice(knife, bedroom)         :- write('TODO'), nl.
-      notice(chair, bedroom)         :- write('TODO'), nl.
-      notice(house_keys, bedroom)    :- write('TODO'), nl.
-      notice(boots, bedroom)         :- write('TODO'), nl.
-      notice(towel, bedroom)         :- write('TODO'), nl.
+      notice(knife, bedroom)         :- write('You left the KNIFE here, on top of the bed. Please don''t fall asleep on it.'), nl.
+      notice(chair, bedroom)         :- write('You left the CHAIR here, near the desk.'), nl.
+      notice(house_keys, bedroom)    :- write('You let the HOUSE KEYS, on the desk. Right now they''re in plain view but often they get lost amoung your notes and books.'), nl.
+      notice(boots, bedroom)         :- write('You left your BOOTS here. Horrible idea honestly since now there is mud on the wooden flooring.'), nl.
+      notice(towel, bedroom)         :- write('You left the TOWEL here. It''s still a bit wet so you jsut left it on the edge of the desk.'), nl.
     /*closet*/
       notice(knife, closet)         :- write('You left the KNIFE here. Clearly it would be useful here, but you aren''t using it at the moment.'), nl.
       notice(chair, closet)         :- write('You set down the CHAIR here. It barely fits in the small space.'), nl.
       notice(house_keys, closet)    :- write('You left the HOUSE KEYS here, in the pocket of one of your jackets. This a perfect way to forget about them and lose them later.'), nl.
       notice(boots, closet)         :- write('You left the dirty BOOTS here. The soft rug in the floor in now caked in black mud. Congrats.'), nl.
-      notice(towel, closet)         :- write('TODO'), nl.
+      notice(towel, closet)         :- write('You left your TOWEL here. It''s not a great place for it, the wetness from it might transfer to some of your shirts and jackets.'), nl.
     /*bathroom*/
-      notice(knife, bathroom)        :- write('TODO'), nl.
-      notice(chair, bathroom)        :- write('TODO'), nl.
-      notice(house_keys, batchroom)  :- write('TODO'), nl.
-      notice(boots, bathroom)        :- write('TODO'), nl.
-      notice(towel, bathroom)         :- write('theres a towel here TODO'), nl.
+      notice(knife, bathroom)        :- write('You left the KNIFE here, on the sink. Just remember that you have razors somewhere and they are much better for shaving than a kitchen knife.'), nl.
+      notice(chair, bathroom)        :- write('You left the CHAIR here. Why.'), nl.
+      notice(house_keys, batchroom)  :- write('You left the HOUSE KEYS here. There aren''t any locks in your bathroom so no reason to keep them here.'), nl.
+      notice(boots, bathroom)        :- write('You left your BOOTS here. At least the mud won''t leave any permanent stains on the bathroom tiles. Probably.'), nl.
+      notice(towel, bathroom)        :- write('Theres a TOWEL here, hanging from the top of the shower door. It''s still a bit wet and you can see a few drops of water hit the tiles below it.'), nl.
 
 /* set pieces */
 notice(dishwasher, kitchen)   :- write('There is a DISHWASHER here, a true lifesaver since you hate washing the dishes by hand.'), nl.
@@ -347,7 +348,7 @@ notice(taped_paper_box, closet) :-
     write('The PAPER BOX on the floor has already been opened with a knife, inside are only white packing peanuts.'), nl
   ).
 
-notice(toilet, bathroom)    :- write('Toilet here TODO.'), nl.
+notice(toilet, bathroom)    :- write('There is a TOILET here, also very clean. You had guests over so you had to scrub the bathroom.'), nl.
 notice(shower, bathroom) :- 
   (unused(shower) ->
     write('Your shower is here. The walls are clear class but they''re a bit cloudy since you haven''t cleaned them in a while. On a shelf built into the wall you keep your shampoo bottles. Are there more of them than usual...?'), nl
@@ -355,7 +356,7 @@ notice(shower, bathroom) :-
     write('Your shower is here. The walls are clear class but they''re a bit cloudy since you haven''t cleaned them in a while. On a shelf built into the wall you keep your shampoo bottles.'), nl
   ).
 
-notice(sink, bathroom)      :- write('Sink here TODO.'), nl.
+notice(sink, bathroom)      :- write('There is a SINK here, with nothing on it. You must have put everything away to make it cleaner.'), nl.
 
 /* These rules describe text upon picking up an item. */
 picked_up(knife)      :- write('You pick up the KNIFE. The handle is solid black and cold to the touch.'), nl.
@@ -365,14 +366,14 @@ picked_up(boots)  :-
   write('You pick up the BOOTS and get some mud on your hands. Yuck.'), nl,
   write('When you rotate on of the boots something cylindrical falls out into your hand. It''s Can #11!'), nl, 
   retract(unfound(can11)), assert(found(can11)).
-picked_up(towel)  :- write('Picked up towel TODO.'), nl.
+picked_up(towel)  :- write('You pick up the TOWEL. It cold and wet to the touch. It still hasn''t dried'), nl.
 
 /* These rules describe text upon dropping an item. */
 dropped(knife)      :- write('You leave the KNIFE here, you don''t want to accidentally stab your self with it later.'), nl.
 dropped(chair)      :- write('You put down the CHAIR. It''s a bit useless without the table next to it but at least you could stand on it.'), nl.
 dropped(house_keys) :- write('You take the HOUSE KEYS out of your pocket and leave them here. No point carrying a bundle of keys without a reason.'), nl.
 dropped(boots)      :- write('You leave the dirty BOOTS here. The mud is on your clothes now as well. Disgusting.'), nl.
-dropepd(towel)      :- write('Dropped towel TODO.'), nl.
+dropepd(towel)      :- write('You drop the wet TOWEL. This might leave a puddle.'), nl.
 
 /* These rules describe interractions with setpieces */
 interract(dishwasher)    :- 
@@ -627,7 +628,12 @@ inspect(couch) :-
 inspect(desk) :-
   i_am_at(Here), 
   (in(desk, Here) ->
-    write('TODO'), nl
+    (unused(desk) ->
+      write('You take a closer look at the pile of notes. At first nothing cathes your eye but then you notice something shiny behind a stack of library books. After pushing them aside you find Can #8!'), nl,
+      retract(unfound(can8)), assert(found(can8)), retract(unused(desk))
+      ;
+      write('You look at your notes again. The desk is even more of a mess now since you rearanged it. Can #8 used to be hidden behind some books here.')
+    )
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
@@ -643,7 +649,12 @@ inspect(string) :-
 inspect(clothing_rack) :-
   i_am_at(Here), 
   (in(clothing_rack, Here) ->
-    write('TODO'), nl
+    (unused(clothing_rack) ->
+      write('You look closer at one of your favourite denim jackets. The fabric is pretty thick but despite that you can still see something bulging in its inner pocket. You reach in and find Can #9!'), nl,
+      retract(unfound(can8)), assert(found(can8)), retract(unused(desk))
+      ;
+      write('You inspect the clothing rack again. Your denim jacket now hangs flat on its hanger. Can #9 used to be in the inner pocket.')
+    )
     ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
