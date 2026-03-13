@@ -1,7 +1,7 @@
 /* this is a text adventure for PARP 26L in prolog by Żą */
 
-:- dynamic i_am_at/1, at/2, in/2, holding/1, unfound/1, found/1, unused/1, running/1.
-:- retractall(at(_, _)), retractall(in(_, _)), retractall(i_am_at(_)), retractall(alive(_)).
+:- dynamic i_am_at/1, at/2, in/2, holding/1, unfound/1, found/1, unused/1, running/1, action_counter/1, can_counter/1.
+:- retractall(at(_, _)), retractall(in(_, _)), retractall(i_am_at(_)), retractall(action_counter(_)), retractall(can_counter(_)), assert(action_counter(0)), assert(can_counter(0)).
 
 /* List of locations in this adventure: */
 location(kitchen).
@@ -54,6 +54,24 @@ unused(shower).
 unused(clothing_rack).
 /*unused(string)*/
 /*logically this could be here but the string has a one time interaction and then its removed completely so this isnt required*/
+
+/* this is an action counter */
+increment_action_counter  :-
+  action_counter(V1),
+  retractall(action_counter(_)),
+  succ(V1, V2),
+  assert(action_counter(V2)).
+
+how_many_actions :-
+  action_counter(Value),
+  write('You''ve taken '), write(Value), write(' action(s).'), nl.
+
+/* this is can counter */
+increment_can_counter  :-
+  can_counter(V1),
+  retractall(can_counter(_)),
+  succ(V1, V2),
+  assert(can_counter(V2)).
 
 /* list of more individual interactions */
 running(dishwasher). /*you better go catch it */
@@ -124,6 +142,9 @@ TOmDO */
 
 /* Standard command and ways of interacting with the game: */
   /* These rules describe how to pick up an object. */
+    take(_) :-
+      increment_action_counter, fail.
+
     take(X) :-
             holding(X),
             write('You''re already holding it!'),
@@ -143,6 +164,9 @@ TOmDO */
 
   /* These rules describe how to put down an object. */
 
+    drop(_) :-
+      increment_action_counter, fail.
+
     drop(X) :-
             holding(X),
             i_am_at(Place),
@@ -156,6 +180,8 @@ TOmDO */
             nl.
 
   /* This rule tells how to move for one location to another. */
+    go(_) :-
+      increment_action_counter, fail.
 
     go(There) :-
             i_am_at(Here),
@@ -174,6 +200,7 @@ TOmDO */
   /* This rule tells how to look about you. */
 
     look :-
+            increment_action_counter,
             i_am_at(Place),
             describe(Place),
             nl,
@@ -193,13 +220,13 @@ TOmDO */
 
     found :-
             found(X),
-            describe(X), nl,
+            describe(X),
             fail.
     
-    unfound :-
-            unfound(X),
-            write(' -'), write(X), nl,
-            fail.
+    % unfound :-
+    %         unfound(X),
+    %         write(' -'), write(X), nl,
+    %         fail.
 
   /* These rules set up a loop to mention all the items in the current location.*/
 
@@ -247,7 +274,7 @@ TOmDO */
           write('unfound.           -- to check which trophies you''re still missing.'), nl,
           write('instructions.      -- to see this message again.'), nl,
           write('halt.              -- to end the game and quit.'), nl,
-          write('The goal of the game is to find all 12 trophies hidden around the house.'), nl,
+          write('The goal of the game is to find as many cans as possible hidden around the house. When you think you''re done return to the kitchen and interract with the FRIDGE for the final score.'), nl,
           nl.
 
 
@@ -287,7 +314,7 @@ This might a common over-ambitious blunder.*/
     /*unique interaction for can5*/
       notice(can5, living_room) :-
         write('When you look at the table you see some used plates, a folded tablecloth and next to them, slightly obscured by an empty cup is Can #5!'), nl,
-        retract(unfound(can5)), assert(found(can5)),
+        retract(unfound(can5)),  increment_can_counter, assert(found(can5)),
         retract(at(can5, living_room)).
     /*kitchen*/
       notice(knife, kitchen)         :- write('There is a KNIFE on the countertop near the sink. It looks sharp.'), nl.
@@ -369,7 +396,7 @@ picked_up(house_keys)      :- write('You pick up the HOUSE_KEYS, and they fit ne
 picked_up(boots)  :- 
   write('You pick up the BOOTS and get some mud on your hands. Yuck.'), nl,
   write('When you rotate on of the boots something cylindrical falls out into your hand. It''s Can #11!'), nl, 
-  retract(unfound(can11)), assert(found(can11)).
+  retract(unfound(can11)),  increment_can_counter, assert(found(can11)).
 picked_up(towel)  :- write('You pick up the TOWEL. It cold and wet to the touch. It still hasn''t dried'), nl.
 
 /* These rules describe text upon dropping an item. */
@@ -380,6 +407,10 @@ dropped(boots)      :- write('You leave the dirty BOOTS here. The mud is on your
 dropepd(towel)      :- write('You drop the wet TOWEL. This might leave a puddle.'), nl.
 
 /* These rules describe interactions with setpieces */
+
+interact(_) :-
+      increment_action_counter, fail.
+
 interact(dishwasher)    :- 
   i_am_at(Here), 
   (in(dishwasher, Here) ->
@@ -388,7 +419,7 @@ interact(dishwasher)    :-
         write('The dishwasher is rumbling and the little display is on - there''s a wash cycle still going. You''l have to wait some time before opening it.'), nl
         ;
         write('The little display is off and the dishwasher isn''t making any noises - the wash cycle must be done. You grab the handle and open the door. Inside it''s still warm and humid. Between plates and pots you find Can #1!.'), nl,
-        retract(unfound(can1)), assert(found(can1)),
+        retract(unfound(can1)),  increment_can_counter, assert(found(can1)),
         retract(unused(dishwasher))
       )
       ;
@@ -404,7 +435,7 @@ interact(couch)    :-
   (in(couch, Here) ->
     (unused(couch) ->
       write('You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!'), nl,
-      retract(unfound(can4)), assert(found(can4)),
+      retract(unfound(can4)),  increment_can_counter, assert(found(can4)),
       retract(unused(couch))
       ;
       write('Against better judgment you decide to sit on the couch again and waste more time. It''s way comfier than previously. Can #4 used to be hidden beneath the blanket here.'), nl
@@ -420,7 +451,7 @@ interact(paper_box)  :-
     (unused(paper_box) ->
       (holding(knife) ->
         write('You use the sharp knife to cut through the packing tape. Inside the box is a lot of white packing peanuts but underneath them you find Can #10!'), nl,
-        retract(unfound(can10)), assert(found(can10)),
+        retract(unfound(can10)),  increment_can_counter, assert(found(can10)),
         retract(unused(paper_box)), fail
         ;
         write('The thick layers of tape are too much for you to tear through. Something sharp would come in handy...'), nl
@@ -434,14 +465,14 @@ interact(paper_box)  :-
   ).
 
 interact(cupboard)  :-
-  i_am_at(Here), 
+  i_am_at(Here),
   (in(cupboard, Here) ->
     write('You open the door of the cupboard wider.'), nl,
     (unused(cupboard) ->
       (holding(chair) ->
         write('You climb the chair to reach the top shelf and grab Can #2!'), nl,
-        retract(unfound(can2)), assert(found(can2)),
-        retract(unused(cupboard)), fail
+        retract(unfound(can2)),  increment_can_counter, assert(found(can2)),
+        retract(unused(cupboard))
         ;
         write('You can see something on the top shelf but It''s much too high for you to reach.'), nl
       )
@@ -456,14 +487,18 @@ interact(string) :-
   i_am_at(Here), 
   (in(string, Here) ->
     write('You grab the string at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of Can #6!'), nl,
-    retract(unfound(can6)), assert(found(can6)), retract(in(string, balcony)), retract(unused(string))
+    retract(unfound(can6)),  increment_can_counter, assert(found(can6)), retract(in(string, balcony)), retract(unused(string))
   ).
 
 interact(fridge)    :- 
   i_am_at(Here), 
   (in(fridge, Here) ->
-    write('You open the fridge again. There''s supposed to be 12 cans of your favourite energy drink here but they''re missing. There''s some leftovers and some veggies on the bottom shelf but you aren''t hungry right now. Better get to searching.'),
-    nl
+    write('You open the fridge and return all the cans that you''ve found to their shelf. You''re looking forward to ejoying a cold drink'), nl,
+    how_many_actions, nl, 
+    write('In total you have found  '),
+    can_counter(Value),
+    write(Value), write(' can(s).'), nl, nl,
+    write('You have finished your search, type "halt." to end the game. Thank you for playing.'), nl
     ;
     write('Whatever you are trying to do you can''t do that here'), nl
   ).
@@ -473,7 +508,7 @@ interact(trashcan)    :-
   (in(trashcan, Here) ->
     (unused(trashcan) ->
       write('You grab the plastic lid and open the trashcan. Inside nestled between old takeout boxes and paper scraps is Can #3!'), nl,
-      retract(unfound(can3)), assert(found(can3)),
+      retract(unfound(can3)),  increment_can_counter, assert(found(can3)),
       retract(unused(trashcan))
       ;
       write('You open the trashcan again. Luckily there is no upleasant smell. Can #3 used to lie on the paper scraps here.'), nl
@@ -487,7 +522,7 @@ interact(plant)    :-
   (in(plant, Here) ->
     (unused(plant) ->
       write('You squat down to touch the plant. After some searching under its many leaves you find Can #7!'), nl,
-      retract(unfound(can7)), assert(found(can7)),
+      retract(unfound(can7)),  increment_can_counter, assert(found(can7)),
       retract(unused(plant))
       ;
       write('You ruffle the plants leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. Can #3 used to be hidden below the leaves.')
@@ -503,7 +538,7 @@ interact(house_door)  :-
       write('You stand in front of the door of your aparment'), nl,
       (holding(house_keys) ->
         write('You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!'), nl,
-        retract(unfound(can12)), assert(found(can12)),
+        retract(unfound(can12)),  increment_can_counter, assert(found(can12)),
         retract(unused(house_door))
         ;
         write('The door is locked and with your current equipment there isn''t much you can do about it.'), nl
@@ -567,7 +602,7 @@ interact(desk) :-
   (in(desk, Here) ->
     (unused(desk) ->
       write('You sit down at your desk determined to read through some of your notes. After sifting through piles of paper you reach for a book. Before you can even open it you notice Can #8 was hiding behind it!'), nl,
-      retract(unused(desk)), retract(unfound(can8)), assert(found(can8))
+      retract(unused(desk)), retract(unfound(can8)),  increment_can_counter, assert(found(can8))
       ;
       write('You''ve already looked through your notes and books, creating an even bigger mess. Can #8 used to be hidden behind some books.'), nl
     )
@@ -579,12 +614,16 @@ interact(desk) :-
 /* interact(_)  :- write('You can''t do anything interesting with this.'), nl. */
 
 /* These rules are for inspecting setpieces */
+
+inspect(_) :-
+      increment_action_counter, fail.
+
 inspect(shower) :-
   i_am_at(Here), 
   (in(shower, Here) ->
     (unused(shower) ->
       write('You walk into the shower, careful not to wet your socks on the moist floor. There''s a sponge here and some shampoo and conditioner bottles on a built-in shelf. After taking a closer look one of the bottles turns out to be Can #7!'), nl,
-      retract(unfound(can7)), assert(found(can7)),
+      retract(unfound(can7)),  increment_can_counter, assert(found(can7)),
       retract(unused(shower))
       ;
       write('You''ve already looked the shower up and down and there isn''t anything else of note here. Can #7 used to be hidden bewteen your shampoo bottles.'), nl
@@ -666,11 +705,12 @@ inspect(table) :-
   i_am_at(Here), 
   (in(table, Here) ->
     (unused(table) ->
-      write('This is were you usually eat your meals or work if you need more space. The table is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it. After taking a closer look at the things laid out on the table you notice the HOUSE KEYS under the folded tablecloth.'), nl
+      write('This is were you usually eat your meals or work if you need more space. The table is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it. After taking a closer look at the things laid out on the table you notice the HOUSE KEYS under the folded tablecloth.'), nl,
       retract(unused(table)), assert(at(house_keys, living_room))
       ;
       write('This is were you usually eat your meals or work if you need more space. The table is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it.'), nl
     )
+    ;
     write('Whatever you are looking for, it isn''t here'), nl
   ).
 
@@ -691,7 +731,7 @@ inspect(desk) :-
   (in(desk, Here) ->
     (unused(desk) ->
       write('You take a closer look at the pile of notes. At first nothing cathes your eye but then you notice something shiny behind a stack of library books. After pushing them aside you find Can #8!'), nl,
-      retract(unfound(can8)), assert(found(can8)), retract(unused(dGesk))
+      retract(unfound(can8)),  increment_can_counter, assert(found(can8)), retract(unused(dGesk))
       ;
       write('You look at your notes again. The desk is even more of a mess now since you rearanged it. Can #8 used to be hidden behind some books here.')
     )
@@ -712,7 +752,7 @@ inspect(clothing_rack) :-
   (in(clothing_rack, Here) ->
     (unused(clothing_rack) ->
       write('You look closer at one of your favourite denim jackets. The fabric is pretty thick but despite that you can still see something bulging in its inner pocket. You reach in and find Can #9!'), nl,
-      retract(unfound(can9)), assert(found(can9)), retract(unused(desk))
+      retract(unfound(can9)),  increment_can_counter, assert(found(can9)), retract(unused(desk))
       ;
       write('You inspect the clothing rack again. Your denim jacket now hangs flat on its hanger. Can #9 used to be in the inner pocket.')
     )
