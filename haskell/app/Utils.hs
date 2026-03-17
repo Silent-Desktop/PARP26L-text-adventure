@@ -65,13 +65,30 @@ promptPlayer = do
   hFlush stdout
   getLine
 
+-- | Labels and descriptions of all cans.
+canLabels :: [String]
+canLabels =
+  [ "Can #1: There are pictures of butterflies on it. The drink flavour is disgustingly peachy.",
+    "Can #2: There are drawings of fish and underwater algae all the way around it. You' re pretty sure the flavour is pineapple.",
+    "Can #3: It's a vivid neon green color. It's the best flavour - sour apple.",
+    "Can #4: It's pink in color and the drink is probably strawberry flavored.",
+    "Can #5: The color of it is a really bright cheerful yellow. There's some drawing on it as well but they're pretty meaningless. The flavour is bad.",
+    "Can #6: It's a uniform soft pinkish-orange color. The drink tastes like peach and lemon.",
+    "Can #7: It has a gold coating with sparkling silver details. It's reeeaaaly shiny. The drink tastes like cream soda.",
+    "Can #8: It's a really bright pastel pink. The drink inside tastes like bubblegum.",
+    "Can #9: It's black with some green gradient. There's \"NITRO\" written at the bottom. Why did you buy this flavour?",
+    "Can #10: It's black with red details. The drink flavour is cherry.",
+    "Can #11: Completely white with some grey shading and silver details. You're not sure what the flavour is supposed to be.",
+    "Can #12: It's a deep purple color with some vines drawn around it. The drink flavour is most likely grape."
+  ]
+
 -- | Show which cans are found.
 showFound :: GameState -> IO ()
 showFound state = do
   mapM_
     ( \(x, y) ->
         Control.Monad.when x $
-          printf "Found can #%d\n" y
+          putStrLn (canLabels !! y)
     )
     (zip (cansFound state) [1 .. length (cansFound state)])
 
