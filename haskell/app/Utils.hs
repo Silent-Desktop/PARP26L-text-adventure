@@ -1,12 +1,10 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 
 module Utils
-  ( GameState (..),
-    printCommands,
+  ( printCommands,
     replaceAt,
     promptPlayer,
     updateCan,
-    gameLoop,
     combineRest,
     showFound,
     showUnfound,
@@ -15,6 +13,8 @@ module Utils
 where
 
 import Control.Monad qualified
+import Rooms
+import State (GameState (..))
 import System.Exit (exitSuccess)
 import System.IO
 import Text.Printf
@@ -38,12 +38,6 @@ printCommands =
     \The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interract with the FRIDGE for the final score\n"
 
 -- | Game state for the adventure.
-data GameState = GameState
-  { dishwasherRunning :: Bool,
-    cansFound :: [Bool],
-    inventory :: [String],
-    pickedUpKnifeInKitchen :: Bool
-  }
 
 -- | Combine list of words into a sentence ignoring the first word.
 combineRest :: [String] -> String
@@ -97,40 +91,3 @@ showUnfound state = do
 showInventory :: GameState -> IO ()
 showInventory state = do
   mapM_ (printf "You have a %s\n") (inventory state)
-
--- | Main game loop handling commands via callbacks.
---
--- Arguments:
---   * handleLook: action after the player issues "look" (display state).
---   * handleGo: action after the player issues "go <direction>" or "go <room>".
---   * handleInteract: action after the player issues "interact <target>".
---   * handleTake: action after the player issues "take <item>".
---   * returnPlace: action invoked at the end of each loop iteration (e.g. return to current room).
---   * state: current 'GameState'.
---
--- The loop reads player input and dispatches the corresponding helper.
-gameLoop ::
-  (GameState -> IO ()) ->
-  (String -> GameState -> IO ()) ->
-  (String -> GameState -> IO ()) ->
-  (String -> GameState -> IO ()) ->
-  (GameState -> IO ()) ->
-  GameState ->
-  IO ()
-gameLoop handleLook handleGo handleInteract handleTake returnPlace state = do
-  userInput <- promptPlayer
-  let splitInput = words userInput
-  case head splitInput of
-    "look" -> handleLook state
-    "go" -> handleGo userInput state
-    "interact" -> handleInteract userInput state
-    "info" -> printCommands
-    "found" -> showFound state
-    "unfound" -> showUnfound state
-    "inventory" -> showInventory state
-    "take" -> handleTake userInput state
-    "exit" -> do
-      putStrLn "Exiting the game"
-      exitSuccess
-    _ -> putStrLn ("Unknown command: " ++ userInput)
-  returnPlace state

@@ -66,6 +66,9 @@ executable PARP26L-text-adventure
         Kitchen
         Utils
         LivingRoom
+        Rooms
+        GameLoop
+        State
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
