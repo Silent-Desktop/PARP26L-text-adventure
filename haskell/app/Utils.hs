@@ -13,9 +13,7 @@ module Utils
 where
 
 import Control.Monad qualified
-import Rooms
 import State (GameState (..))
-import System.Exit (exitSuccess)
 import System.IO
 import Text.Printf
 

@@ -8,11 +8,9 @@ module LivingRoom
   )
 where
 
-import Control.Monad qualified
 import Rooms
 import State (GameState (..))
-import System.Exit (exitSuccess)
-import Utils (combineRest, printCommands, showFound, showInventory, showUnfound, updateCan)
+import Utils (combineRest, updateCan)
 
 handleTakeLivingRoom :: String -> GameState -> IO GameState
 handleTakeLivingRoom input state = do
@@ -60,7 +58,7 @@ handleLookRestLivingRoom state = do
   return state
 
 handleGoLivingRoom :: String -> GameState -> IO Room
-handleGoLivingRoom input state = do
+handleGoLivingRoom input _ = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of

@@ -23,7 +23,7 @@ handleLookKitchen state = do
   return state
 
 handleGoKitchen :: String -> GameState -> IO Room
-handleGoKitchen input state = do
+handleGoKitchen input _ = do
   let splitInput = words input
   if length splitInput < 2
     then do
