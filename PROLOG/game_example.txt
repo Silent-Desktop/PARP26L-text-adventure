@@ -1,0 +1,267 @@
+DISCLAIMER: When played in the console the game utilises colored text to signify interactable elements. These colors are not visible in this example.
+
+joan@joan-Lenovo-IdeaPad-S540-14API:~/Documents/STUDIA_INF/SEM6/PARP/PARP26L-text-adventure$ swipl -s ./PROLOG/adventure_full.pl
+Welcome to SWI-Prolog (threaded, 64 bits, version 10.0.2)
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software.
+Please run ?- license. for legal details.
+
+For online help and background, visit https://www.swi-prolog.org
+For built-in help, use ?- help(Topic). or ?- apropos(Word).
+
+101 ?- start.
+You are in your kitchen staring into your fridge. Lately you've bought exactly 12 cans of your favourite energy drink to last you through the exam season. You had some friends over last night and they must have decided on a prank to hide all of them from you, because the fridge is nearly empty without a single perfectly chilled can. They're not in the fridge but your friends wouldn't steal so they must be around the house. Better get to searching!
+
+Enter commands using standard Prolog syntax.
+Available commands are:
+start.             -- to start the game.
+go(Place).         -- to go to that Place.
+take(Object).      -- to pick up an object.
+drop(Object).      -- to put down an object.
+look.              -- to look around you again.
+interact.          -- to interact with something in the scene.
+inspect.           -- to take a closer look at something.
+inventory.         -- to check what items you have.
+found.             -- to check which trophies you've already found.
+instructions.      -- to see this message again.
+halt.              -- to end the game and quit.
+When something is blue then it's an item and it can be picked up.
+When something is green then it's a setpiece and can be interracted or inspected but not picked up.
+When something is yellow then it's a location.
+purple means you found one of the hidden items. They are automatically checked as found and do not enter your inventory.
+The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interact with the fridge for the final score.
+---------------------------------------------------------
+This is the kitchen. The countertops are clean and there are no dirty dishes in the sink. Clearly you've been busy or just haven't eaten in a long time.
+
+There is a dishwasher here, a true lifesaver since you hate washing the dishes by hand.
+There is a large cupboard right at your eye-level and it's slightly ajar.
+Next to your feet, there is a big square trashcan, with its lid closed.
+
+There is a knife on the countertop near the sink. It looks sharp.
+
+You can see that from here you can reach the livingroom
+false.
+
+102 ?- take(knife).
+You pick up the knife. The handle is solid black and cold to the touch.
+
+true.
+
+103 ?- interact(trashcan).
+You grab the plastic lid and open the trashcan. Inside nestled between old takeout boxes and paper scraps is Can #3
+true.
+
+104 ?- inspect(dishwasher).
+The little display is flashing some numbers and you can hear rumbling and water sloshing inside. It might be a good idea to just take nap instead of waiting here for it to finish.
+true.
+
+105 ?- inspect(fridge).
+This is your fridge. Inside there should be 12 cans of your favourite energy drink but your friends hid them around the house to prank you. When you're done searching you should return here and put them back.
+true.
+
+106 ?- interact(cupboard).
+You open the door of the cupboard wider.
+You can see something on the top shelf but It's much too high for you to reach.
+true.
+
+107 ?- go(livingroom).
+This is the livingroom where you spend your free time. You never take naps here though.
+
+There is a table here, used for dining or gatherings.
+There is a couch here, it looks very comfortable with all its cushions and the fluffy blanket on top.
+
+There is a chair here, just next to the table. Usually you'd just sit on it but sometimes you use it to reach higher places.
+When you look at the table you see some used plates, a folded tablecloth and next to them, slightly obscured by an empty cup is Can #5
+
+You can see that from here you can reach the kitchen
+You can see that from here you can reach the balcony
+You can see that from here you can reach the hall
+false.
+
+108 ?- take(chair).
+You somehow manage to pick up the chair. It's a bit weird to hold but you've done this before.
+
+true.
+
+109 ?- found.
+Can #3, It's a vivid neon green color. It's the best flavour - sour apple.
+Can #5, The color of it is a really bright cheerful yellow. There's some drawing on it as well but they're pretty meaningless. The flavour is bad.
+true.
+
+110 ?- look.
+This is the livingroom where you spend your free time. You never take naps here though.
+
+There is a table here, used for dining or gatherings.
+There is a couch here, it looks very comfortable with all its cushions and the fluffy blanket on top.
+
+
+You can see that from here you can reach the kitchen
+You can see that from here you can reach the balcony
+You can see that from here you can reach the hall
+false.
+
+111 ?- inspect(table).
+This is were you usually eat your meals or work if you need more space. The table is made of a dark reddish wood and it's big enough for at least 8 people to sit around it. After taking a closer look at the things laid out on the table you notice the house_keys under the folded tablecloth.
+true.
+
+112 ?- take(house_keys).
+You pick up the house_keys, and they fit neatly in your back pocket.
+
+true.
+
+113 ?- inspect(table).
+This is were you usually eat your meals or work if you need more space. The table is made of a dark reddish wood and it's big enough for at least 8 people to sit around it.
+true.
+
+114 ?- interact(couch).
+You decide to take a break and sit down on the couch. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4
+true.
+
+115 ?- interact(couch).
+Against better judgment you decide to sit on the couch again and waste more time. It's way comfier than previously. Can #4 used to be hidden beneath the blanket here.
+true.
+
+115 ?- go(hall).
+This is the hall where you keep your coats and shoes. There's some unvacuumed sand on the tiled floor.
+
+The house_door to your apartment is here and it's currently locked.
+
+There is a pair of your heavy duty boots here. They're still covered with wet mud from outside.
+
+You can see that from here you can reach the livingroom
+You can see that from here you can reach the bathroom
+You can see that from here you can reach the bedroom
+false.
+
+116 ?- take(boots).
+You pick up the boots and get some mud on your hands. Yuck.
+When you rotate one of the boots something cylindrical falls out into your hand. It's Can #5
+
+true.
+
+117 ?- inventory.
+ -knife
+ -chair
+ -house_keys
+ -boots
+true.
+
+118 ?- interact(house_door).
+You stand in front of the house_door of your aparment
+You pull out the house_keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12. You lock the door again.
+true.
+
+119 ?- interact(house_door).
+You've already opened the door. Can #12 used to be outside standing on your doormat. You made sure to lock the door again right?
+true.
+
+119 ?- go(bedroom).
+This is the bedroom where you spend most of your time. The blinds are shut but there is a small desk lamp illuminating the room.
+
+There is a desk pushed up against the wall. This is where you work during the day.
+Your bed is in the far corner of the room. It's messy and unmade, the usual sight given your sleep schedule.
+
+
+You can see that from here you can reach the hall
+You can see that from here you can reach the closet
+false.
+
+120 ?- inspect(desk).
+You take a closer look at the pile of notes. You're prepping for exams so your desk is full of notes and loose pens. It looks like there's something hidden behind the large stack of books to the side...
+true.
+
+121 ?- interact(desk).
+You sit down at your desk determined to read through some of your notes. After sifting through piles of paper you reach for a book. Before you can even open it you notice Can #8 was hiding behind it!
+true.
+
+122 ?- interact(bed).
+The bed looks really inviting. You lie down and the moment your cheek touches the pillow you drift off for a nap.
+
+You wake up sometime later, unsure what time it is really is. The house is quiet, even the rumble of the dishwasher in the kitchen has stopped.
+true.
+
+123 ?- look.
+This is the bedroom where you spend most of your time. The blinds are shut but there is a small desk lamp illuminating the room.
+
+There is a desk pushed up against the wall. This is where you work during the day.
+Your bed is in the far corner of the room. It's messy and unmade, the usual sight given your sleep schedule.
+
+
+You can see that from here you can reach the hall
+You can see that from here you can reach the closet
+false.
+
+124 ?- go(hall).
+This is the hall where you keep your coats and shoes. There's some unvacuumed sand on the tiled floor.
+
+The house_door to your apartment is here and it's currently locked.
+
+
+You can see that from here you can reach the livingroom
+You can see that from here you can reach the bathroom
+You can see that from here you can reach the bedroom
+false.
+
+125 ?- go(livingroom).
+This is the livingroom where you spend your free time. You never take naps here though.
+
+There is a table here, used for dining or gatherings.
+There is a couch here, it looks very comfortable with all its cushions and the fluffy blanket on top.
+
+
+You can see that from here you can reach the kitchen
+You can see that from here you can reach the balcony
+You can see that from here you can reach the hall
+false.
+
+126 ?- go(kitchen).
+This is the kitchen. The countertops are clean and there are no dirty dishes in the sink. Clearly you've been busy or just haven't eaten in a long time.
+
+There is a dishwasher here, a true lifesaver since you hate washing the dishes by hand.
+There is a large cupboard right at your eye-level and it's slightly ajar.
+Next to your feet, there is a big square trashcan, with its lid closed.
+
+
+You can see that from here you can reach the livingroom
+false.
+
+127 ?- interact(dishwasher).
+The little display is off and the dishwasher isn't making any noises - the wash cycle must be done. You grab the handle and open the door. Inside it's still warm and humid. Between plates and pots you find Can #1
+true.
+
+128 ?- inventory.
+ -knife
+ -chair
+ -house_keys
+ -boots
+true.
+
+129 ?- drop(chair).
+You put down the chair. It's a bit useless without the table next to it but at least you could stand on it.
+
+true.
+
+130 ?- interact(cupboard).
+You open the door of the cupboard wider.
+You climb the chair to reach the top shelf and grab Can #2
+true.
+
+131 ?- found.
+Can #3, It's a vivid neon green color. It's the best flavour - sour apple.
+Can #5, The color of it is a really bright cheerful yellow. There's some drawing on it as well but they're pretty meaningless. The flavour is bad.
+Can #4, It's pink in color and the drink is probably strawberry flavored.
+Can #11, completely white with some grey shading and silver details. You're not sure what the flavour is supposed to be.
+Can #12, It's a deep purple color with some vines drawn around it. The drink flavour is most likely grape.
+Can #8, It's a really bright pastel pink. The drink inside tastes like bubblegum.
+Can #1, There are pictures of butterflies on it. The drink falvour is disgustingly peachy.
+Can #2, There are drawings of fish and underwater algae all the way around it. You're pretty sure the flavour is pineapple.
+true.
+
+132 ?- interact(fridge).
+You open the fridge and return all the cans that you've found to their shelf. You're looking forward to ejoying a cold drink.
+You've taken 36 action(s).
+In total you have found 8/12 cans.
+You have finished your search, type "halt." to end the game. Thank you for playing!
+true.
+
+133 ?- halt.
+joan@joan-Lenovo-IdeaPad-S540-14API:~/Documents/STUDIA_INF/SEM6/PARP/PARP26L-text-adventure$ 
