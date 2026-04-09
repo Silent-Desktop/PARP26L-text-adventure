@@ -1,4 +1,5 @@
 /* This is DEMO v0.1 for PARP by Żą. */
+/* this is a demo meant to test mechanics and solutions to some item usages and is not a part of the final adventure game */
 
 :- dynamic i_am_at/1, at/2, holding/1.
 :- retractall(at(_, _)), retractall(i_am_at(_)), retractall(alive(_)).
