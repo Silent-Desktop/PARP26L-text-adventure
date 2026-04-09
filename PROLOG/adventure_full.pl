@@ -431,7 +431,7 @@ picked_up(chair)      :- write('You somehow manage to pick up the '), ansi_forma
 picked_up(house_keys)      :- write('You pick up the '), ansi_format([bold, fg(blue)], 'house_keys', []), write(', and they fit neatly in your back pocket.'), nl.
 picked_up(boots)  :- 
   write('You pick up the '), ansi_format([bold, fg(blue)], 'boots', []), write(' and get some mud on your hands. Yuck.'), nl,
-  write('When you rotate one of the '), ansi_format([bold, fg(blue)], 'boots', []), write(' something cylindrical falls out into your hand. It''s '), ansi_format([bold, fg(magenta)], 'Can #5', []), nl, 
+  write('When you rotate one of the '), ansi_format([bold, fg(blue)], 'boots', []), write(' something cylindrical falls out into your hand. It''s '), ansi_format([bold, fg(magenta)], 'Can #11', []), nl, 
   retract(unfound(can11)),  increment_can_counter, assert(found(can11)).
 picked_up(towel)  :- write('You pick up the '), ansi_format([bold, fg(blue)], 'towel', []), write('. It cold and wet to the touch. It still hasn''t dried.'), nl.
 

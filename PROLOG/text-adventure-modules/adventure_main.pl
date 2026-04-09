@@ -266,6 +266,23 @@ TOmDO */
             write('You can see that from here you can reach the '), ansi_format([bold, fg(yellow)], Destination, []), nl,
             fail.
     notice_destination_from(_).
+  
+  /* These rules describe text upon picking up an item. */
+picked_up(knife)      :- write('You pick up the '), ansi_format([bold, fg(blue)], 'knife', []), write('. The handle is solid black and cold to the touch.'), nl.
+picked_up(chair)      :- write('You somehow manage to pick up the '), ansi_format([bold, fg(blue)], 'chair', []), write('. It''s a bit weird to hold but you''ve done this before.'), nl.
+picked_up(house_keys)      :- write('You pick up the '), ansi_format([bold, fg(blue)], 'house_keys', []), write(', and they fit neatly in your back pocket.'), nl.
+picked_up(boots)  :- 
+  write('You pick up the '), ansi_format([bold, fg(blue)], 'boots', []), write(' and get some mud on your hands. Yuck.'), nl,
+  write('When you rotate one of the '), ansi_format([bold, fg(blue)], 'boots', []), write(' something cylindrical falls out into your hand. It''s '), ansi_format([bold, fg(magenta)], 'Can #11', []), nl, 
+  retract(unfound(can11)),  increment_can_counter, assert(found(can11)).
+picked_up(towel)  :- write('You pick up the '), ansi_format([bold, fg(blue)], 'towel', []), write('. It cold and wet to the touch. It still hasn''t dried.'), nl.
+
+/* These rules describe text upon dropping an item. */
+dropped(knife)      :- write('You leave the '), ansi_format([bold, fg(blue)], 'knife', []), write(' here, you don''t want to accidentally stab your self with it later.'), nl.
+dropped(chair)      :- write('You put down the '), ansi_format([bold, fg(blue)], 'chair', []), write('. It''s a bit useless without the table next to it but at least you could stand on it.'), nl.
+dropped(house_keys) :- write('You take the '), ansi_format([bold, fg(blue)], 'house_keys', []), write(' out of your pocket and leave them here. No point carrying a bundle of keys without a reason.'), nl.
+dropped(boots)      :- write('You leave the dirty '), ansi_format([bold, fg(blue)], 'boots', []), write(' here. The mud is on your clothes now as well. Disgusting.'), nl.
+dropepd(towel)      :- write('You drop the wet '), ansi_format([bold, fg(blue)], 'towel', []), write('. This might leave a puddle.'), nl.
 
   /* This rule just writes out game instructions. */
 
