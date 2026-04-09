@@ -1,4 +1,4 @@
-/* this is a text adventure for PARP 26L in prolog by Żą */
+/* this is a text adventure for PARP 26L*/
 
 :- use_module(library(ansi_term)).
 
@@ -345,8 +345,7 @@ describe(can10) :- write('Can #10, It''s black with red details. The drink flavo
 describe(can11) :- write('Can #11, completely white with some grey shading and silver details. You''re not sure what the flavour is supposed to be.'), nl.
 describe(can12) :- write('Can #12, It''s a deep purple color with some vines drawn around it. The drink flavour is most likely grape.'), nl.
 
-/* These rules describe text upon noticing an item. There are separate texts for when an item is spotted in each location
-This might a common over-ambitious blunder.*/
+/* These rules describe text upon noticing an item. There are separate texts for when an item is spotted in each location*/
   /* items */
     /*unique interaction for can5*/
       notice(can5, livingroom) :-
