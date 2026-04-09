@@ -282,7 +282,7 @@ dropped(knife)      :- write('You leave the '), ansi_format([bold, fg(blue)], 'k
 dropped(chair)      :- write('You put down the '), ansi_format([bold, fg(blue)], 'chair', []), write('. It''s a bit useless without the table next to it but at least you could stand on it.'), nl.
 dropped(house_keys) :- write('You take the '), ansi_format([bold, fg(blue)], 'house_keys', []), write(' out of your pocket and leave them here. No point carrying a bundle of keys without a reason.'), nl.
 dropped(boots)      :- write('You leave the dirty '), ansi_format([bold, fg(blue)], 'boots', []), write(' here. The mud is on your clothes now as well. Disgusting.'), nl.
-dropepd(towel)      :- write('You drop the wet '), ansi_format([bold, fg(blue)], 'towel', []), write('. This might leave a puddle.'), nl.
+dropped(towel)      :- write('You drop the wet '), ansi_format([bold, fg(blue)], 'towel', []), write('. This might leave a puddle.'), nl.
 
   /* This rule just writes out game instructions. */
 
