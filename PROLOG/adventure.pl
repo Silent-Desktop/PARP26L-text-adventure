@@ -49,6 +49,7 @@ unused(trashcan).
 unused(plant).
 unused(table).
 unused(railing).
+unused(string).
 unused(dishwasher).
 unused(couch).
 unused(bed).
@@ -199,6 +200,15 @@ TOmDO */
 
     go(_) :-
             write('You can''t go there.').
+
+  /* This is a debug tool meant to speed up testing of all the areas*/
+  teleport(There) :-
+    i_am_at(Here),
+    retract(i_am_at(Here)),
+    assert(i_am_at(There)),
+    !, look.
+  teleport(_) :-
+    write('Invalid location').
 
   /* This rule tells how to look about you. */
 
@@ -491,6 +501,19 @@ interact(paper_box)  :-
     write('Whatever you are trying to do you can''t do that here'), nl
   ).
 
+interact(clothing_rack) :-
+  i_am_at(Here), 
+  (in(clothing_rack, Here) ->
+    (unused(clothing_rack) ->
+      write('You grab your favourite jacket from a hanger and put it on. It''s very warm and has big nice pocket. Without thinking you put your hands in the pockets and notice something cold. In your left pocket you find '), ansi_format([bold, fg(magenta)], 'Can #9', []), nl,
+      retract(unfound(can9)),  increment_can_counter, assert(found(can9)), retract(unused(clothing_rack))
+      ;
+      write('All the clothes, including the jacket you grabbed earlier are back on'), ansi_format([bold, fg(green)], 'clothing_rack', []), write('. You try the jacket on again but quickly put it back since it''s too warm anyway. Can #9 used to be in the left pocket.')
+    )
+    ;
+    write('Whatever you are looking for, it isn''t here'), nl
+  ).
+
 interact(cupboard)  :-
   i_am_at(Here),
   (in(cupboard, Here) ->
@@ -517,7 +540,12 @@ interact(railing) :-
     (unused(railing) ->
       write('You approach the '), ansi_format([bold, fg(green)], 'railing', []), write(' and rearange the wet towels hanging from it. They are colorful and it would be quite easy to hide something between them, like a thin string.'), nl
       ;
-      write('It''s the '), ansi_format([bold, fg(green)], 'railing', []), write('. You rearange the towels again, maybe out of boredom. There used to be a string at the end of which used to be Can #6.'), nl
+      write('It''s the '), ansi_format([bold, fg(green)], 'railing', []), write('. You rearange the towels again, maybe out of boredom.'), nl,
+      (unused(string) ->
+        write('There''s still a thin '), ansi_format([bold, fg(green)], 'string', []), write(' hanging over the edge'), nl
+        ;
+        write('')
+      )
     )
     ;
     write('Whatever you are trying to do you can''t do that here'), nl
@@ -688,9 +716,14 @@ inspect(railing) :-
   (in(railing, Here) ->
     (unused(railing) ->
       write('After looking closer at the '), ansi_format([bold, fg(green)], 'railing', []), write(' and the towels hanging from it you notice a thin '), ansi_format([bold, fg(green)], 'string', []), write(' tied to the edge. It''s pulled taut as if something heavy was at the end of it.'), nl,
-      assert(in(string, balcony))
+      assert(in(string, balcony)), retract(unused(railing))
       ;
-      write('It''s the '), ansi_format([bold, fg(green)], 'railing', []), write('. You''ve already found the string at the end of which used to be Can #6.'), nl
+      write('It''s the '), ansi_format([bold, fg(green)], 'railing', []), write(', with some colorful wet towers hanging from it. '), nl,
+      (unused(string) ->
+        write('There''s still a thin '), ansi_format([bold, fg(green)], 'string', []), write(' hanging over the edge'), nl
+        ;
+        write('')
+      )
     )
     ;
     write('Whatever you are looking for, it isn''t here'), nl
@@ -810,7 +843,7 @@ inspect(clothing_rack) :-
   (in(clothing_rack, Here) ->
     (unused(clothing_rack) ->
       write('You look closer at one of your favourite denim jackets. The fabric is pretty thick but despite that you can still see something bulging in its inner pocket. You reach in and find '), ansi_format([bold, fg(magenta)], 'Can #9', []), nl,
-      retract(unfound(can9)),  increment_can_counter, assert(found(can9)), retract(unused(desk))
+      retract(unfound(can9)),  increment_can_counter, assert(found(can9)), retract(unused(clothing_rack))
       ;
       write('You inspect the '), ansi_format([bold, fg(green)], 'clothing_rack', []), write(' again. Your denim jacket now hangs flat on its hanger. Can #9 used to be in the inner pocket.')
     )
