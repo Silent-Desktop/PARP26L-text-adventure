@@ -1,5 +1,7 @@
 module GameLoop (kitchen, livingRoom) where
 
+import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony)
+import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
 import LivingRoom
 import Rooms
@@ -12,6 +14,12 @@ kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen ha
 
 livingRoom :: GameState -> IO ()
 livingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom
+
+hall :: GameState -> IO ()
+hall = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall
+
+balcony :: GameState -> IO ()
+balcony = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony
 
 -- | Main game loop handling commands via callbacks.
 --
@@ -42,6 +50,8 @@ gameLoop handleLook handleGo handleInteract handleTake state = do
       case nextRoom of
         Kitchen -> kitchen state
         LivingRoom -> livingRoom state
+        Hall -> hall state
+        Balcony -> balcony state
     "interact" -> do
       newState <- handleInteract userInput state
       gameLoop handleLook handleGo handleInteract handleTake newState

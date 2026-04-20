@@ -1,10 +1,10 @@
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 
-module LivingRoom
-  ( handleLookLivingRoom,
-    handleGoLivingRoom,
-    handleInteractLivingRoom,
-    handleTakeLivingRoom,
+module Hall
+  ( handleLookHall,
+    handleGoHall,
+    handleInteractHall,
+    handleTakeHall,
   )
 where
 
@@ -12,8 +12,8 @@ import Rooms
 import State (GameState (..))
 import Utils (combineRest, updateCan)
 
-handleTakeLivingRoom :: String -> GameState -> IO GameState
-handleTakeLivingRoom input state = do
+handleTakeHall :: String -> GameState -> IO GameState
+handleTakeHall input state = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of
@@ -31,8 +31,8 @@ handleTakeLivingRoom input state = do
       putStrLn "No such item"
       return state
 
-handleLookLivingRoom :: GameState -> IO GameState
-handleLookLivingRoom state = do
+handleLookHall :: GameState -> IO GameState
+handleLookHall state = do
   putStrLn
     "This is the living room, where you spend your free time and occasionaly nap.\n\
     \There is a COUCH here, it looks very comfortable with all its cushions and the fluffy blanket on top\n"
@@ -47,18 +47,18 @@ handleLookLivingRoom state = do
           "When you look at the table you see some used plates, a folded tablecloth and next to them, slightly obscured by an empty cup is Can #5!"
         pure $ updateCan 4 True state
       else pure state
-  handleLookRestLivingRoom stateWithCan
+  handleLookRestHall stateWithCan
 
-handleLookRestLivingRoom :: GameState -> IO GameState
-handleLookRestLivingRoom state = do
+handleLookRestHall :: GameState -> IO GameState
+handleLookRestHall state = do
   putStrLn
     "You can see that from here you can reach kitchen\n\
     \You can see that from here you can reach balcony\n\
     \You can see that from here you can reach hall"
   return state
 
-handleGoLivingRoom :: String -> GameState -> IO Room
-handleGoLivingRoom input _ = do
+handleGoHall :: String -> GameState -> IO Room
+handleGoHall input _ = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of
@@ -67,10 +67,10 @@ handleGoLivingRoom input _ = do
     "hall" -> return Hall
     "_" -> do
       putStrLn "No such room"
-      return LivingRoom
+      return Hall
 
-handleInteractLivingRoom :: String -> GameState -> IO GameState
-handleInteractLivingRoom input state = do
+handleInteractHall :: String -> GameState -> IO GameState
+handleInteractHall input state = do
   let splitInput = words input
   case splitInput !! 1 of
     "couch" -> do
