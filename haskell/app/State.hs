@@ -5,5 +5,6 @@ data GameState = GameState
     cansFound :: [Bool],
     inventory :: [String],
     pickedUpKnifeInKitchen :: Bool,
-    pickedUpChair :: Bool
+    pickedUpChair :: Bool,
+    actionCount :: Int
   }

@@ -1,26 +1,19 @@
-module GameLoop (kitchen, livingRoom) where
+module GameLoop (roomFunc) where
 
 import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony)
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
 import LivingRoom
 import Rooms
-import State (GameState)
+import State (GameState (actionCount, dishwasherRunning))
 import System.Exit (exitSuccess)
 import Utils (printCommands, promptPlayer, showFound, showInventory, showUnfound)
 
-kitchen :: GameState -> IO ()
-kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen
-
-livingRoom :: GameState -> IO ()
-livingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom
-
-hall :: GameState -> IO ()
-hall = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall
-
-balcony :: GameState -> IO ()
-balcony = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony
-
+roomFunc :: Room -> GameState  -> IO ()
+roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen
+roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom
+roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall
+roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony
 -- | Main game loop handling commands via callbacks.
 --
 -- Arguments:
@@ -39,40 +32,37 @@ gameLoop ::
   GameState ->
   IO ()
 gameLoop handleLook handleGo handleInteract handleTake state = do
+  let updatedState = state {actionCount = actionCount state + 1,dishwasherRunning=(actionCount state==29)}
   userInput <- promptPlayer
   let splitInput = words userInput
   case head splitInput of
     "look" -> do
-      newState <- handleLook state
+      newState <- handleLook updatedState
       gameLoop handleLook handleGo handleInteract handleTake newState
     "go" -> do
-      nextRoom <- handleGo userInput state
-      case nextRoom of
-        Kitchen -> kitchen state
-        LivingRoom -> livingRoom state
-        Hall -> hall state
-        Balcony -> balcony state
+      nextRoom <- handleGo userInput updatedState
+      roomFunc nextRoom updatedState
     "interact" -> do
-      newState <- handleInteract userInput state
+      newState <- handleInteract userInput updatedState
       gameLoop handleLook handleGo handleInteract handleTake newState
     "info" -> do
       printCommands
-      gameLoop handleLook handleGo handleInteract handleTake state
+      gameLoop handleLook handleGo handleInteract handleTake updatedState
     "found" -> do
-      showFound state
-      gameLoop handleLook handleGo handleInteract handleTake state
+      showFound updatedState
+      gameLoop handleLook handleGo handleInteract handleTake updatedState
     "unfound" -> do
-      showUnfound state
-      gameLoop handleLook handleGo handleInteract handleTake state
+      showUnfound updatedState
+      gameLoop handleLook handleGo handleInteract handleTake updatedState
     "inventory" -> do
-      showInventory state
-      gameLoop handleLook handleGo handleInteract handleTake state
+      showInventory updatedState
+      gameLoop handleLook handleGo handleInteract handleTake updatedState
     "take" -> do
-      newState <- handleTake userInput state
+      newState <- handleTake userInput updatedState
       gameLoop handleLook handleGo handleInteract handleTake newState
     "exit" -> do
       putStrLn "Exiting the game"
       exitSuccess
     _ -> do
       putStrLn ("Unknown command: " ++ userInput)
-      gameLoop handleLook handleGo handleInteract handleTake state
+      gameLoop handleLook handleGo handleInteract handleTake updatedState

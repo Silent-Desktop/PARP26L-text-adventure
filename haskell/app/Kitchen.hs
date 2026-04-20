@@ -10,6 +10,7 @@ import Control.Monad qualified
 import Rooms (Room (Kitchen, LivingRoom))
 import State (GameState (..))
 import Utils (combineRest, updateCan)
+import System.Exit (exitSuccess)
 
 handleLookKitchen :: GameState -> IO GameState
 handleLookKitchen state = do
@@ -113,4 +114,10 @@ handleInteractionKitchen input state = do
         else do
           putStrLn "You open the trashcan again. Luckily there is no upleasant smell. Can #3 used to lie on the paper scraps here."
           return state
+    "fridge" -> do
+      putStrLn "You open the fridge and return all the cans that you've found to their shelf. You're looking forward to enjoying a cold drink"
+      putStrLn ("You've taken " ++ show (actionCount state) ++ " action(s)")
+      putStrLn ("In total you have found " ++ show (length (filter id (cansFound state))) ++ " can(s).")
+      putStrLn "You have finished your search. Thank you for playing."
+      exitSuccess
     _ -> return state
