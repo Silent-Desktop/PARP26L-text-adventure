@@ -1,6 +1,6 @@
 module GameLoop (roomFunc) where
 
-import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony)
+import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony,handleInspectBalcony)
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
 import LivingRoom
@@ -9,11 +9,16 @@ import State (GameState (actionCount, dishwasherRunning))
 import System.Exit (exitSuccess)
 import Utils (printCommands, promptPlayer, showFound, showInventory, showUnfound)
 
+emptyInspect ::  GameState -> IO GameState
+emptyInspect state = do
+  putStrLn "You can't inspect that"
+  return state
+
 roomFunc :: Room -> GameState  -> IO ()
-roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen
-roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom
-roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall
-roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony
+roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen emptyInspect
+roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
+roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall emptyInspect
+roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
 -- | Main game loop handling commands via callbacks.
 --
 -- Arguments:
@@ -29,40 +34,44 @@ gameLoop ::
   (String -> GameState -> IO Room) ->
   (String -> GameState -> IO GameState) ->
   (String -> GameState -> IO GameState) ->
+    (GameState->IO GameState)->
   GameState ->
   IO ()
-gameLoop handleLook handleGo handleInteract handleTake state = do
+gameLoop handleLook handleGo handleInteract handleTake handleInspect state = do
   let updatedState = state {actionCount = actionCount state + 1,dishwasherRunning=(actionCount state==29)}
   userInput <- promptPlayer
   let splitInput = words userInput
   case head splitInput of
     "look" -> do
       newState <- handleLook updatedState
-      gameLoop handleLook handleGo handleInteract handleTake newState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect newState 
     "go" -> do
       nextRoom <- handleGo userInput updatedState
       roomFunc nextRoom updatedState
     "interact" -> do
       newState <- handleInteract userInput updatedState
-      gameLoop handleLook handleGo handleInteract handleTake newState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect newState
     "info" -> do
       printCommands
-      gameLoop handleLook handleGo handleInteract handleTake updatedState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect updatedState
     "found" -> do
       showFound updatedState
-      gameLoop handleLook handleGo handleInteract handleTake updatedState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect updatedState
     "unfound" -> do
       showUnfound updatedState
-      gameLoop handleLook handleGo handleInteract handleTake updatedState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect updatedState
     "inventory" -> do
       showInventory updatedState
-      gameLoop handleLook handleGo handleInteract handleTake updatedState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect updatedState
     "take" -> do
       newState <- handleTake userInput updatedState
-      gameLoop handleLook handleGo handleInteract handleTake newState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect newState
+    "inspect" -> do
+      _ <- handleInspect state
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect state
     "exit" -> do
       putStrLn "Exiting the game"
       exitSuccess
     _ -> do
       putStrLn ("Unknown command: " ++ userInput)
-      gameLoop handleLook handleGo handleInteract handleTake updatedState
+      gameLoop handleLook handleGo handleInteract handleTake handleInspect updatedState

@@ -27,8 +27,8 @@ printCommands =
     \take [object]      -- to pick up an object\n\
     \drop [object]      -- to put down an object\n\
     \look               -- to look around you again\n\
-    \interact           -- to interact with something in the scene. (NOT FINISHED\n\
-    \inspect            -- to take a closer look at something. (NOT IMPLEMENTED\n\
+    \interact           -- to interact with something in the scene.\n\
+    \inspect            -- to take a closer look at something.\n\
     \inventory          -- to check what items you have\n\
     \found              -- to check which trophies you've already found\n\
     \unfound            -- to check which trophies you're still missing\n\
