@@ -2,6 +2,7 @@ module GameLoop (roomFunc) where
 
 import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony, handleInspectBalcony)
 import Bedroom (handleGoBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom)
+import Closet (handleGoCloset, handleInteractCloset, handleLookCloset, handleTakeCloset)
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
 import LivingRoom
@@ -20,6 +21,7 @@ roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractio
 roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
 roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall emptyInspect
 roomFunc (Bedroom) = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom emptyInspect
+roomFunc (Closet) = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset emptyInspect
 roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
 -- | Main game loop handling commands via callbacks.
 --

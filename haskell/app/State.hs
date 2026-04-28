@@ -8,5 +8,6 @@ data GameState = GameState
     pickedUpChair :: Bool,
     pickedUpBoots :: Bool,
     pickedUpKeys :: Bool,
-    actionCount :: Int
+    actionCount :: Int,
+    openedPaperBox :: Bool
   }
