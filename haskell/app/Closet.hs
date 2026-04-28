@@ -14,11 +14,12 @@ handleLookCloset :: GameState -> IO GameState
 handleLookCloset state = do
   putStrLn
     "This is the closet where you keep most of your daily clothes. There are dust speckles in the air and you can smell your laundry detergent faintly."
-  if openedPaperBox state 
+  if not (openedPaperBox state) 
     then do
-      putStrLn "On the floor there is a small paper box completely covered in packing tape. You'll need something sharp to open it."
+      putStrLn "On the floor there is a small PAPER BOX completely covered in packing tape. You'll need something sharp to open it."
     else do
       putStrLn "The paper box on the floor has already been opened with a knife, inside are only white packing peanuts."
+  putStrLn "There is a DRYING RACK here, where you keep your shirts and some pants. It looks dusty."
   return state
 
 handleGoCloset :: String -> GameState -> IO Room
