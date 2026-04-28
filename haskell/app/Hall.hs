@@ -61,23 +61,28 @@ handleGoHall input _ = do
 handleInteractHall :: String -> GameState -> IO GameState
 handleInteractHall input state = do
   let splitInput = words input
-  case splitInput !! 1 of
-    "house door" -> do 
-      putStrLn "You stand in front of the door of your apartment"
-      if not (pickedUpKeys state) then do
-        putStrLn "The door is locked and with your current equipment there isn't much you can do about it."
-        return state
-      else do 
-        stateWithCan <-
-          if not (cansFound state !! 11)
-            then do
-              putStrLn "You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!"
-              pure $ updateCan 11 True state
-            else do
-              putStrLn "Can #12 used to be here"
-              pure state
-        return stateWithCan
-
-    _ -> do
-      putStrLn "No such object here"
+  if length splitInput < 2
+    then do
+      putStrLn "Interact with what?"
       return state
+  else
+    case splitInput !! 1 of
+      "house door" -> do 
+        putStrLn "You stand in front of the door of your apartment"
+        if not (pickedUpKeys state) then do
+          putStrLn "The door is locked and with your current equipment there isn't much you can do about it."
+          return state
+        else do 
+          stateWithCan <-
+            if not (cansFound state !! 11)
+              then do
+                putStrLn "You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!"
+                pure $ updateCan 11 True state
+              else do
+                putStrLn "Can #12 used to be here"
+                pure state
+          return stateWithCan
+
+      _ -> do
+        putStrLn "No such object here"
+        return state
