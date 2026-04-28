@@ -34,7 +34,7 @@ handleTakeHall input state = do
         else do
           putStrLn "You're already holding it!"
           return state
-    "_" -> do
+    _ -> do
       putStrLn "No such item"
       return state
 
@@ -54,7 +54,7 @@ handleGoHall input _ = do
     "bedroom" -> return Bedroom
     "bathroom" -> return Bathroom
     "living room" -> return LivingRoom
-    "_" -> do
+    _ -> do
       putStrLn "No such room"
       return Hall
 
@@ -78,6 +78,6 @@ handleInteractHall input state = do
               pure state
         return stateWithCan
 
-    "_" -> do
+    _ -> do
       putStrLn "No such object here"
       return state

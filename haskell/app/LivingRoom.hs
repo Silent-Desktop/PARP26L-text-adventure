@@ -27,7 +27,7 @@ handleTakeLivingRoom input state = do
         else do
           putStrLn "You're already holding it!"
           return state
-    "_" -> do
+    _ -> do
       putStrLn "No such item"
       return state
 
@@ -65,7 +65,7 @@ handleGoLivingRoom input _ = do
     "kitchen" -> return Kitchen
     "balcony" -> return Balcony
     "hall" -> return Hall
-    "_" -> do
+    _ -> do
       putStrLn "No such room"
       return LivingRoom
 
@@ -79,6 +79,6 @@ handleInteractLivingRoom input state = do
     "table" -> do
       putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
       return state
-    "_" -> do
+    _ -> do
       putStrLn "No such object here"
       return state

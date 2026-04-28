@@ -18,7 +18,7 @@ handleTakeBalcony input state = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of
-    "_" -> do
+    _ -> do
       putStrLn "No such item"
       return state
 
@@ -35,7 +35,7 @@ handleGoBalcony input _ = do
   let rest = combineRest splitInput
   case rest of
     "living room" -> return Balcony
-    "_" -> do
+    _ -> do
       putStrLn "No such room"
       return Balcony
 
@@ -68,6 +68,6 @@ handleInteractBalcony input state = do
             putStrLn "Can #6 used to be here"
             pure state
       return stateWithCan
-    "_" -> do
+    _ -> do
       putStrLn "No such object here"
       return state
