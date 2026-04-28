@@ -17,13 +17,20 @@ handleTakeHall input state = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of
-    "chair" ->
-      if not (pickedUpChair state)
+    "boots" ->
+      if not (pickedUpBoots state)
         then do
-          putStrLn "You somehow manage to pick up the CHAIR. It's a bit weird to hold but you've done this before."
-          let newInventory = inventory state ++ ["chair"]
-          let newState = state {inventory = newInventory, pickedUpChair = True}
-          return newState
+          putStrLn "You pick up the BOOTS and get some mud on your hands. Yuck."
+          let newInventory = inventory state ++ ["boots"]
+          let newState = state {inventory = newInventory, pickedUpBoots = True}
+          stateWithCan <-
+            if not (cansFound newState !! 6)
+              then do
+                putStrLn "When you rotate on of the boots something cylindrical falls out into your hand. It's Can #11!"
+                pure $ updateCan 11 True newState
+              else do
+                pure newState
+          return stateWithCan
         else do
           putStrLn "You're already holding it!"
           return state
@@ -33,38 +40,20 @@ handleTakeHall input state = do
 
 handleLookHall :: GameState -> IO GameState
 handleLookHall state = do
-  putStrLn
-    "This is the living room, where you spend your free time and occasionaly nap.\n\
-    \There is a COUCH here, it looks very comfortable with all its cushions and the fluffy blanket on top\n"
-  if "chair" `notElem` inventory state
-    then do
-      putStrLn "There is a CHAIR here, just next to the table. Usually you'd just sit on it but sometimes you use it to reach higher places."
-    else putStrLn ""
-  stateWithCan <-
-    if not (cansFound state !! 4)
-      then do
-        putStrLn
-          "When you look at the table you see some used plates, a folded tablecloth and next to them, slightly obscured by an empty cup is Can #5!"
-        pure $ updateCan 4 True state
-      else pure state
-  handleLookRestHall stateWithCan
-
-handleLookRestHall :: GameState -> IO GameState
-handleLookRestHall state = do
-  putStrLn
-    "You can see that from here you can reach kitchen\n\
-    \You can see that from here you can reach balcony\n\
-    \You can see that from here you can reach hall"
+  putStrLn "This is the hall, where you keep your coats and shoes. There's some unvacuumed sand on the tiled floor."
+  putStrLn "There is a pair of your heavy duty BOOTS here. They're still covered with wet mud from outside."
+  putStrLn "The HOUSE DOOR to your apartment is here and it''s currently locked."
   return state
+
 
 handleGoHall :: String -> GameState -> IO Room
 handleGoHall input _ = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of
-    "kitchen" -> return Kitchen
-    "balcony" -> return Balcony
-    "hall" -> return Hall
+    "bedroom" -> return Bedroom
+    "bathroom" -> return Bathroom
+    "living room" -> return LivingRoom
     "_" -> do
       putStrLn "No such room"
       return Hall
@@ -73,12 +62,22 @@ handleInteractHall :: String -> GameState -> IO GameState
 handleInteractHall input state = do
   let splitInput = words input
   case splitInput !! 1 of
-    "couch" -> do
-      putStrLn "You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!"
-      return (updateCan 3 True state)
-    "table" -> do
-      putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
-      return state
+    "house door" -> do 
+      putStrLn "You stand in front of the door of your aparment"
+      if not (pickedUpKeys state) then do
+        putStrLn "The door is locked and with your current equipment there isn't much you can do about it."
+        return state
+      else do 
+        stateWithCan <-
+          if not (cansFound state !! 12)
+            then do
+              putStrLn "You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!"
+              pure $ updateCan 12 True state
+            else do
+              putStrLn "Can #12 used to be here"
+              pure state
+        return stateWithCan
+
     "_" -> do
       putStrLn "No such object here"
       return state

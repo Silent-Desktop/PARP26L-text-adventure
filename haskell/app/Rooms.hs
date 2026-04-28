@@ -4,4 +4,7 @@ data Room
   = Kitchen
   | LivingRoom
   | Balcony
-  | Hall
+  | Hall 
+  | Bedroom 
+  | Closet
+  | Bathroom

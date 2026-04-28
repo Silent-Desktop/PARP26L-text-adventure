@@ -18,16 +18,6 @@ handleTakeBalcony input state = do
   let splitInput = words input
   let rest = combineRest splitInput
   case rest of
-    "chair" ->
-      if not (pickedUpChair state)
-        then do
-          putStrLn "You somehow manage to pick up the CHAIR. It's a bit weird to hold but you've done this before."
-          let newInventory = inventory state ++ ["chair"]
-          let newState = state {inventory = newInventory, pickedUpChair = True}
-          return newState
-        else do
-          putStrLn "You're already holding it!"
-          return state
     "_" -> do
       putStrLn "No such item"
       return state

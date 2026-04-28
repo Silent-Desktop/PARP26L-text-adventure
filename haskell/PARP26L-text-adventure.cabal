@@ -71,6 +71,7 @@ executable PARP26L-text-adventure
         State
         Hall
         Balcony
+        Bedroom
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
