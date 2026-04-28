@@ -1,6 +1,7 @@
 module GameLoop (roomFunc) where
 
-import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony,handleInspectBalcony)
+import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony, handleInspectBalcony)
+import Bedroom (handleGoBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom)
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
 import LivingRoom
@@ -18,6 +19,7 @@ roomFunc :: Room -> GameState  -> IO ()
 roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen emptyInspect
 roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
 roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall emptyInspect
+roomFunc (Bedroom) = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom emptyInspect
 roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
 -- | Main game loop handling commands via callbacks.
 --
@@ -38,7 +40,7 @@ gameLoop ::
   GameState ->
   IO ()
 gameLoop handleLook handleGo handleInteract handleTake handleInspect state = do
-  let updatedState = state {actionCount = actionCount state + 1,dishwasherRunning=(actionCount state==29)}
+  let updatedState = state {actionCount = actionCount state + 1, dishwasherRunning = (actionCount state < 29 || dishwasherRunning state)}
   userInput <- promptPlayer
   let splitInput = words userInput
   case head splitInput of

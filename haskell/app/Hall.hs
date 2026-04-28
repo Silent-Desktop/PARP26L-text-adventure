@@ -24,10 +24,10 @@ handleTakeHall input state = do
           let newInventory = inventory state ++ ["boots"]
           let newState = state {inventory = newInventory, pickedUpBoots = True}
           stateWithCan <-
-            if not (cansFound newState !! 6)
+            if not (cansFound newState !! 10)
               then do
                 putStrLn "When you rotate on of the boots something cylindrical falls out into your hand. It's Can #11!"
-                pure $ updateCan 11 True newState
+                pure $ updateCan 10 True newState
               else do
                 pure newState
           return stateWithCan
@@ -69,10 +69,10 @@ handleInteractHall input state = do
         return state
       else do 
         stateWithCan <-
-          if not (cansFound state !! 12)
+          if not (cansFound state !! 11)
             then do
               putStrLn "You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!"
-              pure $ updateCan 12 True state
+              pure $ updateCan 11 True state
             else do
               putStrLn "Can #12 used to be here"
               pure state
