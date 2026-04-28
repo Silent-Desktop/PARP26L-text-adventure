@@ -34,7 +34,7 @@
     /*bedroom*/
       notice(knife, bedroom)         :- write('You left the '), ansi_format([bold, fg(blue)], 'knife', []), write(' here, on top of the bed. Please don''t fall asleep on it.'), nl.
       notice(chair, bedroom)         :- write('You left the '), ansi_format([bold, fg(blue)], 'chair', []), write(' here, near the desk.'), nl.
-      notice(house_keys, bedroom)    :- write('You let the '), ansi_format([bold, fg(blue)], 'house_keys', []), write(', on the desk. Right now they''re in plain view but often they get lost amoung your notes and books.'), nl.
+      notice(house_keys, bedroom)    :- write('You left the '), ansi_format([bold, fg(blue)], 'house_keys', []), write(', on the desk. Right now they''re in plain view but often they get lost amoung your notes and books.'), nl.
       notice(boots, bedroom)         :- write('You left your '), ansi_format([bold, fg(blue)], 'boots', []), write(' here. Horrible idea honestly since now there is mud on the wooden flooring.'), nl.
       notice(towel, bedroom)         :- write('You left the '), ansi_format([bold, fg(blue)], 'towel', []), write(' here. It''s still a bit wet so you jsut left it on the edge of the desk.'), nl.
     /*closet*/
