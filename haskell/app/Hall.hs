@@ -63,7 +63,7 @@ handleInteractHall input state = do
   let splitInput = words input
   case splitInput !! 1 of
     "house door" -> do 
-      putStrLn "You stand in front of the door of your aparment"
+      putStrLn "You stand in front of the door of your apartment"
       if not (pickedUpKeys state) then do
         putStrLn "The door is locked and with your current equipment there isn't much you can do about it."
         return state

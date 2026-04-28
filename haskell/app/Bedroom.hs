@@ -55,28 +55,33 @@ handleGoBedroom input _ = do
 handleInteractBedroom :: String -> GameState -> IO GameState
 handleInteractBedroom input state = do
   let splitInput = words input
-  case splitInput !! 1 of
-    "bed" -> do
-      stateWithDishwasher <-
-        if dishwasherRunning state
-          then do
-            putStrLn "Despite being unmade the bed looks really inviting. You lie down and the moment your cheek touches the pillow you drift off for a nap.\n\
-              \You wake up sometime later, unsure what time it is really is. The house is quiet, even the rumble of the dishwasher in the kitchen has stopped."
-            pure $ state {dishwasherRunning = False}
-          else do
-            putStrLn "Without clear reason you lie down for a nap again. But you already had one today so it's much harder to fall asleep. After a while of tossing and turning you get back up."
-            pure state
-      return stateWithDishwasher
-    "desk" -> do
-      stateWithCan <-
-        if not (cansFound state !! 7)
-          then do
-            putStrLn "You sit down at your desk determined to read through some of your notes. After sifting through piles of paper you reach for a book. Before you can even open it you notice Can #8 was hiding behind it!"
-            pure $ updateCan 7 True state
-          else do
-            putStrLn "You've already looked through your notes and books, creating an even bigger mess. Can #8 used to be hidden behind some books"
-            pure state
-      return stateWithCan
-    _ -> do
-      putStrLn "No such object here"
+  if length splitInput < 2
+    then do
+      putStrLn "Interact with what?"
       return state
+    else do
+      case splitInput !! 1 of
+        "bed" -> do
+          stateWithDishwasher <-
+            if dishwasherRunning state
+              then do
+                putStrLn "Despite being unmade the bed looks really inviting. You lie down and the moment your cheek touches the pillow you drift off for a nap.\n\
+                  \You wake up sometime later, unsure what time it is really is. The house is quiet, even the rumble of the dishwasher in the kitchen has stopped."
+                pure $ state {dishwasherRunning = False}
+              else do
+                putStrLn "Without clear reason you lie down for a nap again. But you already had one today so it's much harder to fall asleep. After a while of tossing and turning you get back up."
+                pure state
+          return stateWithDishwasher
+        "desk" -> do
+          stateWithCan <-
+            if not (cansFound state !! 7)
+              then do
+                putStrLn "You sit down at your desk determined to read through some of your notes. After sifting through piles of paper you reach for a book. Before you can even open it you notice Can #8 was hiding behind it!"
+                pure $ updateCan 7 True state
+              else do
+                putStrLn "You've already looked through your notes and books, creating an even bigger mess. Can #8 used to be hidden behind some books"
+                pure state
+          return stateWithCan
+        _ -> do
+          putStrLn "No such object here"
+          return state

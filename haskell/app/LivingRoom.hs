@@ -72,13 +72,18 @@ handleGoLivingRoom input _ = do
 handleInteractLivingRoom :: String -> GameState -> IO GameState
 handleInteractLivingRoom input state = do
   let splitInput = words input
-  case splitInput !! 1 of
-    "couch" -> do
-      putStrLn "You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!"
-      return (updateCan 3 True state)
-    "table" -> do
-      putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
+  if length splitInput < 2
+    then do
+      putStrLn "Interact with what?"
       return state
-    _ -> do
-      putStrLn "No such object here"
-      return state
+    else do
+      case splitInput !! 1 of
+        "couch" -> do
+          putStrLn "You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!"
+          return (updateCan 3 True state)
+        "table" -> do
+          putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
+          return state
+        _ -> do
+          putStrLn "No such object here"
+          return state
