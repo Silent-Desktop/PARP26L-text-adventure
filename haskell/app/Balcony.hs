@@ -26,33 +26,66 @@ handleLookBalcony :: GameState -> IO GameState
 handleLookBalcony state = do
   putStrLn "On the floor in the corner there is a large potted PLANT. It''s most likely a fern but you never bothered to make sure. It''s leaves are large and sprawling."
   putStrLn "The balcony has a thick metal RAILING and right now there are a couple of towels hanging from it."
+  if (stringFound state)
+    then do
+      putStrLn "Over the edge of the RAILING there is a thin STRING hanging. Its tied to one of the metal bars and its pulled."
+      pure state
+    else pure state
   putStrLn "You can see that from here you can reach living room"
   return state
 
 handleGoBalcony :: String -> GameState -> IO Room
 handleGoBalcony input _ = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 2
   case rest of
-    "living room" -> return Balcony
+    "living room" -> do
+      putStrLn "You go into the living room."
+      return LivingRoom
     _ -> do
       putStrLn "No such room"
       return Balcony
 
-handleInspectBalcony :: GameState -> IO GameState
-handleInspectBalcony state = do
-  putStrLn "Over the edge of the RAILING there is a thin STRING hanging. Its tied to one of the metal bars and its pulled."
-  return state
+handleInspectBalcony :: String -> GameState -> IO GameState
+handleInspectBalcony input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      case splitInput !! 1 of
+        "plant" -> do
+          stateWithCan <-
+            if not (cansFound state !! 7)
+              then do
+                putStrLn "INSPECT PLANT BEFORE CAN FOUND"
+                pure state
+            else do
+              putStrLn "INSPECT PLANT AFTER CAN FOUND"
+              pure state
+          return stateWithCan
+        "railing" -> do
+          putStrLn "Over the edge of the RAILING there is a thin STRING hanging. Its tied to one of the metal bars and its pulled."
+          if not (stringFound state)
+            then do
+              let newState = state {stringFound=True}
+              return newState
+            else 
+              pure state
+        _ -> do
+          putStrLn "No such object here"
+          return state
 
 handleInteractBalcony :: String -> GameState -> IO GameState
 handleInteractBalcony input state = do
   let splitInput = words input
-  if length splitInput < 2
+  if length splitInput < 3
     then do
       putStrLn "Interact with what?"
       return state
     else do
-      case splitInput !! 1 of
+      case splitInput !! 2 of
         "plant" -> do
           stateWithCan <-
             if not (cansFound state !! 7)

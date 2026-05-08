@@ -15,7 +15,7 @@ import Utils (combineRest, updateCan)
 handleTakeLivingRoom :: String -> GameState -> IO GameState
 handleTakeLivingRoom input state = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 1
   case rest of
     "chair" ->
       if not (pickedUpChair state)
@@ -60,11 +60,17 @@ handleLookRestLivingRoom state = do
 handleGoLivingRoom :: String -> GameState -> IO Room
 handleGoLivingRoom input _ = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 2
   case rest of
-    "kitchen" -> return Kitchen
-    "balcony" -> return Balcony
-    "hall" -> return Hall
+    "kitchen" -> do
+      putStrLn "You go into the kitchen."
+      return Kitchen
+    "balcony" -> do
+      putStrLn "You enter the balcony."
+      return Balcony
+    "hall" -> do
+      putStrLn "You go into the hall."
+      return Hall
     _ -> do
       putStrLn "No such room"
       return LivingRoom
@@ -72,15 +78,22 @@ handleGoLivingRoom input _ = do
 handleInteractLivingRoom :: String -> GameState -> IO GameState
 handleInteractLivingRoom input state = do
   let splitInput = words input
-  if length splitInput < 2
+  if length splitInput < 3
     then do
       putStrLn "Interact with what?"
       return state
     else do
-      case splitInput !! 1 of
+      case splitInput !! 2 of
         "couch" -> do
-          putStrLn "You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!"
-          return (updateCan 3 True state)
+          stateWithCan <-
+            if not (cansFound state !! 3)
+              then do
+                putStrLn "You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!"
+                pure $ updateCan 3 True state
+              else do
+                putStrLn "TODO PASTE COUCH CAN 3 FOUND INSPECT TEXT"
+                pure state
+          return stateWithCan
         "table" -> do
           putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
           return state

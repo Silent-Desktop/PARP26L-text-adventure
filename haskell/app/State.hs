@@ -2,6 +2,7 @@ module State (GameState(..)) where
 
 data GameState = GameState
   { dishwasherRunning :: Bool,
+    stringFound :: Bool,
     cansFound :: [Bool],
     inventory :: [String],
     pickedUpKnifeInKitchen :: Bool,

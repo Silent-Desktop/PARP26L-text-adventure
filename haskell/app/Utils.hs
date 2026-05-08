@@ -22,24 +22,24 @@ printCommands :: IO ()
 printCommands =
   putStrLn
     "Commands:\n\
-    \info               -- prints this message\n\
-    \go [place]         -- go to that place\n\
-    \take [object]      -- to pick up an object\n\
-    \drop [object]      -- to put down an object\n\
-    \look               -- to look around you again\n\
-    \interact           -- to interact with something in the scene.\n\
-    \inspect            -- to take a closer look at something.\n\
-    \inventory          -- to check what items you have\n\
-    \found              -- to check which trophies you've already found\n\
-    \unfound            -- to check which trophies you're still missing\n\
-    \exit               -- to end the game and quit\n\
+    \info                     -- prints this message\n\
+    \go to [place]            -- go to that place\n\
+    \take [object]            -- to pick up an object\n\
+    \drop [object]            -- to put down an object\n\
+    \look around              -- to look around you again\n\
+    \interact with [setpiece] -- to interact with something in the scene.\n\
+    \inspect [setpiece]       -- to take a closer look at something.\n\
+    \inventory                -- to check what items you have\n\
+    \found                    -- to check which trophies you've already found\n\
+    \unfound                  -- to check which trophies you're still missing\n\
+    \exit                     -- to end the game and quit\n\
     \The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interract with the FRIDGE for the final score\n"
 
 -- | Game state for the adventure.
 
--- | Combine list of words into a sentence ignoring the first word.
-combineRest :: [String] -> String
-combineRest xs = unwords (drop 1 xs)
+-- | Combine list of words into a sentence ignoring the n first words.
+combineRest :: [String] -> Int -> String
+combineRest xs n = unwords (drop n xs)
 
 -- | Replace element at index in list.
 replaceAt :: Int -> a -> [a] -> [a]

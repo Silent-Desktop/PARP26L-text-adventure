@@ -15,7 +15,7 @@ import Utils (combineRest, updateCan)
 handleTakeHall :: String -> GameState -> IO GameState
 handleTakeHall input state = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 1
   case rest of
     "boots" ->
       if not (pickedUpBoots state)
@@ -49,11 +49,17 @@ handleLookHall state = do
 handleGoHall :: String -> GameState -> IO Room
 handleGoHall input _ = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 2
   case rest of
-    "bedroom" -> return Bedroom
-    "bathroom" -> return Bathroom
-    "living room" -> return LivingRoom
+    "bedroom" -> do
+      putStrLn "You go into the bedroom."
+      return Bedroom
+    "bathroom" -> do
+      putStrLn "You go into the bathroom."
+      return Bathroom
+    "living room" -> do
+      putStrLn "You go into the living room."
+      return LivingRoom
     _ -> do
       putStrLn "No such room"
       return Hall
@@ -61,12 +67,13 @@ handleGoHall input _ = do
 handleInteractHall :: String -> GameState -> IO GameState
 handleInteractHall input state = do
   let splitInput = words input
-  if length splitInput < 2
+  if length splitInput < 3
     then do
       putStrLn "Interact with what?"
       return state
-  else
-    case splitInput !! 1 of
+  else do
+    let rest = combineRest splitInput 2
+    case rest of
       "house door" -> do 
         putStrLn "You stand in front of the door of your apartment"
         if not (pickedUpKeys state) then do
@@ -76,10 +83,10 @@ handleInteractHall input state = do
           stateWithCan <-
             if not (cansFound state !! 11)
               then do
-                putStrLn "You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12!"
+                putStrLn "You pull out the house keys and use them to easily open both locks. The door is now open. On your doorstep you find Can #12! You lock the door again."
                 pure $ updateCan 11 True state
               else do
-                putStrLn "Can #12 used to be here"
+                putStrLn "You once again open the door. Can #12 used to be here, on your doormat."
                 pure state
           return stateWithCan
 

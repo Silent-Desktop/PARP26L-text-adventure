@@ -1,3 +1,5 @@
+ {-# LANGUAGE OverloadedStrings #-}
+
 module Kitchen
   ( handleLookKitchen,
     handleGoKitchen,
@@ -7,6 +9,8 @@ module Kitchen
 where
 
 import Control.Monad qualified
+import Rainbow
+import Data.Function ((&))
 import Rooms (Room (Kitchen, LivingRoom))
 import State (GameState (..))
 import Utils (combineRest, updateCan)
@@ -14,9 +18,11 @@ import System.Exit (exitSuccess)
 
 handleLookKitchen :: GameState -> IO GameState
 handleLookKitchen state = do
-  putStrLn
+  putStr
     "This is the kitchen. The countertops are clean and there are no dirty dishes in the sink. Clearly you've been busy or just haven't eaten in a long time.\n\
-    \There is a DISHWASHER here, a true lifesaver since you hate washing the dishes by hand.\n\
+    \There is a " 
+  putChunk $ "DISHWASHER" & fore blue
+  putStr " here, a true lifesaver since you hate washing the dishes by hand.\n\
     \There is a large CUPBOARD right at your eye-level and its slightly ajar.\n\
     \Next to your feet, there is a big square TRASHCAN, with its lid closed.\n"
   Control.Monad.unless (pickedUpKnifeInKitchen state) $ putStrLn "There is a KNIFE on the countertop near the sink. It looks sharp.\n"
@@ -26,13 +32,13 @@ handleLookKitchen state = do
 handleGoKitchen :: String -> GameState -> IO Room
 handleGoKitchen input _ = do
   let splitInput = words input
-  if length splitInput < 2
+  if length splitInput < 3
     then do
-      putStrLn "Go where?"
+      putStrLn "Go to where?"
       return Kitchen
-    else case combineRest splitInput of
+    else case combineRest splitInput 2 of
       "living room" -> do
-        putStrLn "You into the living room."
+        putStrLn "You go into the living room."
         return LivingRoom
       _ -> do
         putStrLn "There is no such room"
@@ -80,19 +86,19 @@ handleTakeKitchen input state = do
 handleInteractionKitchen :: String -> GameState -> IO GameState
 handleInteractionKitchen input state = do
   let splitInput = words input
-  if length splitInput < 2
+  if length splitInput < 3
     then do
       putStrLn "Interact with what?"
       return state
     else do
-      let object = splitInput !! 1
+      let object = splitInput !! 2
       case object of
         "dishwasher" -> do
           if dishwasherRunning state
             then do
               putStrLn "The dishwasher is rumbling and the little display is on - there's a wash cycle still going. You'l have to wait some time before opening it."
               return state
-            else
+            else do
               if not (cansFound state !! 0)
                 then do
                   putStrLn "The little display is off and the dishwasher isn't making any noises - the wash cycle must be done. You grab the handle and open the door. Inside it's still warm and humid. Between plates and pots you find Can #1!."

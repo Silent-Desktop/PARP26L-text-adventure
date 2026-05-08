@@ -15,12 +15,12 @@ import Utils (combineRest, updateCan)
 handleTakeBedroom :: String -> GameState -> IO GameState
 handleTakeBedroom input state = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 1
   case rest of
     "house keys"-> do
       if not (pickedUpKeys state) 
         then do
-          putStrLn "You pick up the house_keys and they fit neatly in your back pocket."
+          putStrLn "You pick up the house keys and they fit neatly in your back pocket."
           let newInventory = inventory state ++ ["keys"]
           let newState = state{pickedUpKeys=True,inventory=newInventory}
           return newState
@@ -44,10 +44,14 @@ handleLookBedroom state = do
 handleGoBedroom :: String -> GameState -> IO Room
 handleGoBedroom input _ = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 2
   case rest of
-    "hall" -> return Hall
-    "closet" -> return Closet
+    "hall" -> do 
+      putStrLn "You go into the hall."
+      return Hall
+    "closet" -> do
+      putStrLn "You go into the closet."
+      return Closet
     _ -> do
       putStrLn "No such room"
       return Bedroom
@@ -55,22 +59,23 @@ handleGoBedroom input _ = do
 handleInteractBedroom :: String -> GameState -> IO GameState
 handleInteractBedroom input state = do
   let splitInput = words input
-  if length splitInput < 2
+  if length splitInput < 3
     then do
       putStrLn "Interact with what?"
       return state
     else do
-      case splitInput !! 1 of
+      case splitInput !! 2 of
         "bed" -> do
           stateWithDishwasher <-
             if dishwasherRunning state
               then do
                 putStrLn "Despite being unmade the bed looks really inviting. You lie down and the moment your cheek touches the pillow you drift off for a nap.\n\
                   \You wake up sometime later, unsure what time it is really is. The house is quiet, even the rumble of the dishwasher in the kitchen has stopped."
-                pure $ state {dishwasherRunning = False}
+                let newState = state {dishwasherRunning = False}
+                return newState
               else do
                 putStrLn "Without clear reason you lie down for a nap again. But you already had one today so it's much harder to fall asleep. After a while of tossing and turning you get back up."
-                pure state
+                return state
           return stateWithDishwasher
         "desk" -> do
           stateWithCan <-

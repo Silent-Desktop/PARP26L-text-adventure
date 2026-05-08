@@ -9,11 +9,16 @@ import LivingRoom
 import Rooms
 import State (GameState (actionCount, dishwasherRunning))
 import System.Exit (exitSuccess)
-import Utils (printCommands, promptPlayer, showFound, showInventory, showUnfound)
+import Utils (printCommands, promptPlayer, showFound, showInventory, showUnfound, combineRest)
+import Text.Printf
 
-emptyInspect ::  GameState -> IO GameState
-emptyInspect state = do
-  putStrLn "You can't inspect that"
+import Data.Typeable
+
+emptyInspect :: String -> GameState -> IO GameState
+emptyInspect userInput state = do
+  let splitInput = words userInput
+  let rest = combineRest splitInput 1
+  printf "Whatever %s is, you can't inspect that\n" (show rest)
   return state
 
 roomFunc :: Room -> GameState  -> IO ()
@@ -23,6 +28,7 @@ roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handle
 roomFunc (Bedroom) = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom emptyInspect
 roomFunc (Closet) = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset emptyInspect
 roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
+
 -- | Main game loop handling commands via callbacks.
 --
 -- Arguments:
@@ -38,11 +44,11 @@ gameLoop ::
   (String -> GameState -> IO Room) ->
   (String -> GameState -> IO GameState) ->
   (String -> GameState -> IO GameState) ->
-    (GameState->IO GameState)->
+    (String -> GameState->IO GameState)->
   GameState ->
   IO ()
 gameLoop handleLook handleGo handleInteract handleTake handleInspect state = do
-  let updatedState = state {actionCount = actionCount state + 1, dishwasherRunning = (actionCount state < 29 || dishwasherRunning state)}
+  let updatedState = state {actionCount = actionCount state + 1}
   userInput <- promptPlayer
   let splitInput = words userInput
   if null splitInput
@@ -75,8 +81,9 @@ gameLoop handleLook handleGo handleInteract handleTake handleInspect state = do
         newState <- handleTake userInput updatedState
         gameLoop handleLook handleGo handleInteract handleTake handleInspect newState
       "inspect" -> do
-        _ <- handleInspect state
-        gameLoop handleLook handleGo handleInteract handleTake handleInspect state
+        -- inspect updating the state is really only relevant in one case - the balcony and railing with the string
+        newState <- handleInspect userInput state
+        gameLoop handleLook handleGo handleInteract handleTake handleInspect newState
       "exit" -> do
         putStrLn "Exiting the game"
         exitSuccess
