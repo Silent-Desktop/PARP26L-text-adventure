@@ -1,7 +1,7 @@
 module GameLoop (roomFunc) where
 
 import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony, handleInspectBalcony)
-import Bedroom (handleGoBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom)
+import Bedroom (handleGoBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom, handleInspectBedroom)
 import Closet (handleGoCloset, handleInteractCloset, handleLookCloset, handleTakeCloset)
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
@@ -25,7 +25,7 @@ roomFunc :: Room -> GameState  -> IO ()
 roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen emptyInspect
 roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
 roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall emptyInspect
-roomFunc (Bedroom) = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom emptyInspect
+roomFunc (Bedroom) = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom handleInspectBedroom
 roomFunc (Closet) = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset emptyInspect
 roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
 

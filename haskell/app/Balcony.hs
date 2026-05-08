@@ -57,12 +57,12 @@ handleInspectBalcony input state = do
       case splitInput !! 1 of
         "plant" -> do
           stateWithCan <-
-            if not (cansFound state !! 7)
+            if not (cansFound state !! 6)
               then do
-                putStrLn "INSPECT PLANT BEFORE CAN FOUND"
+                putStrLn "It''s the big PLANT on your balcony, perhaps a fern. It''s leaves are wide and sprawling. It would be very easy to hide something here."
                 pure state
             else do
-              putStrLn "INSPECT PLANT AFTER CAN FOUND"
+              putStrLn "The leaves look a bit ruffled now, after you pushed them aside. The PLANT doesn''t seem bothered"
               pure state
           return stateWithCan
         "railing" -> do

@@ -5,6 +5,7 @@ module Bedroom
   handleGoBedroom,
   handleInteractBedroom,
   handleTakeBedroom,
+  handleInspectBedroom,
   )
 where
 
@@ -82,11 +83,40 @@ handleInteractBedroom input state = do
             if not (cansFound state !! 7)
               then do
                 putStrLn "You sit down at your desk determined to read through some of your notes. After sifting through piles of paper you reach for a book. Before you can even open it you notice Can #8 was hiding behind it!"
-                pure $ updateCan 7 True state
+                pure $ (updateCan 7 True state)
               else do
                 putStrLn "You've already looked through your notes and books, creating an even bigger mess. Can #8 used to be hidden behind some books"
                 pure state
           return stateWithCan
+        _ -> do
+          putStrLn "No such object here"
+          return state
+
+handleInspectBedroom :: String -> GameState -> IO GameState
+handleInspectBedroom input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      case splitInput !! 1 of
+        "bed" -> do
+            if dishwasherRunning state
+              then do
+                putStrLn "You inspect the blankets and pillows on your BED. You made it this morning so everything is nice, tidy, and flat. The fluffy covers and soft pillows look very inviting."
+                pure state
+            else do
+              putStrLn "You look at the BED again. The blankets are no longer neatly folded and the pillows are clearly out of place. The nap you had must''ve been really good."
+              pure state
+        "desk" -> do
+          if not (cansFound state !! 7)
+            then do
+              putStrLn "You take a closer look at the pile of notes. You''re prepping for exams so your desk is full of notes and loose pens. It looks like there''s something hidden behind the large stack of books to the side..."
+              pure state            
+            else do
+              putStrLn "You look at your notes again. The DESK is even more of a mess now since you rearanged it. Can #8 used to be hidden behind some books here."
+              pure state
         _ -> do
           putStrLn "No such object here"
           return state
