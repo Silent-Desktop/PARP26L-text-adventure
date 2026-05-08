@@ -90,7 +90,7 @@ showFound state = do
         Control.Monad.when x $
           putStrLn (canLabels !! y)
     )
-    (zip (cansFound state) [1 .. length (cansFound state)])
+    (zip (cansFound state) [0 .. length (cansFound state) - 1])
 
 -- | Show which cans are not found yet.
 showUnfound :: GameState -> IO ()
@@ -98,9 +98,9 @@ showUnfound state = do
   mapM_
     ( \(x, y) ->
         Control.Monad.unless x $
-          printf "Not found can #%d\n" y
+          printf "Not found can #%d\n" (y + 1)
     )
-    (zip (cansFound state) [1 .. length (cansFound state)])
+    (zip (cansFound state) [0 .. length (cansFound state) - 1])
 
 -- | Show contents of inventory.
 showInventory :: GameState -> IO ()
