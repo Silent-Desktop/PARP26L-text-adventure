@@ -88,20 +88,20 @@ handleInteractBalcony input state = do
       case splitInput !! 2 of
         "plant" -> do
           stateWithCan <-
-            if not (cansFound state !! 7)
+            if not (cansFound state !! 6)
               then do
                 putStrLn "You squat down to touch the plant. After some searching under its many leaves you find Can #7!"
-                pure $ (updateCan 7 True state)
+                pure $ (updateCan 6 True state)
             else do
               putStrLn "You ruffle the plants leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. Can #3 used to be hidden below the leaves."
               pure state
           return stateWithCan
         "string" -> do
           stateWithCan <-
-            if not (cansFound state !! 6)
+            if not (cansFound state !! 5)
               then do
                 putStrLn "You grab the string at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of Can #6!"
-                pure $ updateCan 6 True state
+                pure $ updateCan 5 True state
               else do
                 putStrLn "Can #6 used to be here"
                 pure state
