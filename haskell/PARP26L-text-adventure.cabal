@@ -73,6 +73,7 @@ executable PARP26L-text-adventure
         Balcony
         Bedroom
         Closet
+        Bathroom
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

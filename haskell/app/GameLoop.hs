@@ -1,18 +1,18 @@
 module GameLoop (roomFunc) where
 
-import Balcony (handleGoBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony, handleInspectBalcony)
-import Bedroom (handleGoBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom, handleInspectBedroom)
-import Closet (handleGoCloset, handleInteractCloset, handleLookCloset, handleTakeCloset, handleInspectCloset)
+import Balcony (handleGoBalcony, handleInspectBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony)
+import Bathroom
+import Bedroom (handleGoBedroom, handleInspectBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom)
+import Closet (handleGoCloset, handleInspectCloset, handleInteractCloset, handleLookCloset, handleTakeCloset)
+import Data.Typeable
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
 import LivingRoom
 import Rooms
 import State (GameState (actionCount, dishwasherRunning))
 import System.Exit (exitSuccess)
-import Utils (printCommands, promptPlayer, showFound, showInventory, showUnfound, combineRest)
 import Text.Printf
-
-import Data.Typeable
+import Utils (combineRest, printCommands, promptPlayer, showFound, showInventory, showUnfound)
 
 emptyInspect :: String -> GameState -> IO GameState
 emptyInspect userInput state = do
@@ -21,13 +21,14 @@ emptyInspect userInput state = do
   printf "Whatever %s is, you can't inspect that\n" (show rest)
   return state
 
-roomFunc :: Room -> GameState  -> IO ()
-roomFunc (Kitchen) = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen emptyInspect
-roomFunc (LivingRoom) =  gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
-roomFunc (Hall) = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall emptyInspect
-roomFunc (Bedroom) = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom handleInspectBedroom
-roomFunc (Closet) = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset handleInspectCloset
-roomFunc (Balcony) = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
+roomFunc :: Room -> GameState -> IO ()
+roomFunc Kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen emptyInspect
+roomFunc LivingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
+roomFunc Hall = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall emptyInspect
+roomFunc Bedroom = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom handleInspectBedroom
+roomFunc Closet = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset handleInspectCloset
+roomFunc Balcony = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
+roomFunc Bathroom = gameLoop handleLookBathroom handleGoBathroom handleInteractBathroom handleTakeBathroom handleInspectBathroom
 
 -- | Main game loop handling commands via callbacks.
 --
@@ -44,7 +45,7 @@ gameLoop ::
   (String -> GameState -> IO Room) ->
   (String -> GameState -> IO GameState) ->
   (String -> GameState -> IO GameState) ->
-    (String -> GameState->IO GameState)->
+  (String -> GameState -> IO GameState) ->
   GameState ->
   IO ()
 gameLoop handleLook handleGo handleInteract handleTake handleInspect state = do
@@ -58,7 +59,7 @@ gameLoop handleLook handleGo handleInteract handleTake handleInspect state = do
     else case head splitInput of
       "look" -> do
         newState <- handleLook updatedState
-        gameLoop handleLook handleGo handleInteract handleTake handleInspect newState 
+        gameLoop handleLook handleGo handleInteract handleTake handleInspect newState
       "go" -> do
         nextRoom <- handleGo userInput updatedState
         roomFunc nextRoom updatedState

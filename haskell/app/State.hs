@@ -1,4 +1,4 @@
-module State (GameState(..)) where
+module State (GameState (..)) where
 
 data GameState = GameState
   { dishwasherRunning :: Bool,
@@ -9,6 +9,7 @@ data GameState = GameState
     pickedUpChair :: Bool,
     pickedUpBoots :: Bool,
     pickedUpKeys :: Bool,
+    pickedUpTowel :: Bool,
     actionCount :: Int,
     openedPaperBox :: Bool
   }
