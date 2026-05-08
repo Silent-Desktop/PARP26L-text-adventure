@@ -5,6 +5,7 @@ module Hall
     handleGoHall,
     handleInteractHall,
     handleTakeHall,
+    handleInspectHall
   )
 where
 
@@ -85,6 +86,29 @@ handleInteractHall input state = do
                 else do
                   putStrLn "You once again open the door. Can #12 used to be here, on your doormat."
                   pure state
+        _ -> do
+          putStrLn "No such object here"
+          return state
+
+
+handleInspectHall :: String -> GameState -> IO GameState
+handleInspectHall input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      let rest = combineRest splitInput 1
+      case rest of
+        "house door" -> do
+            if not (cansFound state !! 10)
+              then do
+                putStrLn "The HOUSE DOOR is a solid ash grey color and the locks are pretty standard. You always make sure to lock it so you''ll need keys if you want to look out into the corridor."
+                pure state
+              else do
+                putStrLn "The HOUSE DOOR is locked once again and there is no need for you to go outside right now."
+                pure state
         _ -> do
           putStrLn "No such object here"
           return state
