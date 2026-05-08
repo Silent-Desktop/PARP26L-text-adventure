@@ -22,7 +22,7 @@ emptyInspect userInput state = do
   return state
 
 roomFunc :: Room -> GameState -> IO ()
-roomFunc Kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractionKitchen handleTakeKitchen emptyInspect
+roomFunc Kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractKitchen handleTakeKitchen handleInspectKitchen
 roomFunc LivingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
 roomFunc Hall = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall handleInspectHall
 roomFunc Bedroom = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom handleInspectBedroom

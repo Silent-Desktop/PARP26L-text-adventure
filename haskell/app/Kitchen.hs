@@ -3,8 +3,9 @@
 module Kitchen
   ( handleLookKitchen,
     handleGoKitchen,
-    handleInteractionKitchen,
+    handleInteractKitchen,
     handleTakeKitchen,
+    handleInspectKitchen,
   )
 where
 
@@ -83,8 +84,8 @@ handleTakeKitchen input state = do
           putStrLn "No such object here"
           return state
 
-handleInteractionKitchen :: String -> GameState -> IO GameState
-handleInteractionKitchen input state = do
+handleInteractKitchen :: String -> GameState -> IO GameState
+handleInteractKitchen input state = do
   let splitInput = words input
   if length splitInput < 3
     then do
@@ -137,3 +138,36 @@ handleInteractionKitchen input state = do
           putStrLn "You have finished your search. Thank you for playing."
           exitSuccess
         _ -> return state
+
+handleInspectKitchen :: String -> GameState -> IO GameState
+handleInspectKitchen input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      let rest = combineRest splitInput 1
+      case rest of
+        "fridge" -> do
+          putStrLn "This is your FRIDGE. Inside there should be 12 cans of your favourite energy drink but your friends hid them around the house to prank you. When you''re done searching you should return here and put them back."
+          pure state
+        "cupboard" -> do
+            if not (cansFound state !! 1)
+              then do
+                putStrLn "The CUPBOARD is where you keep your plates and cups. However on the top shelf you can see something shiny. You will definetely need a chair to reach it."
+                pure state
+              else do
+                putStrLn "Your plates and cups are still here. Luckily you didn''t break anything when trying to reach the top shelf."
+                pure state
+        "dishwasher" -> do
+            if dishwasherRunning state
+              then do
+                putStrLn "The little display is flashing some numbers and you can hear rumbling and water sloshing inside. It might be a good idea to just take nap instead of waiting here for it to finish."
+                pure state
+              else do
+                putStrLn "The wash cycle has finished, the little display is off and there are no more rumbling noises coming from inside."
+                pure state
+        _ -> do
+          putStrLn "No such object here"
+          return state
