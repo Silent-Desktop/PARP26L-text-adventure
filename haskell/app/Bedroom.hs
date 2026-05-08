@@ -18,16 +18,6 @@ handleTakeBedroom input state = do
   let splitInput = words input
   let rest = combineRest splitInput 1
   case rest of
-    "house keys"-> do
-      if not (pickedUpKeys state) 
-        then do
-          putStrLn "You pick up the house keys and they fit neatly in your back pocket."
-          let newInventory = inventory state ++ ["keys"]
-          let newState = state{pickedUpKeys=True,inventory=newInventory}
-          return newState
-        else do
-          putStrLn "You already picked up the keys earlier"
-          return state
     _ -> do
       putStrLn "No such item"
       return state
@@ -37,7 +27,6 @@ handleLookBedroom state = do
   putStrLn
     "This is the bedroom, where you spend most of your time. The blind are shut but there is a small desk lamp illuminating the room.\n\
     \There is a DESK pushed up against the wall. This is where you work during the day.\n\
-    \You left your HOUSE KEYS on the desk. Right now they're in plain view but often they get lost amoung your notes and books.\n\
     \Your BED is in the far corner of the room. It''s messy and unmade, the usual sight given your sleep schedule."
   putStrLn "You can see that from here you can reach the hall\n"
   return state

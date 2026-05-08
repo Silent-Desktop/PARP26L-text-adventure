@@ -7,7 +7,7 @@ import Closet (handleGoCloset, handleInspectCloset, handleInteractCloset, handle
 import Data.Typeable
 import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall, handleInspectHall)
 import Kitchen
-import LivingRoom
+import LivingRoom (handleGoLivingRoom, handleInteractLivingRoom, handleTakeLivingRoom, handleInspectLivingRoom, handleLookLivingRoom)
 import Rooms
 import State (GameState (actionCount, dishwasherRunning))
 import System.Exit (exitSuccess)
@@ -23,7 +23,7 @@ emptyInspect userInput state = do
 
 roomFunc :: Room -> GameState -> IO ()
 roomFunc Kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractKitchen handleTakeKitchen handleInspectKitchen
-roomFunc LivingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom emptyInspect
+roomFunc LivingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom handleInspectLivingRoom
 roomFunc Hall = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall handleInspectHall
 roomFunc Bedroom = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom handleInspectBedroom
 roomFunc Closet = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset handleInspectCloset

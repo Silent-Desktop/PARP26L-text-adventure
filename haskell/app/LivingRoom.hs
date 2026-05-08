@@ -5,6 +5,7 @@ module LivingRoom
     handleGoLivingRoom,
     handleInteractLivingRoom,
     handleTakeLivingRoom,
+    handleInspectLivingRoom,
   )
 where
 
@@ -27,6 +28,16 @@ handleTakeLivingRoom input state = do
         else do
           putStrLn "You're already holding it!"
           return state
+    "house keys"-> do
+      if not (pickedUpKeys state) 
+        then do
+          putStrLn "You pick up the house keys and they fit neatly in your back pocket."
+          let newInventory = inventory state ++ ["house keys"]
+          let newState = state{pickedUpKeys=True,inventory=newInventory}
+          return newState
+        else do
+          putStrLn "You already picked up the keys earlier"
+          return state
     _ -> do
       putStrLn "No such item"
       return state
@@ -39,6 +50,10 @@ handleLookLivingRoom state = do
   if "chair" `notElem` inventory state
     then do
       putStrLn "There is a CHAIR here, just next to the table. Usually you'd just sit on it but sometimes you use it to reach higher places."
+    else putStrLn ""
+  if houseKeysFound state && not (pickedUpKeys state)
+    then do
+      putStrLn "The HOUSE KEYS are here, on the table. Usually you leave them here anyway, easier to find later."
     else putStrLn ""
   stateWithCan <-
     if not (cansFound state !! 4)
@@ -95,6 +110,37 @@ handleInteractLivingRoom input state = do
         "table" -> do
           putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
           return state
+        _ -> do
+          putStrLn "No such object here"
+          return state
+
+handleInspectLivingRoom :: String -> GameState -> IO GameState
+handleInspectLivingRoom input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      let rest = combineRest splitInput 1
+      case rest of
+        "couch" -> do
+            if not (cansFound state !! 3)
+              then do
+                putStrLn "This is your COUCH. It's were you hang out during the day and read books. You hate napping on it. Right now the cushions and blanket are bunched up in a weird way, like something is underneath."
+                pure state
+              else do
+                putStrLn "This is your COUCH. It's were you hang out during the day and read books. You hate napping on it. The cushions are back to laying flat after you pulled out Can #4 from underneath them."
+                pure state
+        "table" -> do
+            if not (houseKeysFound state)
+              then do
+                putStrLn "This is were you usually eat your meals or work if you need more space. The TABLE is made of a dark reddish wood and it's big enough for at least 8 people to sit around it. After taking a closer look at the things laid out on the table you notice the HOUSE KEYS under the folded tablecloth."
+                let newState = state {houseKeysFound = True}
+                return newState
+              else do
+                putStrLn "This is were you usually eat your meals or work if you need more space. The TABLE'is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it."
+                pure state
         _ -> do
           putStrLn "No such object here"
           return state

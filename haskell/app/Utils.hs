@@ -105,4 +105,4 @@ showUnfound state = do
 -- | Show contents of inventory.
 showInventory :: GameState -> IO ()
 showInventory state = do
-  mapM_ (printf "You have a %s\n") (inventory state)
+  mapM_ (printf "- %s\n") (inventory state)
