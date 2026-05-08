@@ -3,6 +3,7 @@ module Closet
     handleGoCloset,
     handleInteractCloset,
     handleTakeCloset,
+    handleInspectCloset,
   )
 where
 
@@ -52,9 +53,10 @@ handleInteractCloset input state = do
     then do
       putStrLn "Interact with what?"
       return state
-  else
-    case splitInput !! 2 of
-      "drying rack" -> do
+  else do
+    let rest = combineRest splitInput 2
+    case rest of
+      "clothing rack" -> do
         if not (cansFound state !! 8)
           then do
             putStrLn "You grab your favourite jacket from a hanger and put it on. It's very warm and has big nice pocket. Without thinking you put your hands in the pockets and notice something cold. In your left pocket you find Can #9"
@@ -80,3 +82,33 @@ handleInteractCloset input state = do
               return state
 
       _ -> return state
+
+handleInspectCloset :: String -> GameState -> IO GameState
+handleInspectCloset input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      let rest = combineRest splitInput 1
+      case rest of
+        "clothing rack" -> do
+            if not (cansFound state !! 8)
+              then do
+                putStrLn "You look closer at one of your favourite denim jackets. The fabric is pretty thick but despite that you can still see something bulging in its inner pocket."
+                pure state
+            else do
+              putStrLn "You inspect the CLOTHIGN RACK again. Your denim jacket now hangs flat on its hanger, with visibly empty pockets."
+              pure state
+        "paper box" -> do
+          if not (cansFound state !! 9)
+            then do
+              putStrLn "It''s a PAPER BOX completely covered in many many layers of packing tape. It''s definetely too sealed for you to just open it with your bare hands. A knife would surely help here."
+              pure state
+            else do
+              putStrLn "It''s the PAPER BOX, now torn open. Inside only a heap of white packing peanuts remains."
+              pure state
+        _ -> do
+          putStrLn "No such object here"
+          return state
