@@ -105,7 +105,7 @@ handleInteractLivingRoom input state = do
               putStrLn "You decide to take a break and sit down on the COUCH. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find Can #4!"
               pure $ updateCan 3 True state
             else do
-              putStrLn "TODO PASTE COUCH CAN 3 FOUND INSPECT TEXT"
+              putStrLn "Against better judgment you decide to sit on the COUCH again and waste more time. It's way comfier than previously. Can #4 used to be hidden beneath the blanket here."
               pure state
         "table" -> do
           putStrLn "You're not planning to work right now and it's ways before dinner time so the table isn't really useful to you right now."
