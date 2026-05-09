@@ -138,7 +138,7 @@ handleInspectLivingRoom input state = do
         "table" -> do
           if not (houseKeysFound state)
             then do
-              putStrLn $ "This is were you usually eat your meals or work if you need more space. The " ++ green "TABLE" ++ " is made of a dark reddish wood and it's big enough for at least 8 people to sit around it. After taking a closer look at the things laid out on the table you notice the " ++ green "HOUSE KEYS" ++ " under the folded tablecloth."
+              putStrLn $ "This is were you usually eat your meals or work if you need more space. The " ++ green "TABLE" ++ " is made of a dark reddish wood and it's big enough for at least 8 people to sit around it. After taking a closer look at the things laid out on the table you notice the " ++ blue "HOUSE KEYS" ++ " under the folded tablecloth."
               let newState = state {houseKeysFound = True}
               return newState
             else do
