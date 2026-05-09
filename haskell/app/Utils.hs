@@ -9,6 +9,11 @@ module Utils
     showFound,
     showUnfound,
     showInventory,
+    green,
+    magenta,
+    blue,
+    yellow,
+    reset,
   )
 where
 
@@ -82,6 +87,21 @@ canLabels =
     "Can #12: It's a deep purple color with some vines drawn around it. The drink flavour is most likely grape."
   ]
 
+reset :: String
+reset = "\ESC[0m"
+
+green :: String -> String
+green s = "\ESC[32m" ++ s ++ reset
+
+magenta :: String -> String
+magenta s = "\ESC[35m" ++ s ++ reset
+
+blue :: String -> String
+blue s = "\ESC[34m" ++ s ++ "\ESC[0m"
+
+yellow :: String -> String
+yellow s = "\ESC[33m" ++ s ++ "\ESC[0m"
+
 -- | Show which cans are found.
 showFound :: GameState -> IO ()
 showFound state = do
@@ -90,7 +110,7 @@ showFound state = do
         Control.Monad.when x $
           putStrLn (canLabels !! y)
     )
-    (zip (cansFound state) [0 .. length (cansFound state)-1])
+    (zip (cansFound state) [0 .. length (cansFound state) - 1])
 
 -- | Show which cans are not found yet.
 showUnfound :: GameState -> IO ()
@@ -100,7 +120,7 @@ showUnfound state = do
         Control.Monad.unless x $
           printf "Not found can #%d\n" (y + 1)
     )
-    (zip (cansFound state) [0 .. length (cansFound state)-1])
+    (zip (cansFound state) [0 .. length (cansFound state) - 1])
 
 -- | Show contents of inventory.
 showInventory :: GameState -> IO ()

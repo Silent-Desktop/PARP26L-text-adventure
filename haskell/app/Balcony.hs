@@ -5,18 +5,18 @@ module Balcony
     handleGoBalcony,
     handleInteractBalcony,
     handleTakeBalcony,
-    handleInspectBalcony
+    handleInspectBalcony,
   )
 where
 
 import Rooms
 import State (GameState (..))
-import Utils (combineRest, updateCan)
+import Utils (blue, combineRest, green, magenta, updateCan, yellow)
 
 handleTakeBalcony :: String -> GameState -> IO GameState
 handleTakeBalcony input state = do
   let splitInput = words input
-  let rest = combineRest splitInput
+  let rest = combineRest splitInput 1
   case rest of
     _ -> do
       putStrLn "No such item"
@@ -24,14 +24,15 @@ handleTakeBalcony input state = do
 
 handleLookBalcony :: GameState -> IO GameState
 handleLookBalcony state = do
-  putStrLn "On the floor in the corner there is a large potted PLANT. It''s most likely a fern but you never bothered to make sure. It''s leaves are large and sprawling."
-  putStrLn "The balcony has a thick metal RAILING and right now there are a couple of towels hanging from it."
-  if (stringFound state)
-    then do
-      putStrLn "Over the edge of the RAILING there is a thin STRING hanging. Its tied to one of the metal bars and its pulled."
-      pure state
-    else pure state
-  putStrLn "You can see that from here you can reach living room"
+  putStrLn $ "This is the " ++ yellow "balcony" ++ ". On the floor in the corner there is a large potted " ++ green "PLANT" ++ ". It's most likely a fern but you never bothered to make sure. It's leaves are large and sprawling."
+  putStrLn $ "The balcony has a thick metal " ++ green "RAILING" ++ " and right now there are a couple of towels hanging from it."
+  _ <-
+    if stringFound state
+      then do
+        putStrLn $ "Over the edge of the " ++ green "RAILING" ++ " there is a thin " ++ green "STRING" ++ " hanging. Its tied to one of the metal bars and its pulled."
+        pure state
+      else pure state
+  putStrLn $ "You can see that from here you can reach the " ++ yellow "living room"
   return state
 
 handleGoBalcony :: String -> GameState -> IO Room
@@ -40,7 +41,7 @@ handleGoBalcony input _ = do
   let rest = combineRest splitInput 2
   case rest of
     "living room" -> do
-      putStrLn "You go into the living room."
+      putStrLn $ "You go into the " ++ yellow "living room" ++ "."
       return LivingRoom
     _ -> do
       putStrLn "No such room"
@@ -56,22 +57,20 @@ handleInspectBalcony input state = do
     else do
       case splitInput !! 1 of
         "plant" -> do
-          stateWithCan <-
-            if not (cansFound state !! 6)
-              then do
-                putStrLn "It''s the big PLANT on your balcony, perhaps a fern. It''s leaves are wide and sprawling. It would be very easy to hide something here."
-                pure state
-            else do
-              putStrLn "The leaves look a bit ruffled now, after you pushed them aside. The PLANT doesn''t seem bothered"
+          if not (cansFound state !! 6)
+            then do
+              putStrLn $ "It's the big " ++ green "PLANT" ++ " on your balcony, perhaps a fern. It's leaves are wide and sprawling. It would be very easy to hide something here."
               pure state
-          return stateWithCan
+            else do
+              putStrLn $ "The leaves look a bit ruffled now, after you pushed them aside. The " ++ green "PLANT" ++ " doesn't seem bothered"
+              pure state
         "railing" -> do
-          putStrLn "Over the edge of the RAILING there is a thin STRING hanging. Its tied to one of the metal bars and its pulled."
+          putStrLn $ "Over the edge of the " ++ green "RAILING" ++ " there is a thin " ++ green "STRING" ++ " hanging. Its tied to one of the metal bars and its pulled."
           if not (stringFound state)
             then do
-              let newState = state {stringFound=True}
+              let newState = state {stringFound = True}
               return newState
-            else 
+            else
               pure state
         _ -> do
           putStrLn "No such object here"
@@ -87,25 +86,21 @@ handleInteractBalcony input state = do
     else do
       case splitInput !! 2 of
         "plant" -> do
-          stateWithCan <-
-            if not (cansFound state !! 6)
-              then do
-                putStrLn "You squat down to touch the plant. After some searching under its many leaves you find Can #7!"
-                pure $ (updateCan 6 True state)
+          if not (cansFound state !! 6)
+            then do
+              putStrLn $ "You squat down to touch the " ++ green "plant" ++ ". After some searching under its many leaves you find " ++ magenta "Can #7" ++ "!"
+              pure $ updateCan 6 True state
             else do
-              putStrLn "You ruffle the plants leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. Can #3 used to be hidden below the leaves."
+              putStrLn $ "You ruffle the " ++ green "plant's" ++ " leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. " ++ magenta "Can #7" ++ " used to be hidden below the leaves."
               pure state
-          return stateWithCan
         "string" -> do
-          stateWithCan <-
-            if not (cansFound state !! 5)
-              then do
-                putStrLn "You grab the string at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of Can #6!"
-                pure $ updateCan 5 True state
-              else do
-                putStrLn "Can #6 used to be here"
-                pure state
-          return stateWithCan
+          if not (cansFound state !! 5)
+            then do
+              putStrLn $ "You grab the " ++ green "string" ++ " at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of " ++ magenta "Can #6" ++ "!"
+              pure $ updateCan 5 True state
+            else do
+              putStrLn $ magenta "Can #6" ++ " used to be here"
+              pure state
         _ -> do
           putStrLn "No such object here"
           return state
