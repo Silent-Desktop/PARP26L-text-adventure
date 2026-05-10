@@ -120,7 +120,7 @@ showUnfound state = do
         Control.Monad.unless x $
           printf "Not found can #%d\n" (y + 1)
     )
-    (zip (cansFound state) [0 .. length (cansFound state) - 1])
+    (zip (cansFound state) [0 .. length (cansFound state) - 2])
 
 -- | Show contents of inventory.
 showInventory :: GameState -> IO ()
