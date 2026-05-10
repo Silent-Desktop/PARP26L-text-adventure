@@ -13,6 +13,7 @@ module Utils
     magenta,
     blue,
     yellow,
+    handleEmptyTake,
     reset,
   )
 where
@@ -24,21 +25,19 @@ import Text.Printf
 
 -- | Print available text adventure commands.
 printCommands :: IO ()
-printCommands =
-  putStrLn
-    "Commands:\n\
-    \info                     -- prints this message\n\
-    \go to [place]            -- go to that place\n\
-    \take [object]            -- to pick up an object\n\
-    \drop [object]            -- to put down an object\n\
-    \look around              -- to look around you again\n\
-    \interact with [setpiece] -- to interact with something in the scene.\n\
-    \inspect [setpiece]       -- to take a closer look at something.\n\
-    \inventory                -- to check what items you have\n\
-    \found                    -- to check which trophies you've already found\n\
-    \unfound                  -- to check which trophies you're still missing\n\
-    \exit                     -- to end the game and quit\n\
-    \The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interract with the FRIDGE for the final score\n"
+printCommands = do
+  putStrLn "Commands:"
+  putStrLn "info                     -- prints this message"
+  putStrLn $ "go to [" ++ yellow "place" ++ "]            -- go to that place"
+  putStrLn $ "take [" ++ blue "object" ++ "]            -- to pick up an object"
+  putStrLn "look around              -- to look around you again"
+  putStrLn $ "interact with [" ++ green "setpiece" ++ "] -- to interact with something in the scene."
+  putStrLn $ "inspect [" ++ green "setpiece" ++ "]       -- to take a closer look at something."
+  putStrLn "inventory                -- to check what items you have"
+  putStrLn "found                    -- to check which trophies you've already found"
+  putStrLn "unfound                  -- to check which trophies you're still missing"
+  putStrLn "exit                     -- to end the game and quit"
+  putStrLn $ "The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interract with the " ++ green "FRIDGE" ++ " for the final score"
 
 -- | Game state for the adventure.
 
@@ -126,3 +125,8 @@ showUnfound state = do
 showInventory :: GameState -> IO ()
 showInventory state = do
   mapM_ (printf "- %s\n") (inventory state)
+
+handleEmptyTake :: String -> GameState -> IO GameState
+handleEmptyTake _input state = do
+  putStrLn "No such item"
+  return state

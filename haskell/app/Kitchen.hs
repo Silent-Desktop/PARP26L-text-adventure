@@ -1,3 +1,4 @@
+{- HLINT ignore "Use head" -}
 module Kitchen
   ( handleLookKitchen,
     handleGoKitchen,
@@ -82,6 +83,7 @@ handleInteractKitchen input state = do
               putStrLn $ "The " ++ green "dishwasher" ++ " is rumbling—there's a wash cycle still going."
               return state
             else do
+              -- Using this notation instead of head for consistency with other cans
               if not (cansFound state !! 0)
                 then do
                   putStrLn $ "The wash cycle is done. You open the " ++ green "dishwasher" ++ " and find " ++ magenta "Can #1" ++ "!"

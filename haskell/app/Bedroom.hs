@@ -4,23 +4,13 @@ module Bedroom
   ( handleLookBedroom,
     handleGoBedroom,
     handleInteractBedroom,
-    handleTakeBedroom,
     handleInspectBedroom,
   )
 where
 
 import Rooms
 import State (GameState (..))
-import Utils (blue, combineRest, green, magenta, updateCan, yellow)
-
-handleTakeBedroom :: String -> GameState -> IO GameState
-handleTakeBedroom input state = do
-  let splitInput = words input
-  let rest = combineRest splitInput 1
-  case rest of
-    _ -> do
-      putStrLn "No such item"
-      return state
+import Utils (combineRest, green, magenta, updateCan, yellow)
 
 handleLookBedroom :: GameState -> IO GameState
 handleLookBedroom state = do

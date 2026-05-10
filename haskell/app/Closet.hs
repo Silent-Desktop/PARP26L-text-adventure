@@ -2,7 +2,6 @@ module Closet
   ( handleLookCloset,
     handleGoCloset,
     handleInteractCloset,
-    handleTakeCloset,
     handleInspectCloset,
   )
 where
@@ -20,7 +19,7 @@ handleLookCloset state = do
       putStrLn $ "On the floor there is a small " ++ green "PAPER BOX" ++ " completely covered in packing tape. You'll need something sharp to open it."
     else do
       putStrLn $ "The " ++ green "PAPER BOX" ++ " on the floor has already been opened with a knife, inside are only white packing peanuts."
-  putStrLn $ "There is a " ++ green "DRYING RACK" ++ " here, where you keep your shirts and some pants. It looks dusty."
+  putStrLn $ "There is a " ++ green "CLOTHING RACK" ++ " here, where you keep your shirts and some pants. It looks dusty."
   return state
 
 handleGoCloset :: String -> GameState -> IO Room
@@ -34,15 +33,6 @@ handleGoCloset input _ = do
     _ -> do
       putStrLn "No such room"
       return Closet
-
-handleTakeCloset :: String -> GameState -> IO GameState
-handleTakeCloset input state = do
-  let splitInput = words input
-  let object = splitInput !! 1
-  case object of
-    _ -> do
-      putStrLn "No such object here"
-      return state
 
 handleInteractCloset :: String -> GameState -> IO GameState
 handleInteractCloset input state = do
@@ -78,7 +68,9 @@ handleInteractCloset input state = do
             else do
               putStrLn $ "You've already opened the box using the knife. Inside there used to be " ++ magenta "Can #10" ++ "."
               return state
-        _ -> return state
+        _ -> do
+          putStrLn "You can't interact with this"
+          return state
 
 handleInspectCloset :: String -> GameState -> IO GameState
 handleInspectCloset input state = do
@@ -93,7 +85,7 @@ handleInspectCloset input state = do
         "clothing rack" -> do
           if not (cansFound state !! 8)
             then do
-              putStrLn $ "You look closer at one of your favourite denim jackets. The fabric is pretty thick but despite that you can still see something bulging in its inner pocket."
+              putStrLn "You look closer at one of your favourite denim jackets. The fabric is pretty thick but despite that you can still see something bulging in its inner pocket."
               pure state
             else do
               putStrLn $ "You inspect the " ++ green "CLOTHING RACK" ++ " again. Your denim jacket now hangs flat on its hanger, with visibly empty pockets."

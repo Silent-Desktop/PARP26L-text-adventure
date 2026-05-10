@@ -1,33 +1,24 @@
 module GameLoop (roomFunc) where
 
-import Balcony (handleGoBalcony, handleInspectBalcony, handleInteractBalcony, handleLookBalcony, handleTakeBalcony)
+import Balcony (handleGoBalcony, handleInspectBalcony, handleInteractBalcony, handleLookBalcony)
 import Bathroom
-import Bedroom (handleGoBedroom, handleInspectBedroom, handleInteractBedroom, handleLookBedroom, handleTakeBedroom)
-import Closet (handleGoCloset, handleInspectCloset, handleInteractCloset, handleLookCloset, handleTakeCloset)
-import Data.Typeable
-import Hall (handleGoHall, handleInteractHall, handleLookHall, handleTakeHall, handleInspectHall)
+import Bedroom (handleGoBedroom, handleInspectBedroom, handleInteractBedroom, handleLookBedroom)
+import Closet (handleGoCloset, handleInspectCloset, handleInteractCloset, handleLookCloset)
+import Hall (handleGoHall, handleInspectHall, handleInteractHall, handleLookHall, handleTakeHall)
 import Kitchen
-import LivingRoom (handleGoLivingRoom, handleInteractLivingRoom, handleTakeLivingRoom, handleInspectLivingRoom, handleLookLivingRoom)
+import LivingRoom (handleGoLivingRoom, handleInspectLivingRoom, handleInteractLivingRoom, handleLookLivingRoom, handleTakeLivingRoom)
 import Rooms
-import State (GameState (actionCount, dishwasherRunning))
+import State (GameState (actionCount))
 import System.Exit (exitSuccess)
-import Text.Printf
-import Utils (combineRest, printCommands, promptPlayer, showFound, showInventory, showUnfound)
-
-emptyInspect :: String -> GameState -> IO GameState
-emptyInspect userInput state = do
-  let splitInput = words userInput
-  let rest = combineRest splitInput 1
-  printf "Whatever %s is, you can't inspect that\n" (show rest)
-  return state
+import Utils (handleEmptyTake, printCommands, promptPlayer, showFound, showInventory, showUnfound)
 
 roomFunc :: Room -> GameState -> IO ()
 roomFunc Kitchen = gameLoop handleLookKitchen handleGoKitchen handleInteractKitchen handleTakeKitchen handleInspectKitchen
 roomFunc LivingRoom = gameLoop handleLookLivingRoom handleGoLivingRoom handleInteractLivingRoom handleTakeLivingRoom handleInspectLivingRoom
 roomFunc Hall = gameLoop handleLookHall handleGoHall handleInteractHall handleTakeHall handleInspectHall
-roomFunc Bedroom = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleTakeBedroom handleInspectBedroom
-roomFunc Closet = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleTakeCloset handleInspectCloset
-roomFunc Balcony = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleTakeBalcony handleInspectBalcony
+roomFunc Bedroom = gameLoop handleLookBedroom handleGoBedroom handleInteractBedroom handleEmptyTake handleInspectBedroom
+roomFunc Closet = gameLoop handleLookCloset handleGoCloset handleInteractCloset handleEmptyTake handleInspectCloset
+roomFunc Balcony = gameLoop handleLookBalcony handleGoBalcony handleInteractBalcony handleEmptyTake handleInspectBalcony
 roomFunc Bathroom = gameLoop handleLookBathroom handleGoBathroom handleInteractBathroom handleTakeBathroom handleInspectBathroom
 
 -- | Main game loop handling commands via callbacks.

@@ -1,26 +1,14 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-
 module Balcony
   ( handleLookBalcony,
     handleGoBalcony,
     handleInteractBalcony,
-    handleTakeBalcony,
     handleInspectBalcony,
   )
 where
 
 import Rooms
 import State (GameState (..))
-import Utils (blue, combineRest, green, magenta, updateCan, yellow)
-
-handleTakeBalcony :: String -> GameState -> IO GameState
-handleTakeBalcony input state = do
-  let splitInput = words input
-  let rest = combineRest splitInput 1
-  case rest of
-    _ -> do
-      putStrLn "No such item"
-      return state
+import Utils (combineRest, green, magenta, updateCan, yellow)
 
 handleLookBalcony :: GameState -> IO GameState
 handleLookBalcony state = do
