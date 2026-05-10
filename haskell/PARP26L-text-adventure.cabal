@@ -80,8 +80,7 @@ executable PARP26L-text-adventure
 
     -- Other library packages from which modules are imported.
     build-depends:
-        base >=4.18 && <5,
-        rainbow
+        base >=4.18 && <5
 
     -- Directories containing source files.
     hs-source-dirs:   app
