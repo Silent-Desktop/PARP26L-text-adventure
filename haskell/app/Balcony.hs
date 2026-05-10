@@ -60,6 +60,9 @@ handleInspectBalcony input state = do
               return newState
             else
               pure state
+        "string" -> do
+          putStrLn $ "The "++green "string"++" is tied to one of the metal bars and its pulled."
+          return state
         _ -> do
           putStrLn "No such object here"
           return state
@@ -73,6 +76,9 @@ handleInteractBalcony input state = do
       return state
     else do
       case splitInput !! 2 of
+        "railing"-> do
+          putStrLn $ "You approach the "++green "RAILING"++" and rearange the wet towels hanging from it. They are colorful and it would be quite easy to hide something between them, like a thin string."
+          return state
         "plant" -> do
           if not (cansFound state !! 6)
             then do

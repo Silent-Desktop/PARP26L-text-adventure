@@ -20,7 +20,7 @@ handleLookKitchen state = do
   putStrLn $ "There is a " ++ green "DISHWASHER" ++ " here, a true lifesaver since you hate washing the dishes by hand."
   putStrLn $ "There is a large " ++ green "CUPBOARD" ++ " right at your eye-level and its slightly ajar."
   putStrLn $ "Next to your feet, there is a big square " ++ green "TRASHCAN" ++ ", with its lid closed."
-
+  putStrLn $ "When you think you're done return to the kitchen and interract with the " ++ green "FRIDGE" ++ " for the final score."
   Control.Monad.unless (pickedUpKnifeInKitchen state) $
     putStrLn $
       "There is a " ++ blue "KNIFE" ++ " on the countertop near the sink. It looks sharp.\n"

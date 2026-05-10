@@ -8,7 +8,7 @@ where
 
 import Rooms (Room (Bedroom, Closet))
 import State (GameState (..))
-import Utils (combineRest, green, magenta, updateCan)
+import Utils (combineRest, green,yellow, magenta, updateCan)
 
 handleLookCloset :: GameState -> IO GameState
 handleLookCloset state = do
@@ -20,6 +20,7 @@ handleLookCloset state = do
     else do
       putStrLn $ "The " ++ green "PAPER BOX" ++ " on the floor has already been opened with a knife, inside are only white packing peanuts."
   putStrLn $ "There is a " ++ green "CLOTHING RACK" ++ " here, where you keep your shirts and some pants. It looks dusty."
+  putStrLn $ "You can see that from here you can reach " ++ yellow "bedroom"
   return state
 
 handleGoCloset :: String -> GameState -> IO Room
