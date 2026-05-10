@@ -83,7 +83,8 @@ canLabels =
     "Can #9: It's black with some green gradient. There's \"NITRO\" written at the bottom. Why did you buy this flavour?",
     "Can #10: It's black with red details. The drink flavour is cherry.",
     "Can #11: Completely white with some grey shading and silver details. You're not sure what the flavour is supposed to be.",
-    "Can #12: It's a deep purple color with some vines drawn around it. The drink flavour is most likely grape."
+    "Can #12: It's a deep purple color with some vines drawn around it. The drink flavour is most likely grape.",
+    "Can #13: Lucky #13, you found the bonus can. Congrats."
   ]
 
 reset :: String

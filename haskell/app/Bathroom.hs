@@ -25,7 +25,6 @@ handleTakeBathroom input state = do
           let newState = state {inventory = newInventory, pickedUpTowel = True}
           return newState
         else do
-          -- Keeping this blue as it refers to an inventory item
           putStrLn $ "You already picked up the " ++ blue "towel" ++ " earlier"
           return state
     _ -> do
@@ -79,12 +78,12 @@ handleInspectBathroom input state = do
           putStrLn $ "It's the " ++ green "toilet" ++ ". It makes a funny noise when you flush it."
           return state
         "shower" -> do
-          if not (cansFound state !! 6)
+          if not (cansFound state !! 12)
             then do
-              putStrLn $ "You walk into the " ++ green "shower" ++ ". After taking a closer look one of the bottles turns out to be " ++ magenta "Can #7"
-              pure $ updateCan 6 True state
+              putStrLn $ "You walk into the " ++ green "shower" ++ ". After taking a closer look one of the bottles turns out to be " ++ magenta "Can #13"
+              pure $ updateCan 12 True state
             else do
-              putStrLn $ "You've already looked the " ++ green "shower" ++ " up and down. " ++ magenta "Can #7" ++ " used to be hidden here."
+              putStrLn $ "You've already looked the " ++ green "shower" ++ " up and down. " ++ magenta "Can #13" ++ " used to be hidden here."
               pure state
         _ -> do
           putStrLn "No such object here"
