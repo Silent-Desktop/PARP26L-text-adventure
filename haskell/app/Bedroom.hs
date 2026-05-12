@@ -19,10 +19,10 @@ handleLookBedroom state = do
       ++ yellow "bedroom"
       ++ ", where you spend most of your time. The blind are shut but there is a small desk lamp illuminating the room.\n\
          \There is a "
-      ++ green "DESK"
+      ++ green "desk"
       ++ " pushed up against the wall. This is where you work during the day.\n\
          \Your "
-      ++ green "BED"
+      ++ green "bed"
       ++ " is in the far corner of the room. It's messy and unmade, the usual sight given your sleep schedule."
   putStrLn $ "You can see that from here you can reach the " ++ yellow "hall" ++ "\n"
   putStrLn $ "You can see that from here you can reach the " ++ yellow "closet" ++ "\n"
@@ -91,10 +91,10 @@ handleInspectBedroom input state = do
         "bed" -> do
           if dishwasherRunning state
             then do
-              putStrLn $ "You inspect the blankets and pillows on your " ++ green "BED" ++ ". You made it this morning so everything is nice, tidy, and flat. The fluffy covers and soft pillows look very inviting."
+              putStrLn $ "You inspect the blankets and pillows on your " ++ green "bed" ++ ". You made it this morning so everything is nice, tidy, and flat. The fluffy covers and soft pillows look very inviting."
               pure state
             else do
-              putStrLn $ "You look at the " ++ green "BED" ++ " again. The blankets are no longer neatly folded and the pillows are clearly out of place. The nap you had must've been really good."
+              putStrLn $ "You look at the " ++ green "bed" ++ " again. The blankets are no longer neatly folded and the pillows are clearly out of place. The nap you had must've been really good."
               pure state
         "desk" -> do
           if not (cansFound state !! 7)
@@ -102,7 +102,7 @@ handleInspectBedroom input state = do
               putStrLn $ "You take a closer look at the pile of notes. You're prepping for exams so your " ++ green "desk" ++ " is full of notes and loose pens. It looks like there's something hidden behind the large stack of books to the side..."
               pure state
             else do
-              putStrLn $ "You look at your notes again. The " ++ green "DESK" ++ " is even more of a mess now since you rearranged it. " ++ magenta "Can #8" ++ " used to be hidden behind some books here."
+              putStrLn $ "You look at your notes again. The " ++ green "desk" ++ " is even more of a mess now since you rearranged it. " ++ magenta "Can #8" ++ " used to be hidden behind some books here."
               pure state
         _ -> do
           putStrLn "No such object here"

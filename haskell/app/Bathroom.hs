@@ -80,7 +80,7 @@ handleInspectBathroom input state = do
         "shower" -> do
           if not (cansFound state !! 12)
             then do
-              putStrLn $ "You walk into the " ++ green "shower" ++ ". After taking a closer look one of the bottles turns out to be " ++ magenta "Can #13"
+              putStrLn $ "You walk into the " ++ green "shower" ++ ". After taking a closer look one of the bottles turns out to be " ++ magenta "Can #13" ++ ". You could have sworn you only had 12..."
               pure $ updateCan 12 True state
             else do
               putStrLn $ "You've already looked the " ++ green "shower" ++ " up and down. " ++ magenta "Can #13" ++ " used to be hidden here."

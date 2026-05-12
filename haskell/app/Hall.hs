@@ -19,12 +19,12 @@ handleTakeHall input state = do
     "boots" ->
       if not (pickedUpBoots state)
         then do
-          putStrLn $ "You pick up the " ++ blue "BOOTS" ++ " and get some mud on your hands. Yuck."
+          putStrLn $ "You pick up the " ++ blue "boots" ++ " and get some mud on your hands. Yuck."
           let newInventory = inventory state ++ ["boots"]
           let newState = state {inventory = newInventory, pickedUpBoots = True}
           if not (cansFound newState !! 10)
             then do
-              putStrLn $ "When you rotate one of the boots something cylindrical falls out into your hand. It's " ++ magenta "Can #11" ++ "!"
+              putStrLn $ "When you rotate one of the shoes something cylindrical falls out into your hand. It's " ++ magenta "Can #11" ++ "!"
               pure $ updateCan 10 True newState
             else do
               pure newState
@@ -38,8 +38,8 @@ handleTakeHall input state = do
 handleLookHall :: GameState -> IO GameState
 handleLookHall state = do
   putStrLn $ "This is the " ++ yellow "hall" ++ ", where you keep your coats and shoes. There's some unvacuumed sand on the tiled floor."
-  putStrLn $ "There is a pair of your heavy duty " ++ blue "BOOTS" ++ " here. They're still covered with wet mud from outside."
-  putStrLn $ "The " ++ green "HOUSE DOOR" ++ " to your apartment is here and it's currently locked."
+  putStrLn $ "There is a pair of your heavy duty " ++ blue "boots" ++ " here. They're still covered with wet mud from outside."
+  putStrLn $ "The " ++ green "house door" ++ " to your apartment is here and it's currently locked."
   putStrLn $ "You can see that from here you can reach " ++ yellow "bathroom"
   putStrLn $ "You can see that from here you can reach " ++ yellow "living room"
   putStrLn $ "You can see that from here you can reach " ++ yellow "bedroom"
@@ -104,10 +104,10 @@ handleInspectHall input state = do
         "house door" -> do
           if not (cansFound state !! 10)
             then do
-              putStrLn $ "The " ++ green "HOUSE DOOR" ++ " is a solid ash grey color and the locks are pretty standard. You always make sure to lock it so you'll need keys if you want to look out into the corridor."
+              putStrLn $ "The " ++ green "house door" ++ " is a solid ash grey color and the locks are pretty standard. You always make sure to lock it so you'll need keys if you want to look out into the corridor."
               pure state
             else do
-              putStrLn $ "The " ++ green "HOUSE DOOR" ++ " is locked once again and there is no need for you to go outside right now."
+              putStrLn $ "The " ++ green "house door" ++ " is locked once again and there is no need for you to go outside right now."
               pure state
         _ -> do
           putStrLn "No such object here"

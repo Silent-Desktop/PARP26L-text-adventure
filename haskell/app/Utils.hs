@@ -37,7 +37,7 @@ printCommands = do
   putStrLn "found                    -- to check which trophies you've already found"
   putStrLn "unfound                  -- to check which trophies you're still missing"
   putStrLn "exit                     -- to end the game and quit"
-  putStrLn $ "The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interract with the " ++ green "FRIDGE" ++ " for the final score"
+  putStrLn $ "The goal of the game is to find as many cans as possible hidden around the house. When you think you're done return to the kitchen and interract with the fridge for the final score"
 
 -- | Game state for the adventure.
 
