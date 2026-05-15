@@ -3,7 +3,7 @@ FileStream fileIn: 'Utils.st'.
 Object subclass: Game [
     | isGameOver |
 
-    introductionText := 'You are in your ' , (Utils yellow: 'kitchen') , ', staring into your ' , (Utils green: 'fridge') , '. Lately you''ve bought exactly 12 cans of your favourite energy drink to last you through the exam season. You had some friends over last night and they must have decided on a prank to hide all of them from you, because the ' , (Utils green: 'fridge') , ' is nearly empty without a single perfectly chilled can. They''re not in the ' , (Utils green: 'fridge') , ', but they wouldn''t steal, so they must be around the house. Better get to searching!'.
+    introductionText := 'You are in your ' , (Utils yellow: 'kitchen') , ', staring into your ' , (Utils green: 'fridge') , '. Lately you''ve bought exactly 12 ' , (Utils magenta: 'cans') , ' of your favourite energy drink to last you through the exam season. You had some friends over last night and they must have decided on a prank to hide all of them from you, because the ' , (Utils green: 'fridge') , ' is nearly empty without a single perfectly chilled ' , (Utils magenta: 'can') , '. They''re not in the ' , (Utils green: 'fridge') , ', but they wouldn''t steal, so they must be around the house. Better get to searching!'.
 
     instructionsText := {
         'Commands:'.
@@ -17,8 +17,8 @@ Object subclass: Game [
         'found                    -- to check which trophies you''ve already found'.
         'unfound                  -- to check which trophies you''re still missing'.
         'exit                     -- to end the game and quit'.
-        'The goal of the game is to find as many cans as possible hidden around the house.'.
-        'When you think you''re done, return to the kitchen and interact with the fridge for the final score.'.
+        'The goal of the game is to find as many ' , (Utils magenta: 'cans') , ' as possible hidden around the house.'.
+        'When you think you''re done, return to the ' , (Utils yellow: 'kitchen') , ' and interact with the ' , (Utils green: 'fridge') , ' for the final score.'.
     }.
  
     Game class >> new [
@@ -34,11 +34,11 @@ Object subclass: Game [
 
     "Print strings from array in separate lines."
     printLines: anArray [
-        anArray do: [ :string | Transcript show: string; cr ]
+        anArray do: [ :string | Transcript showCr: string ]
     ]
 
     printIntroduction [
-       Transcript show: introductionText; cr.
+       Transcript showCr: introductionText.
     ]
 
     printInstructions [
@@ -60,18 +60,49 @@ Object subclass: Game [
         "Game loop."
         [isGameOver] whileFalse: [
             isUnknown := true.
-            cmd := self readCommand.
-
-            cmd = 'info' ifTrue: [
+            cmd := self readCommand subStrings.
+            cmd first = 'info' ifTrue: [
                 self printInstructions.
                 isUnknown := false
             ].
-            cmd = 'exit' ifTrue: [
+            cmd first = 'go' ifTrue: [
+                Transcript showCr: 'Go white boy, go!'.
+                isUnknown := false
+            ].
+            cmd first = 'take' ifTrue: [
+                Transcript showCr: 'You take something.'.
+                isUnknown := false
+            ].
+            cmd first = 'look' ifTrue: [
+                Transcript showCr: 'You look around.'.
+                isUnknown := false
+            ].
+            cmd first = 'interact' ifTrue: [
+                Transcript showCr: 'You interact with something.'.
+                isUnknown := false
+            ].
+            cmd first = 'inspect' ifTrue: [
+                Transcript showCr: 'You inspect something.'.
+                isUnknown := false
+            ].
+            cmd first = 'inventory' ifTrue: [
+                Transcript showCr: 'Your inventory is empty.'.
+                isUnknown := false
+            ].
+            cmd first = 'found' ifTrue: [
+                Transcript showCr: 'You have found nothing.'.
+                isUnknown := false
+            ].
+            cmd first = 'unfound' ifTrue: [
+                Transcript showCr: 'You have not found everything.'.
+                isUnknown := false
+            ].
+            cmd first = 'exit' ifTrue: [
                 isGameOver := true.
                 isUnknown := false
             ].
             isUnknown ifTrue: [
-                Transcript show: 'Unknown command: ' , cmd; cr
+                Transcript showCr: 'Unknown command: ' , cmd
             ]
         ]
     ]

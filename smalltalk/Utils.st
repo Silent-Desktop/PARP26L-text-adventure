@@ -1,20 +1,17 @@
 Object subclass: Utils [
-Utils class >> esc [
-        ^ Character esc asString
+    esc := Character esc asString.
+    reset := Character esc asString , '[0m'.
+
+    Utils class >> green: text [
+        ^ esc , '[32m' , text , reset
     ]
-Utils class >> reset [
-        ^ self esc , '[0m'
+    Utils class >> yellow: text [
+        ^ esc , '[33m' , text , reset
     ]
-Utils class >> green: text [
-        ^ self esc , '[32m' , text , self reset
+    Utils class >> blue: text [
+        ^ esc , '[34m' , text , reset
     ]
-Utils class >> yellow: text [
-        ^ self esc , '[33m' , text , self reset
-    ]
-Utils class >> blue: text [
-        ^ self esc , '[34m' , text , self reset
-    ]
-Utils class >> magenta: text [
-        ^ self esc , '[35m' , text , self reset
+    Utils class >> magenta: text [
+        ^ esc , '[35m' , text , reset
     ]
 ]
