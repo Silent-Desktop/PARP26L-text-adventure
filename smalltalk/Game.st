@@ -1,7 +1,12 @@
 FileStream fileIn: 'Utils.st'.
+FileStream fileIn: 'Inventory.st'.
+FileStream fileIn: 'Room.st'.
+FileStream fileIn: 'Kitchen.st'.
+FileStream fileIn: 'LivingRoom.st'.
+
 
 Object subclass: Game [
-    | isGameOver |
+    | isGameOver actionCount currentRoom inventory|
 
     introductionText := 'You are in your ' , (Utils yellow: 'kitchen') , ', staring into your ' , (Utils green: 'fridge') , '. Lately you''ve bought exactly 12 ' , (Utils magenta: 'cans') , ' of your favourite energy drink to last you through the exam season. You had some friends over last night and they must have decided on a prank to hide all of them from you, because the ' , (Utils green: 'fridge') , ' is nearly empty without a single perfectly chilled ' , (Utils magenta: 'can') , '. They''re not in the ' , (Utils green: 'fridge') , ', but they wouldn''t steal, so they must be around the house. Better get to searching!'.
 
@@ -22,14 +27,20 @@ Object subclass: Game [
     }.
  
     Game class >> new [
-        | g |
-        g := super new.
-        g init.
-        ^g
+        | x |
+        x := super new.
+        x init.
+        ^x
     ]
 
     init [
-        isGameOver := false
+        isGameOver := false.
+        actionCount := 0.
+        inventory := Inventory new.
+    ]
+
+    setRoom: newRoom [
+        currentRoom := newRoom.
     ]
 
     "Print strings from array in separate lines."
@@ -65,36 +76,36 @@ Object subclass: Game [
                 self printInstructions.
                 isUnknown := false
             ].
-            cmd first = 'go' ifTrue: [
+            cmd first = 'go' ifTrue: [ "TODO"
                 Transcript showCr: 'Go white boy, go!'.
                 isUnknown := false
             ].
-            cmd first = 'take' ifTrue: [
+            cmd first = 'take' ifTrue: [ "TODO"
                 Transcript showCr: 'You take something.'.
                 isUnknown := false
             ].
             cmd first = 'look' ifTrue: [
-                Transcript showCr: 'You look around.'.
+                currentRoom look.
                 isUnknown := false
             ].
-            cmd first = 'interact' ifTrue: [
+            cmd first = 'interact' ifTrue: [ "TODO"
                 Transcript showCr: 'You interact with something.'.
                 isUnknown := false
             ].
-            cmd first = 'inspect' ifTrue: [
+            cmd first = 'inspect' ifTrue: [ "TODO"
                 Transcript showCr: 'You inspect something.'.
                 isUnknown := false
             ].
             cmd first = 'inventory' ifTrue: [
-                Transcript showCr: 'Your inventory is empty.'.
+                inventory displayItems.
                 isUnknown := false
             ].
             cmd first = 'found' ifTrue: [
-                Transcript showCr: 'You have found nothing.'.
+                inventory displayFound.
                 isUnknown := false
             ].
             cmd first = 'unfound' ifTrue: [
-                Transcript showCr: 'You have not found everything.'.
+                inventory displayUnfound.
                 isUnknown := false
             ].
             cmd first = 'exit' ifTrue: [
@@ -103,9 +114,19 @@ Object subclass: Game [
             ].
             isUnknown ifTrue: [
                 Transcript showCr: 'Unknown command: ' , cmd
+            ] ifFalse: [
+                actionCount := actionCount + 1
             ]
         ]
     ]
 ]
 
-Game new run.
+
+kitchen := Kitchen new.
+livingRoom := LivingRoom new.
+
+kitchen connect: livingRoom.
+
+game := Game new.
+game setRoom: kitchen.
+game run.
