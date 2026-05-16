@@ -1,9 +1,9 @@
 FileStream fileIn: 'classes/Room.st'.
 
-Room subclass: LivingRoom [
+Room subclass: RoomName [
     init [
         super init.
-        name := 'living room'.
+        name := ''.
         desc := {
             ''.
         }.
@@ -18,7 +18,7 @@ Room subclass: LivingRoom [
             '' -> (Item look: '' take: '').
         }.
     ]
-    LivingRoom class >> new [
+    RoomName class >> new [
         | x |
         x := super new.
         x init.
