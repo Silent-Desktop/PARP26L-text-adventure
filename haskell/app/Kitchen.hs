@@ -20,7 +20,7 @@ handleLookKitchen :: GameState -> IO GameState
 handleLookKitchen state = do
   putStr $
     "This is the " ++ yellow "kitchen" ++ ". The countertops are clean and there are no dirty dishes in the sink. Clearly you've been busy or just haven't eaten in a long time.\n\
-    \There is a " ++ blue "dishwasher" ++ " here, a true lifesaver since you hate washing the dishes by hand.\n\
+    \There is a " ++ green "dishwasher" ++ " here, a true lifesaver since you hate washing the dishes by hand.\n\
     \Your " ++ green "fridge" ++ " is here, without any chilled cans inside. Open it when you're done.\n\
     \There is a large " ++ green "cupboard" ++ " right at your eye-level and its slightly ajar.\n\
     \Next to your feet, there is a big square " ++ green "trashcan" ++", with its lid closed.\n"
@@ -43,20 +43,6 @@ handleGoKitchen input _ = do
         putStrLn "There is no such room"
         return Kitchen
 
--- handleInputKitchen :: String -> GameState -> IO ()
--- handleInputKitchen input state = do
---   let splitInput = words input
---   case head splitInput of
---     "interact" -> handleInteractionKitchen (splitInput !! 1) state
---     "info" -> printCommands
---     "found" -> showFound state
---     "unfound" -> showUnfound state
---     "inventory" -> showInventory state
---     "take" -> handleTakeKitchen (splitInput !! 1) state
---     "exit" -> do
---       putStrLn "Exiting the game"
---       exitSuccess
---     _ -> putStrLn ("Unknown command: " ++ input)
 
 handleTakeKitchen :: String -> GameState -> IO GameState
 handleTakeKitchen input state = do
