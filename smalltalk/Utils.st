@@ -14,4 +14,21 @@ Object subclass: Utils [
     Utils class >> magenta: text [
         ^ esc , '[35m' , text , reset
     ]
+
+    Utils class >> printLines: anArray [
+        anArray do: [ :string | Transcript showCr: string ]
+    ]
+    Utils class >> concatTarget: cmd skipWords: n [
+        ^ (cmd allButFirst: n) join: ' '
+    ]
+    Utils class >> cmdTarget: cmd skipWords: n failMsg: msg [
+        cmd size <= n ifTrue: [
+                Transcript showCr: msg.
+                ^ nil
+            ]
+            ifFalse: [
+                (cmd size = (n+1)) ifTrue: [ ^ cmd at: n+1 ]
+                    ifFalse: [ ^ (Utils concatTarget: cmd skipWords: n) ].
+            ].
+    ]
 ]

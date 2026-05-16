@@ -31,7 +31,7 @@ Object subclass: Inventory [
     displayItems [
         Transcript showCr: 'Your inventory:'.
         items do: [:each |
-            Transcript showCr: each
+            Transcript showCr: '+ ' , each
         ]
     ]
     displayFound [
@@ -48,6 +48,16 @@ Object subclass: Inventory [
             ((cans at: i) or: [secrets includes: i]) ifFalse: [
                 Transcript showCr: '- Can #' , i asString
             ]
+        ]
+    ]
+    addItem: item [
+        item ifNotNil: [
+            items add: item
+        ]
+    ]
+    foundCan: can [
+        can ifNotNil: [
+            cans at: can put: true.
         ]
     ]
 ]
