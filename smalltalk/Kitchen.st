@@ -1,5 +1,6 @@
 FileStream fileIn: 'Utils.st'.
 FileStream fileIn: 'Room.st'.
+FileStream fileIn: 'Item.st'.
 
 Room subclass: Kitchen [
     desc := {
@@ -13,7 +14,7 @@ Room subclass: Kitchen [
         super init.
         name := 'kitchen'.
         items := Dictionary from: {
-            'knife' -> 'You pick up the knife. The handle is solid black and cold to the touch.'.
+            'knife' -> (Item look: 'There is a ' , (Utils blue: 'knife') , ' on the countertop near the sink. It looks sharp.' take: 'You pick up the knife. The handle is solid black and cold to the touch.').
         }.
         interactables := Dictionary from: {
             'dishwasher' -> [:state | Transcript showCr: 'Dishwasher interaction [PH]' , state actionCount asString. nil].

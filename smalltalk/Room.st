@@ -1,5 +1,5 @@
 Object subclass: Room [
-    | name visited exits items interactables |
+    | name visited items interactables exits |
     init [
         name := String new.
         visited := false.
@@ -38,10 +38,10 @@ Object subclass: Room [
         ]
     ]
     take: item [
-        Transcript showCr: (items removeKey: item ifAbsent: [
+        Transcript showCr: ((items removeKey: item ifAbsent: [
             Transcript showCr: 'No such item here!'.
             ^ nil
-        ]).
+        ]) takeDesc).
         ^ item
     ]
     interact: object withState: state [
