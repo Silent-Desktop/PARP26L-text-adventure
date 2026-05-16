@@ -1,8 +1,9 @@
 Object subclass: Room [
-    | name visited items interactables exits |
+    | name visited desc interactables items exits |
     init [
         name := String new.
         visited := false.
+        desc := { String new. }.
         exits := Dictionary new.
         items := Dictionary new.
         interactables := Dictionary new.
@@ -23,7 +24,7 @@ Object subclass: Room [
     ]
     go: destStr [
         (exits includesKey: destStr) ifTrue: [
-            Transcript showCr: 'You go to the ' , Utils yellow: destStr , '.'.
+            Transcript showCr: 'You go to the ' , Utils colPlace: destStr , '.'.
             (exits at: destStr) visit.
             ^exits at: destStr
         ] ifFalse: [
@@ -32,9 +33,15 @@ Object subclass: Room [
         ]
     ]
     look [
+        Utils printLines: desc.
+        Transcript cr.
+        items values do: [:item |
+            Transcript showCr: item lookDesc.
+        ].
+        items size = 0 ifFalse: [ Transcript cr. ].
         Transcript showCr: 'From here you can go to:'.
         exits keys do: [:roomName |
-            Transcript showCr: '- ' , roomName.
+            Transcript showCr: '- ' , (Utils colPlace: roomName).
         ]
     ]
     take: item [

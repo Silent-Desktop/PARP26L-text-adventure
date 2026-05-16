@@ -1,7 +1,7 @@
 FileStream fileIn: 'Inventory.st'.
 
 Object subclass: GameState [
-    | isGameOver actionCount currentRoom inventory|
+    | isGameOver actionCount currentRoom inventory locks |
 
     GameState class >> new [
         | x |
@@ -13,6 +13,9 @@ Object subclass: GameState [
         isGameOver := false.
         actionCount := 0.
         inventory := Inventory new.
+        locks := Dictionary from: {
+            'dishwasher' -> true.
+        }.
     ]
 
     setRoom: newRoom [
@@ -21,8 +24,17 @@ Object subclass: GameState [
     endGame [
         isGameOver := true
     ]
+    endGameScreen [
+        Transcript showCr: 'You''ve taken ' , actionCount asString , ' action(s).'.
+        Transcript showCr: 'In total, you have found ' , inventory foundCount asString , ' ' , (Utils colCan: 'can(s)') , '.'.
+        Transcript showCr: 'You have finished your search. Thank you for playing!'.
+        self endGame.
+    ]
     incAction [
         actionCount := actionCount + 1
+    ]
+    unlock: key [
+        locks at: key put: false.
     ]
 
     isGameOver [
@@ -36,5 +48,8 @@ Object subclass: GameState [
     ]
     inventory [
         ^inventory
+    ]
+    isLocked: object [
+        ^ locks at: object
     ]
 ]

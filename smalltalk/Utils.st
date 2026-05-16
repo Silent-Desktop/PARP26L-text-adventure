@@ -2,16 +2,16 @@ Object subclass: Utils [
     esc := Character esc asString.
     reset := Character esc asString , '[0m'.
 
-    Utils class >> green: text [
+    Utils class >> colObject: text [  "green"
         ^ esc , '[32m' , text , reset
     ]
-    Utils class >> yellow: text [
+    Utils class >> colPlace: text [  "yellow"
         ^ esc , '[33m' , text , reset
     ]
-    Utils class >> blue: text [
+    Utils class >> colItem: text [  "blue"
         ^ esc , '[34m' , text , reset
     ]
-    Utils class >> magenta: text [
+    Utils class >> colCan: text [  "magenta"
         ^ esc , '[35m' , text , reset
     ]
 
