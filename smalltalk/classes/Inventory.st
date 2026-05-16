@@ -1,4 +1,4 @@
-FileStream fileIn: 'Utils.st'.
+FileStream fileIn: 'classes/Utils.st'.
 
 Object subclass: Inventory [
     | items cans foundCount |

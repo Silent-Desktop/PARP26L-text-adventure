@@ -1,7 +1,7 @@
-FileStream fileIn: 'Kitchen.st'.
-FileStream fileIn: 'LivingRoom.st'.
-FileStream fileIn: 'GameLoop.st'.
-FileStream fileIn: 'Utils.st'.
+FileStream fileIn: 'classes/rooms/Kitchen.st'.
+FileStream fileIn: 'classes/rooms/LivingRoom.st'.
+FileStream fileIn: 'classes/GameLoop.st'.
+FileStream fileIn: 'classes/Utils.st'.
 
 
 kitchen := Kitchen new.

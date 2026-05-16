@@ -1,4 +1,4 @@
-FileStream fileIn: 'Inventory.st'.
+FileStream fileIn: 'classes/Inventory.st'.
 
 Object subclass: GameState [
     | isGameOver actionCount currentRoom inventory locks |

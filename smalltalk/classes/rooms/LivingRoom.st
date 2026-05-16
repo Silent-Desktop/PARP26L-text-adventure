@@ -1,4 +1,4 @@
-FileStream fileIn: 'Room.st'.
+FileStream fileIn: 'classes/Room.st'.
 
 Room subclass: LivingRoom [
     init [

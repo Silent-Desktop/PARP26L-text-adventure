@@ -1,7 +1,7 @@
-FileStream fileIn: 'Utils.st'.
-FileStream fileIn: 'Room.st'.
-FileStream fileIn: 'Item.st'.
-FileStream fileIn: 'Interactable.st'.
+FileStream fileIn: 'classes/Utils.st'.
+FileStream fileIn: 'classes/Room.st'.
+FileStream fileIn: 'classes/Item.st'.
+FileStream fileIn: 'classes/Interactable.st'.
 
 Room subclass: Kitchen [
     init [

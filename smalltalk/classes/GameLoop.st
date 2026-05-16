@@ -1,5 +1,5 @@
-FileStream fileIn: 'Utils.st'.
-FileStream fileIn: 'GameState.st'.
+FileStream fileIn: 'classes/Utils.st'.
+FileStream fileIn: 'classes/GameState.st'.
 
 Object subclass: GameLoop [
     | state |
