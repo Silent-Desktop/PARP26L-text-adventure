@@ -4,9 +4,9 @@ Object subclass: Room [
         name := String new.
         visited := false.
         desc := { String new. }.
-        exits := Dictionary new.
-        items := Dictionary new.
-        interactables := Dictionary new.
+        exits := Dictionary new.  "String -> Room"
+        items := Dictionary new.  "String -> Item"
+        interactables := Dictionary new.  "String -> Interactable"
     ]
     getName [
         ^name
@@ -24,7 +24,7 @@ Object subclass: Room [
     ]
     go: destStr [
         (exits includesKey: destStr) ifTrue: [
-            Transcript showCr: 'You go to the ' , Utils colPlace: destStr , '.'.
+            Transcript showCr: 'You go to the ' , (Utils colPlace: destStr) , '.'.
             (exits at: destStr) visit.
             ^exits at: destStr
         ] ifFalse: [
@@ -46,15 +46,23 @@ Object subclass: Room [
     ]
     take: item [
         Transcript showCr: ((items removeKey: item ifAbsent: [
-            Transcript showCr: 'No such item here!'.
+            Transcript showCr: 'No such ' , (Utils colItem: 'item') , ' here!'.
             ^ nil
         ]) takeDesc).
         ^ item
     ]
-    interact: object withState: state [
-        ^(interactables at: object ifAbsent: [
-            Transcript showCr: 'No such object here!'.
+    check: objectName ifPresentValue: closure [
+        | object |
+        object := interactables at: objectName ifAbsent: [
+            Transcript showCr: 'No such ' , (Utils colObject: 'object') , ' here!'.
             ^ nil
-        ]) value: state
+        ].
+        object ifNotNil: [ closure value: object ].
+    ]
+    interact: objectName withState: state [
+        self check: objectName ifPresentValue: [:object | object interact: state. ].
+    ]
+    inspect: objectName withState: state [
+        self check: objectName ifPresentValue: [:object | object inspect: state. ].
     ]
 ]

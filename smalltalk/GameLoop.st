@@ -59,7 +59,9 @@ Object subclass: GameLoop [
     ]
 
     handleGo: cmd [
-        Transcript showCr: 'Go white boy, go!'.
+        | target |
+        target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Go to ' , (Utils colPlace: 'where') , '?'.
+        target ifNotNil: [ state setRoom: (state currentRoom go: target) ]
     ]
 
     handleTake: cmd [
@@ -79,7 +81,9 @@ Object subclass: GameLoop [
     ]
 
     handleInspect: cmd [
-        Transcript showCr: 'You inspect something.'.
+        | target |
+        target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Inspect ' , (Utils colObject: 'what') , '?'.
+        target ifNotNil: [ state currentRoom inspect: target withState: state ].
     ]
 
     handleInventory: cmd [
