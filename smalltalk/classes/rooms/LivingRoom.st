@@ -25,6 +25,11 @@ Room subclass: LivingRoom [
                     Transcript showCr: 'This is your ', (Utils colObject: 'couch'), '. It''s were you hang out during the day and read books. You hate napping on it. The cushions are back to laying flat after you pulled out Can #4 from underneath them.'.
                 ]
             ]).
+            'table' -> (Interactable interaction: [:state |
+                Transcript showCr: 'TODO TABLE INTERACT'.
+            ] inspection: [:state |
+                    Transcript showCr: 'TABLE INSPECT'.
+            ]).
         }.
         items := Dictionary from: {
             '' -> (Item look: '' take: '').
