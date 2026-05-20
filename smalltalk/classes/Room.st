@@ -14,7 +14,7 @@ Object subclass: Room [
         exits := LookupTable new.  "Symbol -> Room"
         items := LookupTable new.  "Symbol -> Item"
         hiddenItems := LookupTable new.  "Symbol -> Item"
-        interactables := LookupTable new.  "Symbol -> Interactable"
+        interactables := SortedCollection new.  "SortedCollection of Symbol -> Interactable Associations in order to manipulate order"
         hiddenInteracts := LookupTable new.  "Symbol -> Interactable"
     ]
     getName [
@@ -54,7 +54,7 @@ Object subclass: Room [
     ]
     showInteracts [
         interactables do: [:interactable |
-            Transcript showCr: interactable desc.
+            Transcript showCr: interactable value desc.
         ].
     ]
     interactsCr [
@@ -91,11 +91,11 @@ Object subclass: Room [
     ]
     check: objectName ifPresentValue: closure [
         | object |
-        object := interactables at: objectName ifAbsent: [
+        object := interactables detect: [:assoc | assoc key = objectName] ifNone: [
             Transcript showCr: 'No such ' , (Utils colObject: 'object') , ' here!'.
             ^ nil
         ].
-        object ifNotNil: [ closure value: object ].
+        object ifNotNil: [ closure value: object value ].
     ]
     interact: objectName [
         self check: objectName ifPresentValue: [:object | object interact ].

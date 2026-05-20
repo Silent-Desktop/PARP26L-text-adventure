@@ -7,7 +7,7 @@ Room subclass: Kitchen [
         desc := {
             'This is the ' , (Utils colPlace: 'kitchen') , '. The countertops are clean and there are no dirty dishes in the sink. Clearly you''ve been busy or just haven''t eaten in a long time.'.
         }.
-        interactables := LookupTable from: {
+        interactables := SortedCollection from: {
             #dishwasher -> (Interactable desc: 'There is a ' , (Utils colObject: 'dishwasher') , ' here, a true lifesaver, since you hate washing the dishes by hand.'
                 interaction: [
                     (GameState isLocked: #dishwasher) ifTrue: [

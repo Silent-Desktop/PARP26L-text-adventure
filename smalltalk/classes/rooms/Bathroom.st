@@ -7,7 +7,7 @@ Room subclass: Bathroom [
         desc := {
             ''.
         }.
-        interactables := LookupTable from: {
+        interactables := SortedCollection from: {
             #'' -> (Interactable desc: ''
                 interaction: [
 

@@ -7,7 +7,7 @@ Room subclass: LivingRoom [
         desc := {
             'This is the ', (Utils colPlace: 'living room') , ' where you spend your free time. You never take naps here, though.'.
         }.
-        interactables := LookupTable from: {
+        interactables := SortedCollection from: {
             #couch -> (Interactable desc: 'There is a ', (Utils colObject: 'couch') , ' here. It looks very comfortable with all its cushions, the fluffy blanket and the black cat plushie on top.'
                 interaction: [
                     (Inventory isCanFound: 4) ifFalse: [

@@ -7,7 +7,7 @@ Room subclass: Balcony [
         desc := {
             'This is the ',(Utils colPlace: 'balcony'),'.'.
         }.
-        interactables := LookupTable from: {
+        interactables := SortedCollection from: {
             #plant -> (Interactable desc: 'On the floor, in the corner, there is a large potted ',(Utils colObject: 'plant'),'. It''s most likely a fern, but you never bothered to make sure. Its leaves are large and sprawling.'
                 interaction: [
 
@@ -35,7 +35,7 @@ Room subclass: Balcony [
                 interaction: [
                     Transcript showCr: 'You grab the ',(Utils colObject: 'string'),' at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally, you grab a hold of ',(Utils colCan: 'Can #6'),'!'.
                     Inventory foundCan: 6.
-                    interactables removeKey: #string.
+                    interactables remove: (interactables detect: [:assoc | assoc key = #string]).
                 ] inspection: [
                     Transcript showCr: 'The ',(Utils colObject: 'string'),' is tied to one of the metal bars and it''s taut.'
                 ]).
