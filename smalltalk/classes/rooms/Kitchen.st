@@ -69,7 +69,8 @@ Room subclass: Kitchen [
             ]).
         }.
         items := Dictionary from: {
-            'knife' -> (Item look: 'There is a ' , (Utils colItem: 'knife') , ' on the countertop near the sink. It looks sharp.' take: 'You pick up the ' , (Utils colItem: 'knife') , '. The handle is solid black and cold to the touch.').
+            'knife' -> (Item look: 'There is a ' , (Utils colItem: 'knife') , ' on the countertop near the sink. It looks sharp.'
+                take: 'You pick up the ' , (Utils colItem: 'knife') , '. The handle is solid black and cold to the touch.').
         }.
     ]
     Kitchen class >> new [

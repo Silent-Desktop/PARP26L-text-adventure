@@ -15,7 +15,12 @@ Room subclass: RoomName [
             ]).
         }.
         items := Dictionary from: {
-            '' -> (Item look: '' take: '').
+            '' -> (Item look: ''
+                take: '').
+        }.
+        hiddenItems := Dictionary from: {
+            '' -> (Item look: ''
+                take: '')
         }.
     ]
     RoomName class >> new [

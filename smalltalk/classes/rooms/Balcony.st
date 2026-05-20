@@ -15,10 +15,15 @@ Room subclass: Balcony [
             ]).
         }.
         items := Dictionary from: {
-            '' -> (Item look: '' take: '').
+            '' -> (Item look: ''
+                take: '').
+        }.
+        hiddenItems := Dictionary from: {
+            '' -> (Item look: ''
+                take: '')
         }.
     ]
-    LivingRoom class >> new [
+    Balcony class >> new [
         | x |
         x := super new.
         x init.
