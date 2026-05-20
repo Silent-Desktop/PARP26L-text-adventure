@@ -13,10 +13,10 @@ Object subclass: GameLoop [
         'interact with [' , (Utils colObject: 'object') , ']  -- to interact with ' , (Utils colObject: 'something') , ' in the scene.'.
         'inspect [' , (Utils colObject: 'object') , ']        -- to take a closer look at ' , (Utils colObject: 'something') , '.'.
         'inventory               -- to check what ' , (Utils colItem: 'items') , ' you have'.
-        'found                   -- to check which ' , (Utils colCan: 'cans') , ' you''ve already found'.
-        'unfound                 -- to check which ' , (Utils colCan: 'cans') , ' you''re still missing'.
+        'found                   -- to check which cans you''ve already found'.
+        'unfound                 -- to check which cans you''re still missing'.
         'exit                    -- to end the game and quit'.
-        'The goal of the game is to find as many ' , (Utils colCan: 'cans') , ' as possible hidden around the house.'.
+        'The goal of the game is to find as many cans as possible hidden around the house.'.
         'When you think you''re done, return to the ' , (Utils colPlace: 'kitchen') , ' and interact with the ' , (Utils colObject: 'fridge') , ' for the final score.'.
     }.
 
@@ -61,7 +61,7 @@ Object subclass: GameLoop [
     handleGo: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Go to ' , (Utils colPlace: 'where') , '?'.
-        target ifNotNil: [ state setRoom: (state currentRoom go: target) ]
+        target ifNotNil: [ state setRoom: (state currentRoom go: target withState: state) ]
     ]
 
     handleTake: cmd [
@@ -71,7 +71,7 @@ Object subclass: GameLoop [
     ]
 
     handleLook: cmd [
-        state currentRoom look.
+        state currentRoom look: state
     ]
 
     handleInteract: cmd [
@@ -108,7 +108,7 @@ Object subclass: GameLoop [
         Transcript cr.
         self printInstructions.
         Transcript cr.
-        state currentRoom visit.
+        state currentRoom visit: state.
         [state isGameOver] whileFalse: [
             cmd := self readCommand subStrings.
             (cmdHandlers includesKey: cmd first) ifTrue: [

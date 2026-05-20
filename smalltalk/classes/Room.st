@@ -1,18 +1,19 @@
 Object subclass: Room [
-    | name visited desc interactables items exits |
+    | name visited desc interactables items hiddenItems exits |
     init [
         name := String new.
         visited := false.
         desc := { String new. }.
         exits := Dictionary new.  "String -> Room"
         items := Dictionary new.  "String -> Item"
+        hiddenItems := Dictionary new.  "String -> Item"
         interactables := Dictionary new.  "String -> Interactable"
     ]
     getName [
         ^name
     ]
-    visit [
-        visited ifFalse: [ self look ].
+    visit: state [
+        visited ifFalse: [ self look: state ].
         visited := true.
     ]
     addExit: destRoom [
@@ -22,27 +23,43 @@ Object subclass: Room [
         self addExit: destRoom.
         destRoom addExit: self.
     ]
-    go: destStr [
+    revealItem: itemName [
+        items add: (hiddenItems associationAt: itemName).
+        hiddenItems removeKey: itemName.
+    ]
+    go: destStr withState: state [
         (exits includesKey: destStr) ifTrue: [
             Transcript showCr: 'You go to the ' , (Utils colPlace: destStr) , '.'.
-            (exits at: destStr) visit.
+            (exits at: destStr) visit: state.
             ^exits at: destStr
         ] ifFalse: [
             Transcript showCr: 'There is no such room!'.
             ^self
         ]
     ]
-    look [
+    printDesc [
         Utils printLines: desc.
-        Transcript cr.
-        items values do: [:item |
+    ]
+    showItems [
+        items do: [:item |
             Transcript showCr: item lookDesc.
         ].
+    ]
+    itemsCr [
         items size = 0 ifFalse: [ Transcript cr. ].
+    ]
+    showExits [
         Transcript showCr: 'From here you can go to:'.
         exits keys do: [:roomName |
             Transcript showCr: '- ' , (Utils colPlace: roomName).
         ]
+    ]
+    look: state [
+        self printDesc.
+        Transcript cr.
+        self showItems.
+        self itemsCr.
+        self showExits.
     ]
     take: item [
         Transcript showCr: ((items removeKey: item ifAbsent: [

@@ -6,9 +6,8 @@ Room subclass: LivingRoom [
         name := 'living room'.
         desc := {
             'This is the ', (Utils colPlace: 'living room') , ' where you spend your free time. You never take naps here though.'.
-            'There is a ',  (Utils colObject: 'table here') , ' used for dining or gatherings.'.
+            'There is a ',  (Utils colObject: 'table') , ' here, used for dining or gatherings.'.
             'There is a ', (Utils colObject: 'couch') , ' here, it looks very comfortable with all its cushions and the fluffy blanket on top.'.
-            "TODO conditional description for finding can #5 that must appear ONLY once"
         }.
         interactables := Dictionary from: {
             'couch' -> (Interactable interaction: [:state |
@@ -26,18 +25,34 @@ Room subclass: LivingRoom [
                 ]
             ]).
             'table' -> (Interactable interaction: [:state |
-                Transcript showCr: 'TODO TABLE INTERACT'.
+                Transcript showCr: 'You''re not planning to work right now and it''s way before dinner time, so the ',(Utils colObject: 'table'),' isn''t really useful to you at the moment.'.
             ] inspection: [:state |
-                    Transcript showCr: 'TABLE INSPECT'.
+                Transcript showCr: 'This is where you usually eat your meals or work if you need more space. The ',(Utils colObject: 'table'),' is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it.'.
+                (hiddenItems includesKey: 'house keys') ifTrue: [
+                    Transcript showCr: 'After taking a closer look at the things laid out on the table, you notice the ',(Utils colItem: 'house keys'),' under the folded tablecloth.'.
+                    self revealItem: 'house keys'.
+                ]
             ]).
         }.
         items := Dictionary from: {
-            '' -> (Item look: '' take: '').
+            'chair' -> (Item look: 'There is a ' , (Utils colItem: 'chair') , ' here, just next to the ' , (Utils colObject: 'table') , '. Usually, you''d just sit on it, but sometimes you use it to reach higher places.'
+                take: 'You somehow manage to pick up the ' , (Utils colItem: 'chair') , '. It''s a bit weird to hold, but you''ve done this before.').
+        }.
+        hiddenItems := Dictionary from: {
+            'house keys' -> (Item look: 'The ' , (Utils colItem: 'house keys') , ' are here, on the table. Usually, you leave them here anyway, easier to find later.'
+                take: 'You pick up the ' , (Utils colItem: 'house keys') , ' and they fit neatly in your back pocket.').
         }.
     ]
-    LivingRoom class >> look [
-       super look.
-       Transcript showCr: 'WORK PLEASE'.
+    look: state [
+        self printDesc.
+        Transcript cr.
+        self showItems.
+        (state inventory ifCanFound: 5) ifFalse: [
+            Transcript showCr: 'When you look at the ' , (Utils colObject: 'table') , ' you see some used plates, a folded tablecloth, and next to them, slightly obscured by an empty cup, is ' , (Utils colCan: 'Can #5') , '!'.
+            state inventory foundCan: 5.
+        ].
+        self itemsCr.
+        self showExits.
     ]
     LivingRoom class >> new [
         | x |

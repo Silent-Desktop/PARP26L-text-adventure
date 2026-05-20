@@ -26,7 +26,7 @@ Object subclass: GameState [
     ]
     endGameScreen [
         Transcript showCr: 'You''ve taken ' , actionCount asString , ' action(s).'.
-        Transcript showCr: 'In total, you have found ' , inventory foundCount asString , ' ' , (Utils colCan: 'can(s)') , '.'.
+        Transcript showCr: 'In total, you have found ' , inventory foundCount asString , ' can(s).'.
         Transcript showCr: 'You have finished your search. Thank you for playing!'.
         self endGame.
     ]
