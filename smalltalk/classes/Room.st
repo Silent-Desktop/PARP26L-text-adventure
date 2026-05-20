@@ -11,11 +11,11 @@ Object subclass: Room [
         name := String new.
         visited := false.
         desc := { String new. }.
-        exits := Dictionary new.  "String -> Room"
-        items := Dictionary new.  "String -> Item"
-        hiddenItems := Dictionary new.  "String -> Item"
-        interactables := Dictionary new.  "String -> Interactable"
-        hiddenInteracts := Dictionary new.  "String -> Interactable"
+        exits := LookupTable new.  "Symbol -> Room"
+        items := LookupTable new.  "Symbol -> Item"
+        hiddenItems := LookupTable new.  "Symbol -> Item"
+        interactables := LookupTable new.  "Symbol -> Interactable"
+        hiddenInteracts := LookupTable new.  "Symbol -> Interactable"
     ]
     getName [
         ^name
@@ -25,7 +25,7 @@ Object subclass: Room [
         visited := true.
     ]
     addExit: destRoom [
-        exits at: destRoom getName put: destRoom
+        exits at: destRoom getName asSymbol put: destRoom
     ]
     connect: destRoom [
         self addExit: destRoom.
@@ -39,11 +39,11 @@ Object subclass: Room [
         interactables add: (hiddenInteracts associationAt: objName).
         hiddenInteracts removeKey: objName.
     ]
-    go: destStr [
-        (exits includesKey: destStr) ifTrue: [
-            Transcript showCr: 'You go to the ' , (Utils colPlace: destStr) , '.'.
-            (exits at: destStr) visit.
-            ^exits at: destStr
+    go: dest [
+        (exits includesKey: dest) ifTrue: [
+            Transcript showCr: 'You go to the ' , (Utils colPlace: dest asString) , '.'.
+            (exits at: dest) visit.
+            ^exits at: dest
         ] ifFalse: [
             Transcript showCr: 'There is no such room!'.
             ^self

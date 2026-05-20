@@ -18,19 +18,18 @@ Object subclass: GameLoop [
         'The goal of the game is to find as many cans as possible hidden around the house.'.
         'When you think you''re done, return to the ' , (Utils colPlace: 'kitchen') , ' and interact with the ' , (Utils colObject: 'fridge') , ' for the final score.'.
     }.
-
-    cmdHandlers := Dictionary from: {
-        'info' -> #handleInfo:.
-        'go' -> #handleGo:.
-        'take' -> #handleTake:.
-        'look' -> #handleLook:.
-        'interact' -> #handleInteract:.
-        'inspect' -> #handleInspect:.
-        'inventory' -> #handleInventory:.
-        'found' -> #handleFound:.
-        'unfound' -> #handleUnfound:.
-        'exit' -> #handleExit:.
-    }.
+    commands := #(
+        #info:
+        #go:
+        #take:
+        #look:
+        #interact:
+        #inspect:
+        #inventory:
+        #found:
+        #unfound:
+        #exit:
+    ).
  
     GameLoop class >> start: room [
         | x |
@@ -52,66 +51,67 @@ Object subclass: GameLoop [
         ^ FileStream stdin nextLine
     ]
 
-    handleInfo: cmd [
+    info: cmd [
         self printInstructions
     ]
 
-    handleGo: cmd [
+    go: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Go to ' , (Utils colPlace: 'where') , '?'.
-        target ifNotNil: [ GameState setRoom: (GameState currentRoom go: target) ]
+        target ifNotNil: [ GameState setRoom: (GameState currentRoom go: target asSymbol) ]
     ]
 
-    handleTake: cmd [
+    take: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Take ' , (Utils colItem: 'what') , '?'.
-        target ifNotNil: [ Inventory addItem: (GameState currentRoom take: target) ].
+        target ifNotNil: [ Inventory addItem: (GameState currentRoom take: target asSymbol) ].
     ]
 
-    handleLook: cmd [
+    look: cmd [
         GameState currentRoom look
     ]
 
-    handleInteract: cmd [
+    interact: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Interact with ' , (Utils colObject: 'what') , '?'.
-        target ifNotNil: [ GameState currentRoom interact: target ].
+        target ifNotNil: [ GameState currentRoom interact: target asSymbol ].
     ]
 
-    handleInspect: cmd [
+    inspect: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Inspect ' , (Utils colObject: 'what') , '?'.
-        target ifNotNil: [ GameState currentRoom inspect: target ].
+        target ifNotNil: [ GameState currentRoom inspect: target asSymbol ].
     ]
 
-    handleInventory: cmd [
+    inventory: cmd [
         Inventory displayItems.
     ]
 
-    handleFound: cmd [
+    found: cmd [
         Inventory displayFound.
     ]
 
-    handleUnfound: cmd [
+    unfound: cmd [
         Inventory displayUnfound.
     ]
 
-    handleExit: cmd [
+    exit: cmd [
         GameState endGame.
     ]
 
     "Run the game loop."
     run [
-        | cmd |
+        | cmd cmdMethod |
         Transcript cr.
         self printInstructions.
         Transcript cr.
         GameState currentRoom visit.
         [GameState isGameOver] whileFalse: [
             cmd := self readCommand subStrings.
-            (cmdHandlers includesKey: cmd first) ifTrue: [
+            cmdMethod := (cmd first,':') asSymbol.
+            (commands includes: cmdMethod) ifTrue: [
                 GameState incAction.
-                self perform: (cmdHandlers at: cmd first) with: cmd
+                self perform: cmdMethod with: cmd
             ] ifFalse: [
                 Transcript showCr: 'Unknown command: ' , cmd first
             ]

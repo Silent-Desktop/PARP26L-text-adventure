@@ -7,24 +7,24 @@ Room subclass: Hall [
         desc := {
             ''.
         }.
-        interactables := Dictionary from: {
-            '' -> (Interactable desc: ''
+        interactables := LookupTable from: {
+            #'' -> (Interactable desc: ''
                 interaction: [
 
                 ] inspection: [
 
                 ]).
         }.
-        items := Dictionary from: {
-            '' -> (Item look: ''
+        items := LookupTable from: {
+            #'' -> (Item look: ''
                 take: '').
         }.
-        hiddenItems := Dictionary from: {
-            '' -> (Item look: ''
+        hiddenItems := LookupTable from: {
+            #'' -> (Item look: ''
                 take: '')
         }.
-        hiddenInteracts := Dictionary from: {
-            '' -> (Interactable desc: ''
+        hiddenInteracts := LookupTable from: {
+            #'' -> (Interactable desc: ''
                 interaction: [
 
                 ] inspection: [

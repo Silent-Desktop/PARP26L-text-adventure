@@ -16,14 +16,14 @@ Object subclass: Inventory [
         'Can #12: It''s a deep purple colour with some vines drawn around it. The drink flavour is most likely grape.'.
         'Can #13: Lucky #13! You found the bonus secret can. Congrats!'.
     }.
+    cans := Array new: 13 withAll: false.  "unfortunately, it's impossible to use `canDescs size` here"
     secrets := #(13) asSet.  "this is a set in order to theoretically allow adding more secret cans"
-    items := Bag new.  "Bag of Strings — easier access to item names for checks + descriptions aren't needed after picking up."
-    cans := Array new: 13 withAll: false.
     foundCount := 0.
+    items := Bag new.  "Bag of Symbols — easier access to item names for checks + descriptions aren't needed after picking up."
     Inventory class >> displayItems [
         Transcript showCr: 'Your inventory:'.
         items do: [:each |
-            Transcript showCr: '+ ' , (Utils colItem: each)
+            Transcript showCr: '+ ' , (Utils colItem: each asString)
         ]
     ]
     Inventory class >> displayFound [
@@ -36,7 +36,7 @@ Object subclass: Inventory [
     ]
     Inventory class >> displayUnfound [
         Transcript showCr: 'Here''s a list of cans you haven''t found yet:'.
-        1 to: canDescs size do: [:i |
+        1 to: cans size do: [:i |
             ((cans at: i) or: [secrets includes: i]) ifFalse: [
                 Transcript showCr: '- Can #' , i asString
             ]
@@ -48,10 +48,10 @@ Object subclass: Inventory [
         ]
     ]
     Inventory class >> foundCan: can [
-        can ifNotNil: [
+        (cans at: can) ifFalse: [
             cans at: can put: true.
+            foundCount := foundCount + 1.
         ].
-        foundCount := foundCount + 1.
     ]
     Inventory class >> foundCount [
         ^ foundCount

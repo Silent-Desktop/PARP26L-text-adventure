@@ -4,8 +4,8 @@ Object subclass: GameState [
     currentRoom := nil.
     isGameOver := false.
     actionCount := 0.
-    locks := Dictionary from: {
-        'dishwasher' -> true.
+    locks := LookupTable from: {
+        #dishwasher -> true.
     }.
 
     GameState class >> setRoom: newRoom [
