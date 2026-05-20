@@ -1,18 +1,22 @@
 Object subclass: Interactable [
-    | interactBlock inspectBlock |
+    | desc interactBlock inspectBlock |
 
-    Interactable class >> interaction: anIntBlock inspection: anInspBlock [
+    Interactable class >> desc: aDesc interaction: anIntBlock inspection: anInspBlock [
         | x |
         x := super new.
-        x init: anIntBlock inspection: anInspBlock.
+        x init: aDesc interaction: anIntBlock inspection: anInspBlock.
         ^x
     ]
 
-    init: anIntBlock inspection: anInspBlock [
+    init: aDesc interaction: anIntBlock inspection: anInspBlock [
+        desc := aDesc.
         interactBlock := anIntBlock.
         inspectBlock := anInspBlock.
     ]
 
+    desc [
+        ^desc
+    ]
     interact [
         interactBlock value
     ]

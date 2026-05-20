@@ -6,7 +6,7 @@ FileStream fileIn: 'classes/GameState.st'.
 FileStream fileIn: 'classes/Inventory.st'.
 
 Object subclass: Room [
-    | name visited desc interactables items hiddenItems exits |
+    | name visited desc interactables hiddenInteracts items hiddenItems exits |
     init [
         name := String new.
         visited := false.
@@ -15,6 +15,7 @@ Object subclass: Room [
         items := Dictionary new.  "String -> Item"
         hiddenItems := Dictionary new.  "String -> Item"
         interactables := Dictionary new.  "String -> Interactable"
+        hiddenInteracts := Dictionary new.  "String -> Interactable"
     ]
     getName [
         ^name
@@ -34,6 +35,10 @@ Object subclass: Room [
         items add: (hiddenItems associationAt: itemName).
         hiddenItems removeKey: itemName.
     ]
+    revealInteract: objName [
+        interactables add: (hiddenInteracts associationAt: objName).
+        hiddenInteracts removeKey: objName.
+    ]
     go: destStr [
         (exits includesKey: destStr) ifTrue: [
             Transcript showCr: 'You go to the ' , (Utils colPlace: destStr) , '.'.
@@ -46,6 +51,14 @@ Object subclass: Room [
     ]
     printDesc [
         Utils printLines: desc.
+    ]
+    showInteracts [
+        interactables do: [:interactable |
+            Transcript showCr: interactable desc.
+        ].
+    ]
+    interactsCr [
+        interactables size = 0 ifFalse: [ Transcript cr. ].
     ]
     showItems [
         items do: [:item |
@@ -63,7 +76,8 @@ Object subclass: Room [
     ]
     look [
         self printDesc.
-        Transcript cr.
+        self showInteracts.
+        self interactsCr.
         self showItems.
         self itemsCr.
         self showExits.

@@ -1,12 +1,11 @@
-FileStream fileIn: 'classes/rooms/Kitchen.st'.
-FileStream fileIn: 'classes/rooms/LivingRoom.st'.
+(Directory working) allFilesMatching: 'classes/rooms/*' do: [:f| FileStream fileIn: f name].
 FileStream fileIn: 'classes/GameLoop.st'.
 FileStream fileIn: 'classes/Utils.st'.
 
 
 kitchen := Kitchen new.
 livingRoom := LivingRoom new.
-"balcony := Balcony new."
+balcony := Balcony new.
 "hall := Hall new."
 "bathroom := Bathroom new."
 "bedroom := Bedroom new."
@@ -14,7 +13,7 @@ livingRoom := LivingRoom new.
 
 kitchen connect: livingRoom.
 "livingRoom connect: hall."
-"livingRoom connect: balcony."
+livingRoom connect: balcony.
 "hall connect: bedroom."
 "hall connect: bathroom."
 "bedroom connect: closet."
