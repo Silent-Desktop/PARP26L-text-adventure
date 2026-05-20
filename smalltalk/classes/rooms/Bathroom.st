@@ -7,7 +7,7 @@ Room subclass: Bathroom [
         desc := {
             ''.
         }.
-        interactables := SortedCollection from: {
+        interactables := interactables class from: {
             #'' -> (Interactable desc: ''
                 interaction: [
 
@@ -15,15 +15,15 @@ Room subclass: Bathroom [
 
                 ]).
         }.
-        items := LookupTable from: {
+        items := items class from: {
             #'' -> (Item look: ''
                 take: '').
         }.
-        hiddenItems := LookupTable from: {
+        hiddenItems := hiddenItems class from: {
             #'' -> (Item look: ''
                 take: '')
         }.
-        hiddenInteracts := LookupTable from: {
+        hiddenInteracts := hiddenInteracts class from: {
             #'' -> (Interactable desc: ''
                 interaction: [
 

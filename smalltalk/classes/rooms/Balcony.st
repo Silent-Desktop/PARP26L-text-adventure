@@ -7,7 +7,7 @@ Room subclass: Balcony [
         desc := {
             'This is the ',(Utils colPlace: 'balcony'),'.'.
         }.
-        interactables := SortedCollection from: {
+        interactables := interactables class from: {
             #plant -> (Interactable desc: 'On the floor, in the corner, there is a large potted ',(Utils colObject: 'plant'),'. It''s most likely a fern, but you never bothered to make sure. Its leaves are large and sprawling.'
                 interaction: [
 
@@ -30,7 +30,7 @@ Room subclass: Balcony [
                     ]
                 ]).
         }.
-        hiddenInteracts := LookupTable from: {
+        hiddenInteracts := hiddenInteracts class from: {
             #string -> (Interactable desc: 'Over the edge of the ',(Utils colObject: 'railing'),' there is a thin ',(Utils colObject: 'string'),' hanging. It''s tied to one of the metal bars and it''s taut.'
                 interaction: [
                     Transcript showCr: 'You grab the ',(Utils colObject: 'string'),' at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally, you grab a hold of ',(Utils colCan: 'Can #6'),'!'.

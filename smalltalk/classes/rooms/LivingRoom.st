@@ -7,7 +7,7 @@ Room subclass: LivingRoom [
         desc := {
             'This is the ', (Utils colPlace: 'living room') , ' where you spend your free time. You never take naps here, though.'.
         }.
-        interactables := SortedCollection from: {
+        interactables := interactables class from: {
             #couch -> (Interactable desc: 'There is a ', (Utils colObject: 'couch') , ' here. It looks very comfortable with all its cushions, the fluffy blanket and the black cat plushie on top.'
                 interaction: [
                     (Inventory isCanFound: 4) ifFalse: [
@@ -35,11 +35,11 @@ Room subclass: LivingRoom [
                     ]
                 ]).
         }.
-        items := LookupTable from: {
+        items := items class from: {
             #chair -> (Item look: 'There is a ' , (Utils colItem: 'chair') , ' here, just next to the ' , (Utils colObject: 'table') , '. Usually, you''d just sit on it, but sometimes you use it to reach higher places.'
                 take: 'You somehow manage to pick up the ' , (Utils colItem: 'chair') , '. It''s a bit weird to hold, but you''ve done this before.').
         }.
-        hiddenItems := LookupTable from: {
+        hiddenItems := hiddenItems class from: {
             #'house keys' -> (Item look: 'The ' , (Utils colItem: 'house keys') , ' are here, on the table. Usually, you leave them here anyway, easier to find later.'
                 take: 'You pick up the ' , (Utils colItem: 'house keys') , ' and they fit neatly in your back pocket.').
         }.

@@ -7,7 +7,7 @@ Room subclass: Kitchen [
         desc := {
             'This is the ' , (Utils colPlace: 'kitchen') , '. The countertops are clean and there are no dirty dishes in the sink. Clearly you''ve been busy or just haven''t eaten in a long time.'.
         }.
-        interactables := SortedCollection from: {
+        interactables := interactables class from: {
             #dishwasher -> (Interactable desc: 'There is a ' , (Utils colObject: 'dishwasher') , ' here, a true lifesaver, since you hate washing the dishes by hand.'
                 interaction: [
                     (GameState isLocked: #dishwasher) ifTrue: [
@@ -65,7 +65,7 @@ Room subclass: Kitchen [
                     Transcript showCr: 'This is your ' , (Utils colObject: 'fridge') , '. Inside, there should be 12 cans of your favourite energy drink, but your friends hid them around the house to prank you. When you''re done searching, you should return here and put them back.'
                 ]).
         }.
-        items := LookupTable from: {
+        items := items class from: {
             #knife -> (Item look: 'There is a ' , (Utils colItem: 'knife') , ' on the countertop near the sink. It looks sharp.'
                 take: 'You pick up the ' , (Utils colItem: 'knife') , '. The handle is solid black and cold to the touch.').
         }.
