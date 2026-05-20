@@ -1,60 +1,46 @@
 FileStream fileIn: 'classes/Inventory.st'.
 
 Object subclass: GameState [
-    singleton := nil.
-    | isGameOver actionCount currentRoom inventory locks |
+    currentRoom := nil.
+    isGameOver := false.
+    actionCount := 0.
+    inventory := Inventory new.
+    locks := Dictionary from: {
+        'dishwasher' -> true.
+    }.
 
-    GameState class >> new [
-        | x |
-        x := super new.
-        x init.
-        ^x
-    ]
-    GameState class >> state [
-        singleton ifNil: [singleton := self new].
-        ^singleton
-    ]
-    init [
-        isGameOver := false.
-        actionCount := 0.
-        inventory := Inventory new.
-        locks := Dictionary from: {
-            'dishwasher' -> true.
-        }.
-    ]
-
-    setRoom: newRoom [
+    GameState class >> setRoom: newRoom [
         currentRoom := newRoom.
     ]
-    endGame [
+    GameState class >> endGame [
         isGameOver := true
     ]
-    endGameScreen [
+    GameState class >> endGameScreen [
         Transcript showCr: 'You''ve taken ' , actionCount asString , ' action(s).'.
         Transcript showCr: 'In total, you have found ' , inventory foundCount asString , ' can(s).'.
         Transcript showCr: 'You have finished your search. Thank you for playing!'.
         self endGame.
     ]
-    incAction [
+    GameState class >> incAction [
         actionCount := actionCount + 1
     ]
-    unlock: key [
+    GameState class >> unlock: key [
         locks at: key put: false.
     ]
 
-    isGameOver [
+    GameState class >> isGameOver [
         ^isGameOver
     ]
-    actionCount [
+    GameState class >> actionCount [
         ^actionCount
     ]
-    currentRoom [
+    GameState class >> currentRoom [
         ^currentRoom
     ]
-    inventory [
+    GameState class >> inventory [
         ^inventory
     ]
-    isLocked: object [
+    GameState class >> isLocked: object [
         ^ locks at: object
     ]
 ]

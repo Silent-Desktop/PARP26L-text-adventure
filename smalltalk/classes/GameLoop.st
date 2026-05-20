@@ -2,8 +2,6 @@ FileStream fileIn: 'classes/Utils.st'.
 FileStream fileIn: 'classes/GameState.st'.
 
 Object subclass: GameLoop [
-    | state |
-
     instructionsText := {
         'Commands:'.
         'info                    -- prints this message'.
@@ -41,8 +39,7 @@ Object subclass: GameLoop [
     ]
 
     init: room [
-        state := GameState state.
-        state setRoom: room.
+        GameState setRoom: room.
     ]
 
     printInstructions [
@@ -61,45 +58,45 @@ Object subclass: GameLoop [
     handleGo: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Go to ' , (Utils colPlace: 'where') , '?'.
-        target ifNotNil: [ state setRoom: (state currentRoom go: target) ]
+        target ifNotNil: [ GameState setRoom: (GameState currentRoom go: target) ]
     ]
 
     handleTake: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Take ' , (Utils colItem: 'what') , '?'.
-        target ifNotNil: [ state inventory addItem: (state currentRoom take: target) ].
+        target ifNotNil: [ GameState inventory addItem: (GameState currentRoom take: target) ].
     ]
 
     handleLook: cmd [
-        state currentRoom look
+        GameState currentRoom look
     ]
 
     handleInteract: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Interact with ' , (Utils colObject: 'what') , '?'.
-        target ifNotNil: [ state currentRoom interact: target ].
+        target ifNotNil: [ GameState currentRoom interact: target ].
     ]
 
     handleInspect: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Inspect ' , (Utils colObject: 'what') , '?'.
-        target ifNotNil: [ state currentRoom inspect: target ].
+        target ifNotNil: [ GameState currentRoom inspect: target ].
     ]
 
     handleInventory: cmd [
-        state inventory displayItems.
+        GameState inventory displayItems.
     ]
 
     handleFound: cmd [
-        state inventory displayFound.
+        GameState inventory displayFound.
     ]
 
     handleUnfound: cmd [
-        state inventory displayUnfound.
+        GameState inventory displayUnfound.
     ]
 
     handleExit: cmd [
-        state endGame.
+        GameState endGame.
     ]
 
     "Run the game loop."
@@ -108,11 +105,11 @@ Object subclass: GameLoop [
         Transcript cr.
         self printInstructions.
         Transcript cr.
-        state currentRoom visit.
-        [state isGameOver] whileFalse: [
+        GameState currentRoom visit.
+        [GameState isGameOver] whileFalse: [
             cmd := self readCommand subStrings.
             (cmdHandlers includesKey: cmd first) ifTrue: [
-                state incAction.
+                GameState incAction.
                 self perform: (cmdHandlers at: cmd first) with: cmd
             ] ifFalse: [
                 Transcript showCr: 'Unknown command: ' , cmd first
