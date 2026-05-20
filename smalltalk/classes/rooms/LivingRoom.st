@@ -10,23 +10,25 @@ Room subclass: LivingRoom [
             'There is a ', (Utils colObject: 'couch') , ' here, it looks very comfortable with all its cushions and the fluffy blanket on top.'.
         }.
         interactables := Dictionary from: {
-            'couch' -> (Interactable interaction: [:state |
+            'couch' -> (Interactable interaction: [
+                | state |
+                state := GameState state.
                 (state inventory ifCanFound: 4) ifFalse: [
                     Transcript showCr: 'You decide to take a break and sit down on the ', (Utils colObject: 'couch'), '. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find ', (Utils colCan: 'Can #4'), '!'.
                     state inventory foundCan: 4.
                 ] ifTrue: [
                     Transcript showCr: 'Against better judgment you decide to sit on the ', (Utils colObject: 'couch'), ' again and waste more time. It''s way comfier than previously. Can #4 used to be hidden beneath the blanket here.'.
             ]
-            ] inspection: [:state |
-                (state inventory ifCanFound: 4) ifFalse: [
+            ] inspection: [
+                (GameState state inventory ifCanFound: 4) ifFalse: [
                     Transcript showCr: 'This is your ', (Utils colObject: 'couch'), '. It''s were you hang out during the day and read books. You hate napping on it. Right now the cushions and blanket are bunched up in a weird way, like something is underneath.'.
                 ] ifTrue: [
                     Transcript showCr: 'This is your ', (Utils colObject: 'couch'), '. It''s were you hang out during the day and read books. You hate napping on it. The cushions are back to laying flat after you pulled out Can #4 from underneath them.'.
                 ]
             ]).
-            'table' -> (Interactable interaction: [:state |
+            'table' -> (Interactable interaction: [
                 Transcript showCr: 'You''re not planning to work right now and it''s way before dinner time, so the ',(Utils colObject: 'table'),' isn''t really useful to you at the moment.'.
-            ] inspection: [:state |
+            ] inspection: [
                 Transcript showCr: 'This is where you usually eat your meals or work if you need more space. The ',(Utils colObject: 'table'),' is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it.'.
                 (hiddenItems includesKey: 'house keys') ifTrue: [
                     Transcript showCr: 'After taking a closer look at the things laid out on the table, you notice the ',(Utils colItem: 'house keys'),' under the folded tablecloth.'.
@@ -43,13 +45,13 @@ Room subclass: LivingRoom [
                 take: 'You pick up the ' , (Utils colItem: 'house keys') , ' and they fit neatly in your back pocket.').
         }.
     ]
-    look: state [
+    look [
         self printDesc.
         Transcript cr.
         self showItems.
-        (state inventory ifCanFound: 5) ifFalse: [
+        (GameState state inventory ifCanFound: 5) ifFalse: [
             Transcript showCr: 'When you look at the ' , (Utils colObject: 'table') , ' you see some used plates, a folded tablecloth, and next to them, slightly obscured by an empty cup, is ' , (Utils colCan: 'Can #5') , '!'.
-            state inventory foundCan: 5.
+            GameState state inventory foundCan: 5.
         ].
         self itemsCr.
         self showExits.

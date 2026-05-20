@@ -12,8 +12,8 @@ Object subclass: Room [
     getName [
         ^name
     ]
-    visit: state [
-        visited ifFalse: [ self look: state ].
+    visit [
+        visited ifFalse: [ self look ].
         visited := true.
     ]
     addExit: destRoom [
@@ -27,10 +27,10 @@ Object subclass: Room [
         items add: (hiddenItems associationAt: itemName).
         hiddenItems removeKey: itemName.
     ]
-    go: destStr withState: state [
+    go: destStr [
         (exits includesKey: destStr) ifTrue: [
             Transcript showCr: 'You go to the ' , (Utils colPlace: destStr) , '.'.
-            (exits at: destStr) visit: state.
+            (exits at: destStr) visit.
             ^exits at: destStr
         ] ifFalse: [
             Transcript showCr: 'There is no such room!'.
@@ -54,7 +54,7 @@ Object subclass: Room [
             Transcript showCr: '- ' , (Utils colPlace: roomName).
         ]
     ]
-    look: state [
+    look [
         self printDesc.
         Transcript cr.
         self showItems.
@@ -76,10 +76,10 @@ Object subclass: Room [
         ].
         object ifNotNil: [ closure value: object ].
     ]
-    interact: objectName withState: state [
-        self check: objectName ifPresentValue: [:object | object interact: state. ].
+    interact: objectName [
+        self check: objectName ifPresentValue: [:object | object interact ].
     ]
-    inspect: objectName withState: state [
-        self check: objectName ifPresentValue: [:object | object inspect: state. ].
+    inspect: objectName [
+        self check: objectName ifPresentValue: [:object | object inspect ].
     ]
 ]

@@ -8,9 +8,9 @@ Room subclass: Balcony [
             ''.
         }.
         interactables := Dictionary from: {
-            '' -> (Interactable interaction: [:state |
+            '' -> (Interactable interaction: [
 
-            ] inspection: [:state |
+            ] inspection: [
 
             ]).
         }.

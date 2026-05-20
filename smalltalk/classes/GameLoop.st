@@ -41,7 +41,7 @@ Object subclass: GameLoop [
     ]
 
     init: room [
-        state := GameState new.
+        state := GameState state.
         state setRoom: room.
     ]
 
@@ -61,7 +61,7 @@ Object subclass: GameLoop [
     handleGo: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Go to ' , (Utils colPlace: 'where') , '?'.
-        target ifNotNil: [ state setRoom: (state currentRoom go: target withState: state) ]
+        target ifNotNil: [ state setRoom: (state currentRoom go: target) ]
     ]
 
     handleTake: cmd [
@@ -71,19 +71,19 @@ Object subclass: GameLoop [
     ]
 
     handleLook: cmd [
-        state currentRoom look: state
+        state currentRoom look
     ]
 
     handleInteract: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 2 failMsg: 'Interact with ' , (Utils colObject: 'what') , '?'.
-        target ifNotNil: [ state currentRoom interact: target withState: state ].
+        target ifNotNil: [ state currentRoom interact: target ].
     ]
 
     handleInspect: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Inspect ' , (Utils colObject: 'what') , '?'.
-        target ifNotNil: [ state currentRoom inspect: target withState: state ].
+        target ifNotNil: [ state currentRoom inspect: target ].
     ]
 
     handleInventory: cmd [
@@ -108,7 +108,7 @@ Object subclass: GameLoop [
         Transcript cr.
         self printInstructions.
         Transcript cr.
-        state currentRoom visit: state.
+        state currentRoom visit.
         [state isGameOver] whileFalse: [
             cmd := self readCommand subStrings.
             (cmdHandlers includesKey: cmd first) ifTrue: [

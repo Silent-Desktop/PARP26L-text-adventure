@@ -1,6 +1,7 @@
 FileStream fileIn: 'classes/Inventory.st'.
 
 Object subclass: GameState [
+    singleton := nil.
     | isGameOver actionCount currentRoom inventory locks |
 
     GameState class >> new [
@@ -8,6 +9,10 @@ Object subclass: GameState [
         x := super new.
         x init.
         ^x
+    ]
+    GameState class >> state [
+        singleton ifNil: [singleton := self new].
+        ^singleton
     ]
     init [
         isGameOver := false.

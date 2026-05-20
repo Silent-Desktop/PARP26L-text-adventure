@@ -13,10 +13,10 @@ Object subclass: Interactable [
         inspectBlock := anInspBlock.
     ]
 
-    interact: state [
-        interactBlock value: state
+    interact [
+        interactBlock value
     ]
-    inspect: state [
-        inspectBlock value: state
+    inspect [
+        inspectBlock value
     ]
 ]
