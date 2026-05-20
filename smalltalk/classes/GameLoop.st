@@ -1,5 +1,6 @@
 FileStream fileIn: 'classes/Utils.st'.
 FileStream fileIn: 'classes/GameState.st'.
+FileStream fileIn: 'classes/Inventory.st'.
 
 Object subclass: GameLoop [
     instructionsText := {

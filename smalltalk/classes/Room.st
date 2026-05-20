@@ -1,3 +1,10 @@
+"Classes usually used by the room subclasses:"
+FileStream fileIn: 'classes/Utils.st'.
+FileStream fileIn: 'classes/Item.st'.
+FileStream fileIn: 'classes/Interactable.st'.
+FileStream fileIn: 'classes/GameState.st'.
+FileStream fileIn: 'classes/Inventory.st'.
+
 Object subclass: Room [
     | name visited desc interactables items hiddenItems exits |
     init [

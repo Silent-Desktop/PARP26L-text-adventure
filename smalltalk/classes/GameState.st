@@ -4,7 +4,6 @@ Object subclass: GameState [
     currentRoom := nil.
     isGameOver := false.
     actionCount := 0.
-    inventory := Inventory new.
     locks := Dictionary from: {
         'dishwasher' -> true.
     }.
@@ -17,7 +16,7 @@ Object subclass: GameState [
     ]
     GameState class >> endGameScreen [
         Transcript showCr: 'You''ve taken ' , actionCount asString , ' action(s).'.
-        Transcript showCr: 'In total, you have found ' , inventory foundCount asString , ' can(s).'.
+        Transcript showCr: 'In total, you have found ' , Inventory foundCount asString , ' can(s).'.
         Transcript showCr: 'You have finished your search. Thank you for playing!'.
         self endGame.
     ]
@@ -36,9 +35,6 @@ Object subclass: GameState [
     ]
     GameState class >> currentRoom [
         ^currentRoom
-    ]
-    GameState class >> inventory [
-        ^inventory
     ]
     GameState class >> isLocked: object [
         ^ locks at: object
