@@ -11,14 +11,14 @@ Room subclass: LivingRoom [
         }.
         interactables := Dictionary from: {
             'couch' -> (Interactable interaction: [
-                (GameState inventory ifCanFound: 4) ifFalse: [
+                (Inventory isCanFound: 4) ifFalse: [
                     Transcript showCr: 'You decide to take a break and sit down on the ', (Utils colObject: 'couch'), '. The cushions are soft but there is something hard poking you in the hip. You reach under the blanket and find ', (Utils colCan: 'Can #4'), '!'.
-                    GameState inventory foundCan: 4.
+                    Inventory foundCan: 4.
                 ] ifTrue: [
                     Transcript showCr: 'Against better judgment you decide to sit on the ', (Utils colObject: 'couch'), ' again and waste more time. It''s way comfier than previously. Can #4 used to be hidden beneath the blanket here.'.
             ]
             ] inspection: [
-                (GameState inventory ifCanFound: 4) ifFalse: [
+                (Inventory isCanFound: 4) ifFalse: [
                     Transcript showCr: 'This is your ', (Utils colObject: 'couch'), '. It''s were you hang out during the day and read books. You hate napping on it. Right now the cushions and blanket are bunched up in a weird way, like something is underneath.'.
                 ] ifTrue: [
                     Transcript showCr: 'This is your ', (Utils colObject: 'couch'), '. It''s were you hang out during the day and read books. You hate napping on it. The cushions are back to laying flat after you pulled out Can #4 from underneath them.'.
@@ -47,9 +47,9 @@ Room subclass: LivingRoom [
         self printDesc.
         Transcript cr.
         self showItems.
-        (GameState inventory ifCanFound: 5) ifFalse: [
+        (Inventory isCanFound: 5) ifFalse: [
             Transcript showCr: 'When you look at the ' , (Utils colObject: 'table') , ' you see some used plates, a folded tablecloth, and next to them, slightly obscured by an empty cup, is ' , (Utils colCan: 'Can #5') , '!'.
-            GameState inventory foundCan: 5.
+            Inventory foundCan: 5.
         ].
         self itemsCr.
         self showExits.

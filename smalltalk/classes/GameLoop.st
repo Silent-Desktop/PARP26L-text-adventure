@@ -64,7 +64,7 @@ Object subclass: GameLoop [
     handleTake: cmd [
         | target |
         target := Utils cmdTarget: cmd skipWords: 1 failMsg: 'Take ' , (Utils colItem: 'what') , '?'.
-        target ifNotNil: [ GameState inventory addItem: (GameState currentRoom take: target) ].
+        target ifNotNil: [ Inventory addItem: (GameState currentRoom take: target) ].
     ]
 
     handleLook: cmd [
@@ -84,15 +84,15 @@ Object subclass: GameLoop [
     ]
 
     handleInventory: cmd [
-        GameState inventory displayItems.
+        Inventory displayItems.
     ]
 
     handleFound: cmd [
-        GameState inventory displayFound.
+        Inventory displayFound.
     ]
 
     handleUnfound: cmd [
-        GameState inventory displayUnfound.
+        Inventory displayUnfound.
     ]
 
     handleExit: cmd [

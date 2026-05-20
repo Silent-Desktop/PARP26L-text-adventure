@@ -1,7 +1,6 @@
 FileStream fileIn: 'classes/Utils.st'.
 
 Object subclass: Inventory [
-    | items cans foundCount |
     canDescs := {
         'Can #1: There are pictures of butterflies on it. The drink flavour is disgustingly peachy.'.
         'Can #2: There are drawings of fish and underwater algae all the way around it. You''re pretty sure the flavour is pineapple.'.
@@ -18,24 +17,16 @@ Object subclass: Inventory [
         'Can #13: Lucky #13! You found the bonus secret can. Congrats!'.
     }.
     secrets := #(13) asSet.  "this is a set in order to theoretically allow adding more secret cans"
-    Inventory class >> new [
-        | x |
-        x := super new.
-        x init.
-        ^x
-    ]
-    init [
-        items := Bag new.  "Bag of Strings — easier access to item names for checks + descriptions aren't needed after picking up."
-        cans := Array new: canDescs size withAll: false.
-        foundCount := 0.
-    ]
-    displayItems [
+    items := Bag new.  "Bag of Strings — easier access to item names for checks + descriptions aren't needed after picking up."
+    cans := Array new: 13 withAll: false.
+    foundCount := 0.
+    Inventory class >> displayItems [
         Transcript showCr: 'Your inventory:'.
         items do: [:each |
             Transcript showCr: '+ ' , (Utils colItem: each)
         ]
     ]
-    displayFound [
+    Inventory class >> displayFound [
         Transcript showCr: 'Here''s a list of cans you have found:'.
         1 to: canDescs size do: [:i |
             (cans at: i) ifTrue: [
@@ -43,7 +34,7 @@ Object subclass: Inventory [
             ]
         ]
     ]
-    displayUnfound [
+    Inventory class >> displayUnfound [
         Transcript showCr: 'Here''s a list of cans you haven''t found yet:'.
         1 to: canDescs size do: [:i |
             ((cans at: i) or: [secrets includes: i]) ifFalse: [
@@ -51,24 +42,24 @@ Object subclass: Inventory [
             ]
         ]
     ]
-    addItem: item [
+    Inventory class >> addItem: item [
         item ifNotNil: [
             items add: item
         ]
     ]
-    foundCan: can [
+    Inventory class >> foundCan: can [
         can ifNotNil: [
             cans at: can put: true.
         ].
         foundCount := foundCount + 1.
     ]
-    foundCount [
+    Inventory class >> foundCount [
         ^ foundCount
     ]
-    ifCanFound: can [
+    Inventory class >> isCanFound: can [
         ^ cans at: can
     ]
-    hasItem: name [
+    Inventory class >> hasItem: name [
         ^ items includes: name
     ]
 ]

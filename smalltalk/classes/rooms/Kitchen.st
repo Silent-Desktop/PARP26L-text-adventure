@@ -19,9 +19,9 @@ Room subclass: Kitchen [
                 (GameState isLocked: 'dishwasher') ifTrue: [
                     Transcript showCr: 'The ' , (Utils colObject: 'dishwasher') , ' is rumbling and the little display is on — there''s a wash cycle still going. You''ll have to wait some time before opening it.'
                 ] ifFalse: [
-                    (GameState inventory ifCanFound: 1) ifFalse: [
+                    (Inventory isCanFound: 1) ifFalse: [
                         Transcript showCr: 'The little display is off and the ' , (Utils colObject: 'dishwasher') , ' isn''t making any noises — the wash cycle must be done. You grab the handle and open the door. Inside, it''s still warm and humid. Between plates and pots you find ' , (Utils colCan: 'Can #1') , '!'.
-                        GameState inventory foundCan: 1.
+                        Inventory foundCan: 1.
                     ] ifTrue: [
                         Transcript showCr: 'The ' , (Utils colObject: 'dishwasher') , ' has already been opened. The plates inside are drying. Can #1 used to be here.'
                     ]
@@ -34,10 +34,10 @@ Room subclass: Kitchen [
                 ]
             ]).
             'cupboard' -> (Interactable interaction: [
-                (GameState inventory ifCanFound: 2) ifFalse: [
-                    (GameState inventory hasItem: 'chair') ifTrue: [
+                (Inventory isCanFound: 2) ifFalse: [
+                    (Inventory hasItem: 'chair') ifTrue: [
                         Transcript showCr: 'You climb the ' , (Utils colItem: 'chair') , ' to reach the top shelf and grab ' , (Utils colCan: 'Can #2') , '!'.
-                        GameState inventory foundCan: 2.
+                        Inventory foundCan: 2.
                     ] ifFalse: [
                         Transcript showCr: 'You can see something on the top shelf but it''s way too high for you to reach.'
                     ]
@@ -45,16 +45,16 @@ Room subclass: Kitchen [
                     Transcript showCr: 'You look into the ' , (Utils colObject: 'cupboard') , ' again but besides some clean cups and plates there''s nothing of interest anymore. Can #2 used to be on the top shelf.'
                 ]
             ] inspection: [
-                (GameState inventory ifCanFound: 2) ifFalse: [
+                (Inventory isCanFound: 2) ifFalse: [
                     Transcript showCr: 'The ' , (Utils colObject: 'cupboard') , ' is where you keep your plates and cups. However, on the top shelf you can see something shiny. You will definitely need a ',(Utils colItem: 'chair'),' to reach it.'
                 ] ifTrue: [
                     Transcript showCr: 'Your plates and cups are still here. Luckily you haven''t broken anything while trying to reach the top shelf.'
                 ]
             ]).
             'trashcan' -> (Interactable interaction: [
-                (GameState inventory ifCanFound: 3) ifFalse: [
+                (Inventory isCanFound: 3) ifFalse: [
                     Transcript showCr: 'You grab the plastic lid and open the ' , (Utils colObject: 'trashcan') , '. Inside, nestled between old takeout boxes and paper scraps, is ' , (Utils colCan: 'Can #3') , '!'.
-                    GameState inventory foundCan: 3.
+                    Inventory foundCan: 3.
                 ] ifTrue: [
                     Transcript showCr: 'You open the ' , (Utils colObject: 'trashcan') , ' again. Luckily, there is no upleasant smell. Can #3 used to lie on the paper scraps here.'
                 ]
