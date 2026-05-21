@@ -6,17 +6,17 @@ FileStream fileIn: 'classes/Utils.st'.
 kitchen := Kitchen new.
 livingRoom := LivingRoom new.
 balcony := Balcony new.
-"hall := Hall new."
-"bathroom := Bathroom new."
-"bedroom := Bedroom new."
-"closet := Closet new."
+hall := Hall new.
+bathroom := Bathroom new.
+bedroom := Bedroom new.
+closet := Closet new.
 
 kitchen connect: livingRoom.
-"livingRoom connect: hall."
+livingRoom connect: hall.
 livingRoom connect: balcony.
-"hall connect: bedroom."
-"hall connect: bathroom."
-"bedroom connect: closet."
+hall connect: bedroom.
+hall connect: bathroom.
+bedroom connect: closet.
 
 introductionText := {
         'You are in your ' , (Utils colPlace: 'kitchen') , ', staring into your ' , (Utils colObject: 'fridge') , '.'.

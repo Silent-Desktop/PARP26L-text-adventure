@@ -5,12 +5,11 @@ Room subclass: Balcony [
         super init.
         name := 'balcony'.
         desc := {
-            'This is the ',(Utils colPlace: 'balcony'),'.'.
+            'This is the ',(Utils colPlace: 'balcony'),'.  From here you have a nice outlook onto the yard behind your building.'.
         }.
         interactables := interactables class from: {
             #plant -> (Interactable desc: 'On the floor, in the corner, there is a large potted ',(Utils colObject: 'plant'),'. It''s most likely a fern, but you never bothered to make sure. Its leaves are large and sprawling.'
                 interaction: [
-
                 ] inspection: [
                     (Inventory isCanFound: 7) ifFalse: [
                         Transcript showCr: 'It''s the big ',(Utils colObject: 'plant'),' on your balcony, perhaps a fern. Its leaves are wide and sprawling. It would be very easy to hide something here.'.
