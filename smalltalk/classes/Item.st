@@ -1,34 +1,26 @@
 Object subclass: Item [
-    | name lookDesc aTakeBlock |
+    | name lookDesc takeBlock |
 
-    Item class >> look: aLookDesc take: aTakeBlock [
+    Item class >> look: aLookDesc take: aTakeDesc [
         | x |
         x := super new.
-        x init: nil look: aLookDesc take: aTakeBlock.
+        x init: aLookDesc take: aTakeDesc.
         ^x
     ]
 
-    Item class >> name: aName look: aLookDesc take: aTakeBlock [
-        | x |
-        x := super new.
-        x init: aName look: aLookDesc take: aTakeBlock.
-        ^x
-    ]
-
-    init: aName look: aLookDesc take: take [
-        name := aName.
+    init: aLookDesc take: aTakeDesc [
         lookDesc := aLookDesc.
-        aTakeBlock := take.
-    ]
-
-    name [
-        ^ name
+        (aTakeDesc respondsTo: #value) ifFalse: [
+            takeBlock := [Transcript showCr: aTakeDesc]
+        ] ifTrue: [
+            takeBlock := aTakeDesc
+        ]
     ]
 
     lookDesc [
         ^lookDesc
     ]
     take [
-        aTakeBlock value
+        takeBlock value
     ]
 ]

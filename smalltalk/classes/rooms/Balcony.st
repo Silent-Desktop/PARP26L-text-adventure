@@ -35,9 +35,7 @@ Room subclass: Balcony [
                     Transcript showCr: 'You grab the ',(Utils colObject: 'string'),' at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally, you grab a hold of ',(Utils colCan: 'Can #6'),'!'.
                     Inventory foundCan: 6.
                     interactables remove: (interactables detect: [:assoc | assoc key = #string]).
-                ] inspection: [
-                    Transcript showCr: 'The ',(Utils colObject: 'string'),' is tied to one of the metal bars and it''s taut.'
-                ]).
+                ] inspection: 'The ',(Utils colObject: 'string'),' is tied to one of the metal bars and it''s taut.').
         }
     ]
     Balcony class >> new [

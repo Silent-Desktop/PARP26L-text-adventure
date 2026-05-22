@@ -10,8 +10,16 @@ Object subclass: Interactable [
 
     init: aDesc interaction: anIntBlock inspection: anInspBlock [
         desc := aDesc.
-        interactBlock := anIntBlock.
-        inspectBlock := anInspBlock.
+        (anIntBlock respondsTo: #value) ifTrue: [
+            interactBlock := anIntBlock
+        ] ifFalse: [
+            interactBlock := [Transcript showCr: anIntBlock]
+        ].
+        (anInspBlock respondsTo: #value) ifTrue: [
+            inspectBlock := anInspBlock
+        ] ifFalse: [
+            inspectBlock := [Transcript showCr: anInspBlock]
+        ].
     ]
 
     desc [

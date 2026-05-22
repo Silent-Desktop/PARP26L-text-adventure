@@ -54,22 +54,16 @@ Room subclass: Kitchen [
                     ] ifTrue: [
                         Transcript showCr: 'You open the ' , (Utils colObject: 'trashcan') , ' again. Luckily, there is no upleasant smell. Can #3 used to lie on the paper scraps here.'
                     ]
-                ] inspection: [
-                    Transcript showCr: 'It''s a standard grey ' , (Utils colObject: 'trashcan') , '. The container itself isn''t heavy and you mostly throw out paper scraps here.'
-                ]).
+                ] inspection: 'It''s a standard grey ' , (Utils colObject: 'trashcan') , '. The container itself isn''t heavy and you mostly throw out paper scraps here.').
             #fridge -> (Interactable desc: 'Your ' , (Utils colObject: 'fridge') , ' is here, without any chilled cans inside. Open it when you''re done.'
                 interaction: [
                     Transcript showCr: 'You open the ' , (Utils colObject: 'fridge') , ' and return all the cans that you''ve found to their shelf. You''re looking forward to enjoying a nice, cold drink.'.
                     GameState endGameScreen.
-                ] inspection: [
-                    Transcript showCr: 'This is your ' , (Utils colObject: 'fridge') , '. Inside, there should be 12 cans of your favourite energy drink, but your friends hid them around the house to prank you. When you''re done searching, you should return here and put them back.'
-                ]).
+                ] inspection: 'This is your ' , (Utils colObject: 'fridge') , '. Inside, there should be 12 cans of your favourite energy drink, but your friends hid them around the house to prank you. When you''re done searching, you should return here and put them back.').
         }.
         items := items class from: {
             #knife -> (Item look: 'There is a ' , (Utils colItem: 'knife') , ' on the countertop near the sink. It looks sharp.'
-                take: [
-                    Transcript showCr: 'You pick up the ' , (Utils colItem: 'knife') , '. The handle is solid black and cold to the touch.'
-                ]).
+                take: 'You pick up the ' , (Utils colItem: 'knife') , '. The handle is solid black and cold to the touch.').
         }.
     ]
     Kitchen class >> new [

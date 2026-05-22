@@ -32,7 +32,7 @@ Room subclass: Hall [
         items := items class from: {
             #boots -> (Item look: 'There is a pair of your heavy duty ', (Utils colItem: 'boots'), ' here. They''re still covered with wet mud from outside.'
                 take: [
-                    Transcript showCr: 'You pick up the ', (Utils colItem: 'boots'), ' and get some mud on your hands. Yuck. When you rotate one of the ', (Utils colItem: 'boots'), ' something cylindrical falls out into your hand. It''s ', (Utils colCan: 'Can #11'), '.'.
+                    Transcript showCr: 'You pick up the ', (Utils colItem: 'boots'), ' and get some mud on your hands. Yuck. When you rotate one of the ', (Utils colItem: 'boots'), ' something cylindrical falls out into your hand. It''s ', (Utils colCan: 'Can #11'), '!'.
                     Inventory foundCan: 11.
                 ]).
         }.

@@ -90,11 +90,6 @@ Object subclass: Room [
         ].
         removed take.
         ^ item
-        " Transcript showCr: ((items removeKey: item ifAbsent: [
-            Transcript showCr: 'No such ' , (Utils colItem: 'item') , ' here!'.
-            ^ nil
-        ]) takeDesc).
-        ^ item "
     ]
     check: objectName ifPresentValue: closure [
         | object |
