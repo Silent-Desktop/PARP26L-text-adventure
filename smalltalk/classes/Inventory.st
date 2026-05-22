@@ -22,24 +22,36 @@ Object subclass: Inventory [
     items := Bag new.  "Bag of Symbols — easier access to item names for checks + descriptions aren't needed after picking up."
    
     Inventory class >> displayItems [
-        Transcript showCr: 'Your inventory:'.
-        items do: [:each |
-            Transcript showCr: '+ ' , (Utils colItem: each asString)
+        items isEmpty ifTrue: [
+            Transcript showCr: 'You don''t have any items!'.
+        ] ifFalse: [
+            Transcript showCr: 'Your inventory:'.
+            items do: [:each |
+                Transcript showCr: '+ ' , (Utils colItem: each asString)
+            ]
         ]
     ]
     Inventory class >> displayFound [
-        Transcript showCr: 'Here''s a list of cans you have found:'.
-        1 to: canDescs size do: [:i |
-            (cans at: i) ifTrue: [
-                Transcript showCr: '+ ' , (canDescs at: i)
+        (cans includes: true) ifFalse: [
+            Transcript showCr: 'You haven''t found any cans yet!'.
+        ] ifTrue: [
+            Transcript showCr: 'Here''s a list of cans you have found:'.
+            1 to: canDescs size do: [:i |
+                (cans at: i) ifTrue: [
+                    Transcript showCr: '+ ' , (canDescs at: i)
+                ]
             ]
         ]
     ]
     Inventory class >> displayUnfound [
-        Transcript showCr: 'Here''s a list of cans you haven''t found yet:'.
-        1 to: cans size do: [:i |
-            ((cans at: i) or: [secrets includes: i]) ifFalse: [
-                Transcript showCr: '- Can #' , i asString
+        (cans includes: false) ifFalse: [
+            Transcript showCr: 'You''ve found all of the cans!'.
+        ] ifTrue: [
+            Transcript showCr: 'Here''s a list of cans you haven''t found yet:'.
+            1 to: cans size do: [:i |
+                ((cans at: i) or: [secrets includes: i]) ifFalse: [
+                    Transcript showCr: '- Can #' , i asString
+                ]
             ]
         ]
     ]

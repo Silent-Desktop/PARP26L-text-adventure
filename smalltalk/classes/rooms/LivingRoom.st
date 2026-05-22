@@ -28,9 +28,9 @@ Room subclass: LivingRoom [
                 interaction: 'You''re not planning to work right now and it''s way before dinner time, so the ',(Utils colObject: 'table'),' isn''t really useful to you at the moment.'
                 inspection: [
                     Transcript showCr: 'This is where you usually eat your meals or work if you need more space. The ',(Utils colObject: 'table'),' is made of a dark reddish wood and it''s big enough for at least 8 people to sit around it.'.
-                    (hiddenItems includesKey: #'house keys') ifTrue: [
-                        Transcript showCr: 'After taking a closer look at the things laid out on the table, you notice the ',(Utils colItem: 'house keys'),' under the folded tablecloth.'.
-                        self revealItem: #'house keys'.
+                    (hiddenItems includesKey: #keys) ifTrue: [
+                        Transcript showCr: 'After taking a closer look at the things laid out on the ',(Utils colObject: 'table'),', you notice the ',(Utils colItem: 'keys'),' to your apartment, hidden under the folded tablecloth.'.
+                        self revealItem: #keys.
                     ]
                 ]).
         }.
@@ -39,8 +39,8 @@ Room subclass: LivingRoom [
                 take: 'You somehow manage to pick up the ' , (Utils colItem: 'chair') , '. It''s a bit weird to hold, but you''ve done this before.').
         }.
         hiddenItems := hiddenItems class from: {
-            #'house keys' -> (Item look: 'The ' , (Utils colItem: 'house keys') , ' are here, on the table. Usually, you leave them here anyway, easier to find later.'
-                take: 'You pick up the ' , (Utils colItem: 'house keys') , ' and they fit neatly in your back pocket.').
+            #keys -> (Item look: 'The ' , (Utils colItem: 'keys') , ' to your apartment are here, on the ',(Utils colObject: 'table'),'. Usually, you leave them here anyway, easier to find later.'
+                take: 'You pick up the ' , (Utils colItem: 'keys') , ' and they fit neatly in your back pocket.').
         }.
     ]
     showItems [

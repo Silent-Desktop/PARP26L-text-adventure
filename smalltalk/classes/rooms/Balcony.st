@@ -5,34 +5,39 @@ Room subclass: Balcony [
         super init.
         name := 'balcony'.
         desc := {
-            'This is the ',(Utils colPlace: 'balcony'),'.  From here you have a nice outlook onto the yard behind your building.'.
+            'This is the ',(Utils colPlace: 'balcony'),'. From here, you have a nice outlook onto the yard behind your building.'.
         }.
         interactables := interactables class from: {
-            #plant -> (Interactable desc: 'On the floor, in the corner, there is a large potted ',(Utils colObject: 'plant'),'. It''s most likely a fern, but you never bothered to make sure. Its leaves are large and sprawling.'
+            #plant -> (Interactable desc: 'On the floor, in the corner, there is a large potted ',(Utils colObject: 'plant'),'. It''s most likely a fern, but you''ve never bothered to make sure. Its leaves are large and sprawling.'
                 interaction: [
+                    (Inventory isCanFound: 7) ifFalse: [
+                        Transcript showCr: 'You squat down to touch the ',(Utils colObject: 'plant'),'. After some searching under its many leaves, you find ',(Utils colCan: 'Can #7'),'!'.
+                        Inventory foundCan: 7.
+                    ] ifTrue: [
+                        Transcript showCr: 'You ruffle the ',(Utils colObject: 'plant''s'),' leaves again, but, besides a couple of dried petals and small bugs, nothing of interest falls out. ',(Utils colCan: 'Can #7'),' used to be hidden below the leaves.'.
+                    ]
                 ] inspection: [
                     (Inventory isCanFound: 7) ifFalse: [
-                        Transcript showCr: 'It''s the big ',(Utils colObject: 'plant'),' on your balcony, perhaps a fern. Its leaves are wide and sprawling. It would be very easy to hide something here.'.
+                        Transcript showCr: 'It''s the big ',(Utils colObject: 'plant'),' on your ',(Utils colPlace: 'balcony'),', perhaps a fern. Its leaves are wide and sprawling. It would be very easy to hide something here.'.
                     ] ifTrue: [
                         Transcript showCr: 'The leaves look a bit ruffled now, after you''ve pushed them aside. The ',(Utils colObject: 'plant'),' doesn''t seem bothered.'.
                     ]
                 ]).
-            #railing -> (Interactable desc: 'The balcony has a thick metal ',(Utils colObject: 'railing'),' and right now, there is a couple of towels hanging from it.'
-                interaction: [
-
-                ] inspection: [
+            #railing -> (Interactable desc: 'The ',(Utils colPlace: 'balcony'),' has a thick metal ',(Utils colObject: 'railing'),' and right now, there is a couple of towels hanging from it.'
+                interaction: 'You approach the ',(Utils colObject: 'railing'),' and rearrange the wet towels hanging from it. They are colourful and it would be quite easy to hide something between them, like a thin string.'
+                inspection: [
                     (Inventory isCanFound: 6) ifFalse: [
                         Transcript showCr: 'Over the edge of the ',(Utils colObject: 'railing'),' there is a thin ',(Utils colObject: 'string'),' hanging. It''s tied to one of the metal bars and it''s taut.'.
                         (hiddenInteracts includesKey: #string) ifTrue: [self revealInteract: #string].
                     ] ifTrue: [
-                        Transcript showCr: 'There is a thin string tied to the ',(Utils colObject: 'railing'),'. Currently, it''s loose. Can #6 used to be tied to the end.'.
+                        Transcript showCr: 'There is a thin ',(Utils colObject: 'string'),' tied to the ',(Utils colObject: 'railing'),'. Currently, it''s loose. Can #6 used to be tied to the end.'.
                     ]
                 ]).
         }.
         hiddenInteracts := hiddenInteracts class from: {
             #string -> (Interactable desc: 'Over the edge of the ',(Utils colObject: 'railing'),' there is a thin ',(Utils colObject: 'string'),' hanging. It''s tied to one of the metal bars and it''s taut.'
                 interaction: [
-                    Transcript showCr: 'You grab the ',(Utils colObject: 'string'),' at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally, you grab a hold of ',(Utils colCan: 'Can #6'),'!'.
+                    Transcript showCr: 'You grab the ',(Utils colObject: 'string'),' at the edge of the ',(Utils colObject: 'railing'),' and start gently pulling. There is something heavy tied to it. Finally, you grab a hold of ',(Utils colCan: 'Can #6'),'!'.
                     Inventory foundCan: 6.
                     interactables remove: (interactables detect: [:assoc | assoc key = #string]).
                 ] inspection: 'The ',(Utils colObject: 'string'),' is tied to one of the metal bars and it''s taut.').
@@ -45,5 +50,3 @@ Room subclass: Balcony [
         ^x
     ]
 ]
-
-"TODO: descriptions, interactions, inspections, items"

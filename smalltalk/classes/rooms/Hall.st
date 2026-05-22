@@ -5,27 +5,27 @@ Room subclass: Hall [
         super init.
         name := 'hall'.
         desc := {
-            'This is the ', (Utils colPlace: 'hall'), ' where you keep your coats and shoes. There''s some unvacuumed sand on the tiled floor.'.
+            'This is the ', (Utils colPlace: 'hall'), ', where you keep your coats and shoes. There''s some unvacuumed sand on the tiled floor.'.
         }.
         interactables := interactables class from: {
-            #'house door' -> (Interactable desc: 'The ', (Utils colObject: 'house door'), ' to your apartment is here and it''s currently locked.'
+            #door -> (Interactable desc: 'The ', (Utils colObject: 'door'), ' to your apartment is here and it''s currently locked.'
                 interaction: [
                     (Inventory isCanFound: 12) ifFalse: [
-                        Transcript showCr: 'You stand in front of the ', (Utils colObject: 'house door'), ' of your apartment.'.
-                        (Inventory hasItem: #'house keys') ifTrue: [
-                            Transcript showCr: 'You pull out the ', (Utils colItem: 'house keys'), ' and use them to easily open both locks. The door is now open. On your doorstep you find ', (Utils colCan: 'Can #12'), '! You lock the door again.'.
+                        Transcript showCr: 'You stand in front of the ', (Utils colObject: 'door'), ' of your apartment.'.
+                        (Inventory hasItem: #keys) ifTrue: [
+                            Transcript showCr: 'You pull out the ', (Utils colItem: 'keys'), ' and use them to easily open both locks. The ',(Utils colObject: 'door'),' is now open. On your doorstep you find ', (Utils colCan: 'Can #12'), '! You lock the ',(Utils colObject: 'door'),' again.'.
                             Inventory foundCan: 12.
                         ] ifFalse: [
-                            Transcript showCr: 'The ', (Utils colObject: 'house door'), ' is locked and with your current equipment there isn''t much you can do about it.'
+                            Transcript showCr: 'The ', (Utils colObject: 'door'), ' is locked and, at least with your current equipment, there isn''t much you can do about it.'
                         ]
                     ] ifTrue: [
-                        Transcript showCr: 'You''ve already opened the door. Can #12 used to be outside standing on your doormat. You made sure to lock the door again right?'
+                        Transcript showCr: 'You''ve already opened the ',(Utils colObject: 'door'),'. Can #12 used to be outside, standing on your doormat. You''ve made sure to lock the ',(Utils colObject: 'door'),' again, right?'
                     ]
                 ] inspection: [
                     (Inventory isCanFound: 12) ifFalse: [
-                        Transcript showCr: 'The ', (Utils colObject: 'house door'), ' is a solid ash grey color and the locks are pretty standard. You always make sure to lock it so you''ll need keys if you want to look out into the corridor.'
+                        Transcript showCr: 'The ', (Utils colObject: 'door'), ' is a solid ash grey color and the locks are pretty standard. You always make sure to lock it, so you''ll need your ',(Utils colItem: 'keys'),' if you want to look out into the corridor.'
                     ] ifTrue: [
-                        Transcript showCr: 'The ', (Utils colObject: 'house door'), ' is locked once again and there is no need for you to go outside right now.'
+                        Transcript showCr: 'The ', (Utils colObject: 'door'), ' is locked once again and there is no need for you to go outside right now.'
                     ]
                 ]).
         }.
@@ -44,5 +44,3 @@ Room subclass: Hall [
         ^x
     ]
 ]
-
-"TODO: descriptions, interactions, inspections, items"

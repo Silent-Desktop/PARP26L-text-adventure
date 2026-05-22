@@ -21,8 +21,10 @@ Object subclass: Room [
         ^name
     ]
     visit [
-        visited ifFalse: [ self look ].
-        visited := true.
+        visited ifFalse: [
+            self look.
+            visited := true.
+        ] ifTrue: [self showExits.].
     ]
     addExit: destRoom [
         exits at: destRoom getName asSymbol put: destRoom
