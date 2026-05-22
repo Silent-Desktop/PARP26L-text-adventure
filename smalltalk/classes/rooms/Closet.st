@@ -17,11 +17,11 @@ Room subclass: Closet [
         }.
         items := items class from: {
             #'' -> (Item look: ''
-                take: '').
+                take: []).
         }.
         hiddenItems := hiddenItems class from: {
             #'' -> (Item look: ''
-                take: '')
+                take: [])
         }.
         hiddenInteracts := hiddenInteracts class from: {
             #'' -> (Interactable desc: ''

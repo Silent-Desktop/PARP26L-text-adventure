@@ -1,22 +1,34 @@
 Object subclass: Item [
-    | lookDesc takeDesc |
+    | name lookDesc aTakeBlock |
 
-    Item class >> look: aLookDesc take: aTakeDesc [
+    Item class >> look: aLookDesc take: aTakeBlock [
         | x |
         x := super new.
-        x init: aLookDesc take: aTakeDesc.
+        x init: nil look: aLookDesc take: aTakeBlock.
         ^x
     ]
 
-    init: aLookDesc take: aTakeDesc [
+    Item class >> name: aName look: aLookDesc take: aTakeBlock [
+        | x |
+        x := super new.
+        x init: aName look: aLookDesc take: aTakeBlock.
+        ^x
+    ]
+
+    init: aName look: aLookDesc take: take [
+        name := aName.
         lookDesc := aLookDesc.
-        takeDesc := aTakeDesc.
+        aTakeBlock := take.
+    ]
+
+    name [
+        ^ name
     ]
 
     lookDesc [
         ^lookDesc
     ]
-    takeDesc [
-        ^takeDesc
+    take [
+        aTakeBlock value
     ]
 ]

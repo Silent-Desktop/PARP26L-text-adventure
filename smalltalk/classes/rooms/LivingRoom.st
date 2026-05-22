@@ -37,11 +37,15 @@ Room subclass: LivingRoom [
         }.
         items := items class from: {
             #chair -> (Item look: 'There is a ' , (Utils colItem: 'chair') , ' here, just next to the ' , (Utils colObject: 'table') , '. Usually, you''d just sit on it, but sometimes you use it to reach higher places.'
-                take: 'You somehow manage to pick up the ' , (Utils colItem: 'chair') , '. It''s a bit weird to hold, but you''ve done this before.').
+                take: [
+                    Transcript showCr: 'You somehow manage to pick up the ' , (Utils colItem: 'chair') , '. It''s a bit weird to hold, but you''ve done this before.'
+                ]).
         }.
         hiddenItems := hiddenItems class from: {
             #'house keys' -> (Item look: 'The ' , (Utils colItem: 'house keys') , ' are here, on the table. Usually, you leave them here anyway, easier to find later.'
-                take: 'You pick up the ' , (Utils colItem: 'house keys') , ' and they fit neatly in your back pocket.').
+                take: [
+                    Transcript showCr: 'You pick up the ' , (Utils colItem: 'house keys') , ' and they fit neatly in your back pocket.'
+                ]).
         }.
     ]
     showItems [

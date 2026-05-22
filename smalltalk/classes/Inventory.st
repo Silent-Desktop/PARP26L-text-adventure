@@ -20,6 +20,7 @@ Object subclass: Inventory [
     secrets := #(13) asSet.  "this is a set in order to theoretically allow adding more secret cans"
     foundCount := 0.
     items := Bag new.  "Bag of Symbols — easier access to item names for checks + descriptions aren't needed after picking up."
+   
     Inventory class >> displayItems [
         Transcript showCr: 'Your inventory:'.
         items do: [:each |

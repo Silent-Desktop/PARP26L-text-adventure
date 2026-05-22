@@ -83,11 +83,18 @@ Object subclass: Room [
         self showExits.
     ]
     take: item [
-        Transcript showCr: ((items removeKey: item ifAbsent: [
+        | removed |
+        removed := items removeKey: item ifAbsent: [
+            Transcript showCr: 'No such ', (Utils colItem: 'item'), ' here!'.
+            ^ nil
+        ].
+        removed take.
+        ^ item
+        " Transcript showCr: ((items removeKey: item ifAbsent: [
             Transcript showCr: 'No such ' , (Utils colItem: 'item') , ' here!'.
             ^ nil
         ]) takeDesc).
-        ^ item
+        ^ item "
     ]
     check: objectName ifPresentValue: closure [
         | object |

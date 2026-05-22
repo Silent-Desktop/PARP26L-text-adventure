@@ -34,7 +34,9 @@ Room subclass: Bathroom [
         }.
         items := items class from: {
             #towel -> (Item look: 'Theres a ', (Utils colItem: 'towel'), ' here, hanging from the top of the shower door. It''s still a bit wet and you can see a few drops of water hit the tiles below it.'
-                take: 'You pick up the ', (Utils colItem: 'towel'), '. It cold and wet to the touch. It still hasn''t dried.').
+                take: [
+                    Transcript showCr: 'You pick up the ', (Utils colItem: 'towel'), '. It cold and wet to the touch. It still hasn''t dried.'
+                ]).
         }.
     ]
     Bathroom class >> new [
