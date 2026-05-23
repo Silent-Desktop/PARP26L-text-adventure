@@ -43,6 +43,7 @@ Room subclass: LivingRoom [
                 take: 'You pick up the ' , (Utils colItem: 'keys') , ' and they fit neatly in your back pocket.').
         }.
     ]
+    "Override for the showItems method — automatically grant the player Can #5."
     showItems [
         super showItems.
         (Inventory isCanFound: 5) ifFalse: [

@@ -59,8 +59,15 @@ Room subclass: Kitchen [
                 ] inspection: 'It''s a standard grey ' , (Utils colObject: 'trashcan') , '. The container itself isn''t heavy and you mostly throw out paper scraps here.').
             #fridge -> (Interactable desc: 'Your ' , (Utils colObject: 'fridge') , ' is here, without any chilled cans inside. Open it when you''re done.'
                 interaction: [
-                    Transcript showCr: 'You open the ' , (Utils colObject: 'fridge') , ' and return all the cans that you''ve found to their shelf. You''re looking forward to enjoying a nice, cold drink.'.
-                    GameState endGameScreen.
+                    Inventory foundCount = 0 ifTrue: [
+                        Transcript showCr: 'You open the ' , (Utils colObject: 'fridge') , ' and, once again, take in its vast emptiness. You still need your daily caffeine dose, but you decide your friends'' prank is not worth your time.'.
+                        Transcript showCr: 'Perhaps a visit to the ',(Utils colPlace: 'frog shop'),' is in order.'.
+                        (Inventory hasItem: #keys) ifFalse: [Transcript showCr: 'Oh, right, you haven''t found your ',(Utils colItem: 'keys'),' yet...'.].
+                        GameState sadEndGameScreen.
+                    ] ifFalse: [
+                        Transcript showCr: 'You open the ' , (Utils colObject: 'fridge') , ' and return all the cans that you''ve found to their shelf. You''re looking forward to enjoying a nice, cold drink.'.
+                        GameState endGameScreen.
+                    ]
                 ] inspection: 'This is your ' , (Utils colObject: 'fridge') , '. Inside, there should be 12 cans of your favourite energy drink, but your friends hid them around the house to prank you.',Character nl asString,'When you''re done searching, you should return here and put them back.').
         }.
         items := items class from: {

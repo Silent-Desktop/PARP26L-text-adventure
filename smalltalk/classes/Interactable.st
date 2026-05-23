@@ -1,13 +1,23 @@
+"Interactable class
+
+Responsibilities:
+- store object description displayed with the 'look' command
+- store Blocks to be executed with the 'inspect' and 'interact' commands (or simple Strings to be displayed)"
+
 Object subclass: Interactable [
     | desc interactBlock inspectBlock |
-
+    "Interactable constructor
+    Arguments:
+    - `desc`: String
+    - `interaction`: Block or String
+    - `inspection`: Block or String
+    `interaction`/`inspection` Strings are converted into a simple `[Transcript showCr: aString]` Block."
     Interactable class >> desc: aDesc interaction: anIntBlock inspection: anInspBlock [
         | x |
         x := super new.
         x init: aDesc interaction: anIntBlock inspection: anInspBlock.
         ^x
     ]
-
     init: aDesc interaction: anIntBlock inspection: anInspBlock [
         desc := aDesc.
         (anIntBlock respondsTo: #value) ifTrue: [
@@ -22,13 +32,15 @@ Object subclass: Interactable [
         ].
     ]
 
-    desc [
-        ^desc
-    ]
+    "Execute the relevant code blocks."
     interact [
         interactBlock value
     ]
     inspect [
         inspectBlock value
+    ]
+
+    desc [
+        ^desc
     ]
 ]

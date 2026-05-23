@@ -28,14 +28,16 @@ Room subclass: Bedroom [
                 #desk -> (Interactable desc: 'There is a ', (Utils colObject: 'desk'), ' pushed up against the wall. This is where you work during the day.',Character nl asString,'There''s a pile of notes, pens, and some books on it — the usual sight, given your upcoming exams.'
                 interaction: [
                     (Inventory isCanFound: 8) ifFalse: [
-                        Transcript showCr: 'You sit down at your ', (Utils colObject: 'desk'), ', determined to read through some of your notes. After sifting through piles of paper, you reach for a book.',Character nl asString,'Before you even open it, you notice ', (Utils colCan: 'Can #8'), ' was hiding behind it!'.
+                        Transcript showCr: 'You sit down at your ', (Utils colObject: 'desk'), ', determined to read through some of your notes. After sifting through piles of paper, you reach for a book.'.
+                        Transcript showCr: 'Before you even open it, you notice ', (Utils colCan: 'Can #8'), ' was hiding behind it!'.
                         Inventory foundCan: 8.
                     ] ifTrue: [
                         Transcript showCr: 'You''ve already looked through your notes and books, creating an even bigger mess. Can #8 used to be hidden behind some books.'
                     ]
                 ] inspection: [
                     (Inventory isCanFound: 8) ifFalse: [
-                        Transcript showCr: 'You take a closer look at the pile of notes. You''re prepping for exams, so your ',(Utils colObject: 'desk'),' is full of notes and loose pens.',Character nl asString,'It looks like there''s something hidden behind the large stack of books to the side...'
+                        Transcript showCr: 'You take a closer look at the pile of notes. You''re prepping for exams, so your ',(Utils colObject: 'desk'),' is full of notes and loose pens.'.
+                        Transcript showCr: 'It looks like there''s something hidden behind the large stack of books to the side...'
                     ] ifTrue: [
                         Transcript showCr: 'You look at your notes again. The ', (Utils colObject: 'desk'), ' is even more of a mess now, since you''ve rearranged it. Can #8 used to be hidden behind some books here.'
                     ]
@@ -50,5 +52,3 @@ Room subclass: Bedroom [
         ^x
     ]
 ]
-
-"TODO: descriptions, interactions, inspections, items"

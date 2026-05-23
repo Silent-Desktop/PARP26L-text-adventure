@@ -37,14 +37,17 @@ Room subclass: Closet [
             #'clothing rack' -> (Interactable desc: 'There is a ', (Utils colObject: 'clothing rack'), ' here, where you keep your shirts and some pants. It looks dusty.'
                 interaction: [
                     (Inventory isCanFound: 9) ifFalse: [
-                        Transcript showCr: 'You grab your favourite jacket from a hanger and put it on. It''s very warm and has nice, big pockets. Without much thinking, you put your hands in the pockets and notice something cold. In your left pocket, you find ', (Utils colCan: 'Can #9'), '!'.
+                        Transcript showCr: 'You grab your favourite jacket from a hanger and put it on. It''s very warm and has nice, big pockets.'.
+                        Transcript showCr: 'Without much thinking, you put your hands in the pockets and notice something cold. In your left pocket, you find ', (Utils colCan: 'Can #9'), '!'.
                         Inventory foundCan: 9.
                     ] ifTrue: [
-                        Transcript showCr: 'All the clothes, including the jacket you grabbed earlier, are back on the ', (Utils colObject: 'clothing rack'), '. You try the jacket on again, but quickly put it back, since it''s too warm, anyway.',Character nl asString,'Can #9 used to be in the left pocket.'
+                        Transcript showCr: 'All the clothes, including the jacket you grabbed earlier, are back on the ', (Utils colObject: 'clothing rack'), '. You try the jacket on again, but quickly put it back, since it''s too warm, anyway.'.
+                        Transcript showCr: 'Can #9 used to be in the left pocket.'
                     ]
                 ] inspection: [
                     (Inventory isCanFound: 9) ifFalse: [
-                        Transcript showCr: 'You look closer at one of your favourite denim jackets. The fabric is pretty thick, but despite that, you can still see something bulging in its inner pocket.',Character nl asString,'You reach in and find ', (Utils colCan: 'Can #9'), '!'.
+                        Transcript showCr: 'You look closer at one of your favourite denim jackets. The fabric is pretty thick, but despite that, you can still see something bulging in its inner pocket.'.
+                        Transcript showCr: 'You reach in and find ', (Utils colCan: 'Can #9'), '!'.
                         Inventory foundCan: 9.
                     ] ifTrue: [
                         Transcript showCr: 'You inspect the ', (Utils colObject: 'clothing rack'), ' again. Your denim jacket now hangs flat on its hanger. Can #9 used to be in the inner pocket.'
