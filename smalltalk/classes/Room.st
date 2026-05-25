@@ -126,7 +126,7 @@ Object subclass: Room [
     "Take an Item from the Room.
     Remove the Item from `items`.
     Execute the Item's `take` BlockClosure (usually just displays a String).
-    Return an Item or `nil` if invalid."
+    Return the item Symbol or `nil` if invalid."
     take: item [
         | removed |
         removed := items removeKey: item ifAbsent: [
