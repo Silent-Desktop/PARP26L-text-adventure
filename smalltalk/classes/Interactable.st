@@ -2,7 +2,7 @@
 
 Responsibilities:
 - store object description displayed with the 'look' command
-- store Blocks to be executed with the 'inspect' and 'interact' commands (or simple Strings to be displayed)"
+- store BlockClosures to be executed with the 'inspect' and 'interact' commands (or simple Strings to be displayed)"
 
 Object subclass: Interactable [
     | desc interactBlock inspectBlock |

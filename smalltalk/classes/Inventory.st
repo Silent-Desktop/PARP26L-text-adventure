@@ -2,7 +2,7 @@ FileStream fileIn: 'classes/Utils.st'.
 
 "Inventory class
 
-This class' fields and methods are static in order to allow global access (e.g. within interaction Blocks)
+This class' fields and methods are static in order to allow global access (e.g. within interaction BlockClosures)
 without the necessity to explicitly pass the inventory as an argument.
 
 Responsibilities:

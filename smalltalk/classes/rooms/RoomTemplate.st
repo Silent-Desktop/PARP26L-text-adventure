@@ -1,6 +1,6 @@
 "Template for creating new Rooms.
-Fill the '' fields with Strings, #'' fields with Symbols, [] fields with Blocks.
-Note: Interactable and Item classes accept both Strings and Blocks as `interaction`/`inspection`/`take`."
+Fill the '' fields with Strings, #'' fields with Symbols, [] fields with BlockClosures.
+Note: Interactable and Item classes accept both Strings and BlockClosures as `interaction`/`inspection`/`take`."
 
 FileStream fileIn: 'classes/Room.st'.
 

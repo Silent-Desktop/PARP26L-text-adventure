@@ -2,7 +2,7 @@ FileStream fileIn: 'classes/Inventory.st'.
 
 "GameState class
 
-This class' fields and methods are static in order to allow global access (e.g. within interaction Blocks)
+This class' fields and methods are static in order to allow global access (e.g. within interaction BlockClosures)
 without the necessity to explicitly pass the state as an argument.
 
 Responsibilities:
