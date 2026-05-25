@@ -8,7 +8,7 @@ Run PROLOG with `swipl -s <filename>`
 Run HASKELL with arrow in top right or `ghc <filename>`  
 Run SMALLTALK with `gst -g <filename>` in the `smalltalk/` directory  
 ### PROLOG
-The text adventure in prolog can be run in 2 ways. Either use the file 'adventure_full.pl', which contains all the code in a singular file
+The text adventure in prolog can be run in 2 ways. Either use the file 'adventure_full.pl', which contains all the code in a singular file  
 Or use the file 'adventure_main.pl' which is a version of the game split into modules for code readability.
 
 Alternatively:
