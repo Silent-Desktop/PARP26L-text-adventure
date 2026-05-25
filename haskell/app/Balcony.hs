@@ -1,0 +1,110 @@
+module Balcony
+  ( handleLookBalcony,
+    handleGoBalcony,
+    handleInteractBalcony,
+    handleInspectBalcony,
+  )
+where
+
+import Rooms
+import State (GameState (..))
+import Utils (combineRest, green, magenta, updateCan, yellow)
+
+handleLookBalcony :: GameState -> IO GameState
+handleLookBalcony state = do
+  putStrLn $ "This is the " ++ yellow "balcony" ++ ". On the floor in the corner there is a large potted " ++ green "plant" ++ ". It's most likely a fern but you never bothered to make sure. It's leaves are large and sprawling."
+  putStrLn $ "The balcony has a thick metal " ++ green "railing" ++ " and right now there are a couple of towels hanging from it."
+  _ <-
+    if stringFound state
+      then do
+        putStrLn $ "Over the edge of the " ++ green "railing" ++ " there is a thin " ++ green "string" ++ " hanging. Its tied to one of the metal bars and its pulled."
+        pure state
+      else pure state
+  putStrLn $ "You can see that from here you can reach the " ++ yellow "living room"
+  return state
+
+handleGoBalcony :: String -> GameState -> IO Room
+handleGoBalcony input _ = do
+  let splitInput = words input
+  let rest = combineRest splitInput 2
+  case rest of
+    "living room" -> do
+      putStrLn $ "You go into the " ++ yellow "living room" ++ "."
+      return LivingRoom
+    _ -> do
+      putStrLn "No such room"
+      return Balcony
+
+handleInspectBalcony :: String -> GameState -> IO GameState
+handleInspectBalcony input state = do
+  let splitInput = words input
+  if length splitInput < 2
+    then do
+      putStrLn "Inspect what?"
+      return state
+    else do
+      case splitInput !! 1 of
+        "plant" -> do
+          if not (cansFound state !! 6)
+            then do
+              putStrLn $ "It's the big " ++ green "plant" ++ " on your balcony, perhaps a fern. It's leaves are wide and sprawling. It would be very easy to hide something here."
+              pure state
+            else do
+              putStrLn $ "The leaves look a bit ruffled now, after you pushed them aside. The " ++ green "plant" ++ " doesn't seem bothered"
+              pure state
+        "railing" -> do
+          if not (cansFound state !! 5)
+            then do
+              putStrLn $ "Over the edge of the " ++ green "railing" ++ " there is a thin " ++ green "string" ++ " hanging. Its tied to one of the metal bars and its pulled."
+              if not (stringFound state)
+                then do
+                  let newState = state {stringFound = True}
+                  return newState
+                else
+                  pure state
+            else do
+              putStrLn $ "there is a thin " ++ green "string" ++ " tied to the " ++ green "railing" ++ ". Currently it's loose. " ++ magenta "Can #6" ++ " used to be tied to the end."
+              pure state
+        "string" -> do
+          if not (cansFound state !! 5)
+            then do
+              putStrLn $ "The "++green "string"++" is tied to one of the metal bars and its pulled."
+              pure state
+            else do
+              putStrLn $ "The " ++ green "string" ++ " is loose. " ++ magenta "Can #6" ++ " used to be tied to the end."
+              pure state
+        _ -> do
+          putStrLn "No such object here"
+          return state
+
+handleInteractBalcony :: String -> GameState -> IO GameState
+handleInteractBalcony input state = do
+  let splitInput = words input
+  if length splitInput < 3
+    then do
+      putStrLn "Interact with what?"
+      return state
+    else do
+      case splitInput !! 2 of
+        "railing"-> do
+          putStrLn $ "You approach the "++green "railing"++" and rearange the wet towels hanging from it. They are colorful and it would be quite easy to hide something between them, like a thin string."
+          return state
+        "plant" -> do
+          if not (cansFound state !! 6)
+            then do
+              putStrLn $ "You squat down to touch the " ++ green "plant" ++ ". After some searching under its many leaves you find " ++ magenta "Can #7" ++ "!"
+              pure $ updateCan 6 True state
+            else do
+              putStrLn $ "You ruffle the " ++ green "plant's" ++ " leaves again but besides a couple of dried petals and small bugs nothing of interest falls out. " ++ magenta "Can #7" ++ " used to be hidden below the leaves."
+              pure state
+        "string" -> do
+          if not (cansFound state !! 5)
+            then do
+              putStrLn $ "You grab the " ++ green "string" ++ " at the edge of the railing and start gently pulling. There is something heavy tied to it. Finally you grab a hold of " ++ magenta "Can #6" ++ "!"
+              pure $ updateCan 5 True state
+            else do
+              putStrLn $ magenta "Can #6" ++ " used to be here"
+              pure state
+        _ -> do
+          putStrLn "No such object here"
+          return state
