@@ -125,7 +125,7 @@ Object subclass: Room [
     ]
     "Take an Item from the Room.
     Remove the Item from `items`.
-    Execute the Item's `take` Block (usually just displays a String).
+    Execute the Item's `take` BlockClosure (usually just displays a String).
     Return an Item or `nil` if invalid."
     take: item [
         | removed |
@@ -149,11 +149,11 @@ Object subclass: Room [
         ].
         object ifNotNil: [ closure value: object value ].
     ]
-    "Execute an Interactable's `interact` Block."
+    "Execute an Interactable's `interact` BlockClosure."
     interact: objectName [
         self check: objectName ifPresentValue: [:object | object interact ].
     ]
-    "Execute an Interactable's `inspect` Block."
+    "Execute an Interactable's `inspect` BlockClosure."
     inspect: objectName [
         self check: objectName ifPresentValue: [:object | object inspect ].
     ]

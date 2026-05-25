@@ -2,15 +2,15 @@
 
 Responsibilities:
 - store item description to be displayed with the 'look' command
-- store a String to be displayed with the 'take' command (or a more complex Block to be executed)"
+- store a String to be displayed with the 'take' command (or a more complex BlockClosure to be executed)"
 
 Object subclass: Item [
     | lookDesc takeBlock |
     "Item constructor
     Arguments:
     - look: String
-    - take: String or Block
-    `take` String is converted into a simple `[Transcript showCr: aString]` Block."
+    - take: String or BlockClosure
+    `take` String is converted into a simple `[Transcript showCr: aString]` BlockClosure."
     Item class >> look: aLookDesc take: aTakeDesc [
         | x |
         x := super new.

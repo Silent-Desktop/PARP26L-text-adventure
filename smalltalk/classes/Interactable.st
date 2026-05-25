@@ -9,9 +9,9 @@ Object subclass: Interactable [
     "Interactable constructor
     Arguments:
     - `desc`: String
-    - `interaction`: Block or String
-    - `inspection`: Block or String
-    `interaction`/`inspection` Strings are converted into a simple `[Transcript showCr: aString]` Block."
+    - `interaction`: BlockClosure or String
+    - `inspection`: BlockClosure or String
+    `interaction`/`inspection` Strings are converted into a simple `[Transcript showCr: aString]` BlockClosure."
     Interactable class >> desc: aDesc interaction: anIntBlock inspection: anInspBlock [
         | x |
         x := super new.
